@@ -5,6 +5,35 @@ Bunch of helper functions that don't have a place.
 """
 
 
+def top_n_values_of_dict(input_dict, n):
+
+    result = sorted(input_dict.items(), reverse=True, key=lambda item: item[1])
+    return result[:n]
+
+
+def words_in_sentence(sentence):
+    spaces_count = 0
+
+    for char in sentence:
+        if char == " ":
+            spaces_count += 1
+
+    return spaces_count + 1
+
+
+def newline_to_space(char):
+    if char == '\n':
+        return ' '
+    else:
+        return char
+
+
+def trim_sentence(sentence):
+    if "CHAPTER " in sentence:
+        return ""
+    return "".join(map(newline_to_space, sentence))
+
+
 def is_word(word):
     """
 

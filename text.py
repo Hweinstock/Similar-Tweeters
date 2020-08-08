@@ -1,4 +1,4 @@
-from utility import is_word
+import utility
 import re
 
 
@@ -6,10 +6,12 @@ class TextObject:
     """
     This Object Wraps a textfile and gives it easier functionality than working directly with file.
     """
-    def __init__(self, filepath):
+    def __init__(self, filepath, precalc=True):
         self.filepath = filepath
         self.text = self.read_full_file()
-        self.indexed_word_set = self.index_words()
+        if precalc:
+            self.indexed_word_set = self.index_words()
+            self.indexed_sentence_set = self.index_sentences()
         self.sentences = self.list_of_sentences()
 
     def read_full_file(self):
@@ -31,7 +33,7 @@ class TextObject:
             a list with words splits based on re-match. This is not perfect, but will be easier with less puncuation (on Discord)
 
         """
-        return [word.lower() for word in re.split('\s|,|\.|;|:|\n|--|–|\"|-|—|”|\(|\)|\’', self.text) if is_word(word)]
+        return [word.lower() for word in re.split('\s|,|\.|;|:|\n|--|–|\"|-|—|”|\(|\)|\’', self.text) if utility.is_word(word)]
 
     def list_of_sentences(self):
         """
@@ -39,7 +41,27 @@ class TextObject:
         Returns:
             a list of sentences found in the raw text
         """
-        return [sentence for sentence in re.split('\.|\!|\?', self.text)]
+        result = []
+        for sentence in re.split('[\.\!\?]\s', self.text):
+            trimmed_sentence = utility.trim_sentence(sentence)
+            if trimmed_sentence != "":
+                result.append(trimmed_sentence)
+        #return [utility.trim_sentence(sentence) for sentence in re.split('[\.\!\?]\s', self.text)]
+        return result
+
+    def index_sentences(self):
+        sentence_list = self.list_of_sentences()
+
+        occurrences = {}
+
+        for sentence in sentence_list:
+            num_words = utility.words_in_sentence(sentence)
+            if num_words in occurrences:
+                occurrences[num_words] += 1
+            else:
+                occurrences[num_words] = 1
+
+        return occurrences
 
     def index_words(self):
         """
@@ -69,8 +91,21 @@ class TextObject:
             A list ranking top words in form [(word, count), (word2, count2)...(wordn, countn)]
 
         """
-        sorted_words = sorted(self.indexed_word_set.items(), reverse=True, key=lambda item: item[1])
-        return sorted_words[:n]
+
+        return utility.top_n_values_of_dict(self.indexed_word_set, n)
+
+    def top_n_sentence_lengths(self, n):
+        """
+
+        Args:
+            n: Cutoff point for ranking
+
+        Returns:
+            A list ranking top sentence lengths in form [(length1, count), (length2, count2)...(lengthn, countn)]
+
+        """
+
+        return utility.top_n_values_of_dict(self.indexed_sentence_set, n)
 
     def average_word_length(self):
         """
