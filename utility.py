@@ -5,6 +5,11 @@ Bunch of helper functions that don't have a place.
 """
 
 
+def scale_indexed_set(indexed_set):
+    total = sum(indexed_set.values())
+    return {k: v / total for (k, v) in indexed_set.items()}
+
+
 def top_n_values_of_dict(input_dict, n):
 
     result = sorted(input_dict.items(), reverse=True, key=lambda item: item[1])

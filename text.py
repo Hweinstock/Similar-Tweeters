@@ -61,7 +61,9 @@ class TextObject:
             else:
                 occurrences[num_words] = 1
 
-        return occurrences
+        scaled_occurrences = utility.scale_indexed_set(occurrences)
+
+        return scaled_occurrences
 
     def index_words(self):
         """
@@ -79,7 +81,9 @@ class TextObject:
             else:
                 occurrences[word] = 1
 
-        return occurrences
+        scaled_occurrences = utility.scale_indexed_set(occurrences)
+
+        return scaled_occurrences
 
     def top_n_words(self, n):
         """
@@ -123,6 +127,17 @@ class TextObject:
 
         return total_length / total_words
 
+    def index_punctuation(self):
+
+        occurrences = {}
+        punctuation = ['.', '!', '?', ',', ':', ';', '-']
+
+        for p in punctuation:
+            occurrences[p] = self.text.count(p+' ')
+
+        scaled_occurrences = utility.scale_indexed_set(occurrences)
+        return scaled_occurrences
+
     def report(self):
         ret_string ='\n'
         ret_string += self.filepath + '\n'
@@ -135,5 +150,8 @@ class TextObject:
 
         ret_string += "Average sentence length: "
         ret_string += str(self.top_n_sentence_lengths(10)) + '\n'
+
+        ret_string += "Punctuation: "
+        ret_string += str(self.index_punctuation()) + '\n'
 
         return ret_string
