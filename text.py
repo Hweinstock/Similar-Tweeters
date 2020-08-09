@@ -123,4 +123,17 @@ class TextObject:
 
         return total_length / total_words
 
+    def report(self):
+        ret_string ='\n'
+        ret_string += self.filepath + '\n'
 
+        ret_string += "Top 10 words: "
+        ret_string += str(self.top_n_words(10)) + '\n'
+
+        ret_string += "Average word length: "
+        ret_string += str(self.average_word_length()) + '\n'
+
+        ret_string += "Average sentence length: "
+        ret_string += str(self.top_n_sentence_lengths(10)) + '\n'
+
+        return ret_string
