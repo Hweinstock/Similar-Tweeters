@@ -7,10 +7,11 @@ if __name__ == "__main__":
     Examples/Testing
     1-3, 2-4 same authors
     """
-    Dracula = TextObject('test_data/dracula.txt')
-    MobyDick = TextObject('test_data/moby_dick.txt')
-    Worm = TextObject('test_data/worm.txt')
-    Bartleby = TextObject('test_data/bartleby.txt')
+
+    Dracula = TextObject('test_data/dracula_bstoker.txt')
+    MobyDick = TextObject('test_data/moby_dick_hmelville.txt')
+    Worm = TextObject('test_data/worm_bstoker.txt')
+    Bartleby = TextObject('test_data/bartleby_hmelville.txt')
 
     print(Dracula.report())
     print(MobyDick.report())

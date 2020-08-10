@@ -5,17 +5,25 @@ import re
 class TextObject:
     """
     This Object Wraps a textfile and gives it easier functionality than working directly with file.
+    This could eventually be called a message object, but just to keep general its a text object.
     """
+
     def __init__(self, filepath, precalc=True):
         self.filepath = filepath
-        self.text = self.read_full_file()
+        self.text = self.read_full_text()
         if precalc:
             self.indexed_word_set = self.index_words()
             self.indexed_sentence_set = self.index_sentences()
             self.index_punctuation_set = self.index_punctuation()
         self.sentences = self.list_of_sentences()
 
-    def read_full_file(self):
+    def number_of_setences(self):
+        return len(self.sentences)
+
+    def number_of_words(self):
+        return len(self.list_of_words())
+
+    def read_full_text(self):
         """
 
         Returns:
@@ -152,7 +160,41 @@ class TextObject:
 
         return total_length / total_words
 
+    def average_sentence_length(self):
+        """
+
+        Returns:
+            a floating point value representing average sentence length in words.
+        """
+
+        total_length = 0
+        total_sentences = 0
+
+        for sentence in self.indexed_sentence_set:
+            total_length += sentence * self.indexed_sentence_set[sentence]
+            total_sentences += self.indexed_sentence_set[sentence]
+
+        return total_length / total_sentences
+
     def report(self):
+        n = 5
+        text_report = {
+            "top_words": self.top_n_words(n),
+            "word_length": self.average_word_length(),
+            "top_sentences": self.top_n_sentence_lengths(n),
+            "punctuation_percentage": self.index_punctuation().items()
+
+        }
+        return text_report
+
+    def __str__(self):
+        """
+        Only really useful for debugging.
+        Returns:
+            A report of major statistics regarding the text.
+
+        """
+
         ret_string ='\n'
         ret_string += self.filepath + '\n'
 

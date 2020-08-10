@@ -109,3 +109,39 @@ def is_word(word):
         #     print(word)
         return False
     return True
+
+
+def is_letter(char):
+    """
+
+    Args:
+        char:
+
+    Returns:
+        True if valid letter, false if not
+
+    """
+    matched_char = re.match("[a-zA-z]")
+
+    if matched_char is not None and matched_char == char:
+        return True
+    else:
+        return False
+
+
+def is_capitalized(char):
+    """
+
+    Args:
+        char:
+
+    Returns:
+        True if capitalized, false if not.
+
+    """
+    matched_char = re.match("[A-Z]")
+    if matched_char is not None and matched_char == char:
+        return True
+    else:
+        return False
+
