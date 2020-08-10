@@ -6,17 +6,47 @@ Bunch of helper functions that don't have a place.
 
 
 def scale_indexed_set(indexed_set):
+    """
+
+    Converts flat numbers to percentages so that they actually make sense.
+
+    Args:
+        indexed_set:
+
+    Returns:
+        A new dict with percentages.
+
+
+    """
     total = sum(indexed_set.values())
     return {k: v / total for (k, v) in indexed_set.items()}
 
 
 def top_n_values_of_dict(input_dict, n):
+    """
 
+    Args:
+        input_dict: an indexed set/dict
+        n: cutoff point (int)
+
+    Returns:
+        The top n keys of dict based on value of keys.
+
+    """
     result = sorted(input_dict.items(), reverse=True, key=lambda item: item[1])
     return result[:n]
 
 
 def words_in_sentence(sentence):
+    """
+
+    Args:
+        sentence:
+
+    Returns:
+        Int: The number of words in a given sentence
+
+    """
     spaces_count = 0
 
     for char in sentence:
@@ -27,6 +57,17 @@ def words_in_sentence(sentence):
 
 
 def newline_to_space(char):
+    """
+
+    Helper function to trim_sentence
+
+    Args:
+        char:
+
+    Returns:
+        a space if input is newline,
+
+    """
     if char == '\n':
         return ' '
     else:
@@ -34,6 +75,15 @@ def newline_to_space(char):
 
 
 def trim_sentence(sentence):
+    """
+
+    Args:
+        sentence:
+
+    Returns:
+        a cleaned up sentence without escape characters (currently only does \n)
+
+    """
     if "CHAPTER " in sentence:
         return ""
     return "".join(map(newline_to_space, sentence))

@@ -12,6 +12,7 @@ class TextObject:
         if precalc:
             self.indexed_word_set = self.index_words()
             self.indexed_sentence_set = self.index_sentences()
+            self.index_punctuation_set = self.index_punctuation()
         self.sentences = self.list_of_sentences()
 
     def read_full_file(self):
@@ -33,6 +34,7 @@ class TextObject:
             a list with words splits based on re-match. This is not perfect, but will be easier with less puncuation (on Discord)
 
         """
+        # Def going to clean up the RE here. Some nasty formatting in the book made this necessary.
         return [word.lower() for word in re.split('\s|,|\.|;|:|\n|--|–|\"|-|—|”|\(|\)|\’', self.text) if utility.is_word(word)]
 
     def list_of_sentences(self):
@@ -46,10 +48,16 @@ class TextObject:
             trimmed_sentence = utility.trim_sentence(sentence)
             if trimmed_sentence != "":
                 result.append(trimmed_sentence)
-        #return [utility.trim_sentence(sentence) for sentence in re.split('[\.\!\?]\s', self.text)]
+
         return result
 
     def index_sentences(self):
+        """
+
+        Returns:
+            a dictionary of format {sentence length : % of occurences}
+
+        """
         sentence_list = self.list_of_sentences()
 
         occurrences = {}
@@ -69,7 +77,7 @@ class TextObject:
         """
 
         Returns:
-            a dictionary of format {word : # of occurrences}
+            a dictionary of format {word : % of occurrences}
 
         """
         word_list = self.list_of_words()
@@ -83,6 +91,23 @@ class TextObject:
 
         scaled_occurrences = utility.scale_indexed_set(occurrences)
 
+        return scaled_occurrences
+
+    def index_punctuation(self):
+        """
+
+        Returns:
+            a dictionary of format {punc : % of occurences}
+
+        """
+
+        occurrences = {}
+        punctuation = ['.', '!', '?', ',', ':', ';', '-']
+
+        for p in punctuation:
+            occurrences[p] = self.text.count(p+' ')
+
+        scaled_occurrences = utility.scale_indexed_set(occurrences)
         return scaled_occurrences
 
     def top_n_words(self, n):
@@ -126,17 +151,6 @@ class TextObject:
             total_words += self.indexed_word_set[word]
 
         return total_length / total_words
-
-    def index_punctuation(self):
-
-        occurrences = {}
-        punctuation = ['.', '!', '?', ',', ':', ';', '-']
-
-        for p in punctuation:
-            occurrences[p] = self.text.count(p+' ')
-
-        scaled_occurrences = utility.scale_indexed_set(occurrences)
-        return scaled_occurrences
 
     def report(self):
         ret_string ='\n'
