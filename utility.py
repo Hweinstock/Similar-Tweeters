@@ -1,4 +1,7 @@
 import re
+import numpy as np
+from numpy.linalg import norm
+
 
 """
 Bunch of helper functions that don't have a place. 
@@ -145,3 +148,43 @@ def is_capitalized(char):
     else:
         return False
 
+
+def list_similarity(l1, l2):
+    """
+
+    Args:
+        l1: Python list of nums
+        l2: Python list of nums
+
+    Returns:
+        Treats l1 and l2 as two vectors in n-space in order to calculate the cosine
+        of the angle between the vectors as a method of comparing/quantifying the difference
+        between two vectors.
+
+        Also known as cosine similarity.
+
+
+    """
+    a = np.array(l1)
+    b = np.array(l2)
+
+    cos_sim = np.dot(a, b)/(norm(a)*norm(b))
+
+    return cos_sim
+
+
+def frequency_class(freq, max_freq):
+    """
+    https://de.wikipedia.org/wiki/H%C3%A4ufigkeitsklasse (translate to English)
+
+    Args:
+        freq:
+        max_freq:
+
+    Returns:
+        returns the frequency class of a given word, this is a metric used to meaasure
+        the frequency of a certain word in relation to the most frequent word.
+
+
+    """
+    return np.floor(0.5 - np.log(freq / max_freq))

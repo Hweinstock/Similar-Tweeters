@@ -11,6 +11,9 @@ class TextObject:
     def __init__(self, filepath, precalc=True):
         self.filepath = filepath
         self.text = self.read_full_text()
+        self.words = self.list_of_words()
+        self.sentences = self.list_of_sentences()
+
         if precalc:
             self.indexed_word_set = self.index_words()
             self.indexed_sentence_set = self.index_sentences()
@@ -66,11 +69,10 @@ class TextObject:
             a dictionary of format {sentence length : % of occurences}
 
         """
-        sentence_list = self.list_of_sentences()
 
         occurrences = {}
 
-        for sentence in sentence_list:
+        for sentence in self.sentences:
             num_words = utility.words_in_sentence(sentence)
             if num_words in occurrences:
                 occurrences[num_words] += 1
@@ -88,10 +90,9 @@ class TextObject:
             a dictionary of format {word : % of occurrences}
 
         """
-        word_list = self.list_of_words()
         occurrences = {}
 
-        for word in word_list:
+        for word in self.words:
             if word in occurrences:
                 occurrences[word] += 1
             else:
@@ -117,6 +118,16 @@ class TextObject:
 
         scaled_occurrences = utility.scale_indexed_set(occurrences)
         return scaled_occurrences
+
+    def classify_word_distribution(self):
+        frequency_list = {}
+        max_freq = self.top_n_words(1)[0][1]
+
+        for word in self.words:
+            freq = self.indexed_word_set[word]
+            frequency_list[word] = utility.frequency_class(freq, max_freq)
+
+        return frequency_list
 
     def top_n_words(self, n):
         """
@@ -181,8 +192,9 @@ class TextObject:
         text_report = {
             "top_words": self.top_n_words(n),
             "word_length": self.average_word_length(),
+            "sentence_length": self.average_sentence_length(),
             "top_sentences": self.top_n_sentence_lengths(n),
-            "punctuation_percentage": self.index_punctuation().items()
+            "punctuation_percentages": self.index_punctuation().items(),
 
         }
         return text_report
@@ -210,4 +222,5 @@ class TextObject:
         ret_string += "Punctuation: "
         ret_string += str(self.index_punctuation()) + '\n'
 
+        ret_string += str(utility.top_n_values_of_dict(self.classify_word_distribution(), 10))
         return ret_string

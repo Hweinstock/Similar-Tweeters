@@ -12,7 +12,7 @@ if __name__ == "__main__":
     MobyDick = TextObject('test_data/moby_dick_hmelville.txt')
     Worm = TextObject('test_data/worm_bstoker.txt')
     Bartleby = TextObject('test_data/bartleby_hmelville.txt')
-
+    print(str(Dracula))
     print(Dracula.report())
     print(MobyDick.report())
     print(Worm.report())
