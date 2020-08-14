@@ -86,8 +86,6 @@ class Comparison:
 
         return True
 
-
-
     @property
     def report(self):
         result = {

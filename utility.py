@@ -22,6 +22,8 @@ def scale_indexed_set(indexed_set):
 
     """
     total = sum(indexed_set.values())
+    if total == 0:
+        return {k: 0 for (k, v) in indexed_set.items()}
     return {k: v / total for (k, v) in indexed_set.items()}
 
 
@@ -163,12 +165,15 @@ def list_similarity(l1, l2):
 
         Also known as cosine similarity.
 
-
+`   # TODO: Figure out what breaks this is 50:100 range
     """
     a = np.array(l1)
     b = np.array(l2)
-
-    cos_sim = np.dot(a, b)/(norm(a)*norm(b))
+    try:
+        cos_sim = np.dot(a, b)/(norm(a)*norm(b))
+    except ValueError:
+        print(a, b)
+        return None
 
     return cos_sim
 
