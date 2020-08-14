@@ -1,5 +1,10 @@
 import utility
 import re
+from nltk.tokenize import word_tokenize, sent_tokenize
+from nltk.corpus import stopwords
+import string
+
+stop_words = stopwords.words('english')
 
 
 class TextObject:
@@ -8,23 +13,23 @@ class TextObject:
     This could eventually be called a message object, but just to keep general its a text object.
     """
 
-    def __init__(self, filepath, precalc=True):
+    def __init__(self, filepath, precalc=True, include_stopwords=False):
         self.filepath = filepath
+        self.include_stopwords = include_stopwords
         self.text = self.read_full_text()
-        self.words = self.list_of_words()
         self.sentences = self.list_of_sentences()
+        self.words = self.list_of_words()
 
         if precalc:
             self.indexed_word_set = self.index_words()
             self.indexed_sentence_set = self.index_sentences()
-            self.index_punctuation_set = self.index_punctuation()
-        self.sentences = self.list_of_sentences()
+            self.indexed_punctuation_set = self.index_punctuation()
 
     def number_of_setences(self):
         return len(self.sentences)
 
     def number_of_words(self):
-        return len(self.list_of_words())
+        return len(self.words)
 
     def read_full_text(self):
         """
@@ -39,14 +44,25 @@ class TextObject:
         return text
 
     def list_of_words(self):
+        # https://machinelearningmastery.com/clean-text-machine-learning-python/#:~:text=3.-,Split%20into%20Words,%E2%80%9D%20%E2%80%9C's%E2%80%9C).
         """
 
         Returns:
             a list with words splits based on re-match. This is not perfect, but will be easier with less puncuation (on Discord)
 
         """
-        # Def going to clean up the RE here. Some nasty formatting in the book made this necessary.
-        return [word.lower() for word in re.split('\s|,|\.|;|:|\n|--|–|\"|-|—|”|\(|\)|\’', self.text) if utility.is_word(word)]
+        global stop_words
+
+        tokens = word_tokenize(self.text)
+        punc_table = str.maketrans('', '', string.punctuation)
+        stripped_words = [word.translate(punc_table) for word in tokens]
+        words = [word.lower() for word in stripped_words if word.isalpha()]
+
+        if self.include_stopwords:
+            return words
+        else:
+            meaningful_words = [word for word in words if word not in stop_words]
+            return meaningful_words
 
     def list_of_sentences(self):
         """
@@ -54,13 +70,7 @@ class TextObject:
         Returns:
             a list of sentences found in the raw text
         """
-        result = []
-        for sentence in re.split('[\.\!\?]\s', self.text):
-            trimmed_sentence = utility.trim_sentence(sentence)
-            if trimmed_sentence != "":
-                result.append(trimmed_sentence)
-
-        return result
+        return sent_tokenize(self.text)
 
     def index_sentences(self):
         """
@@ -199,6 +209,41 @@ class TextObject:
         }
         return text_report
 
+    def cross_compare_top_n_words(self, text_b, n):
+        """
+
+        Args:
+            text_b: TextObject
+
+        Returns:
+            The difference in how similar the top n word frequencies in self are from their frequencies in target text.
+        """
+
+        source_top_n_word_pairs = self.top_n_words(n)
+        source_top_n_words_freqs = [pair[1] for pair in source_top_n_word_pairs]
+        source_top_n_words = [pair[0] for pair in source_top_n_word_pairs]
+
+        target_top_n_words_freqs = []
+        for word in source_top_n_words:
+            if word in text_b.indexed_word_set:
+                target_top_n_words_freqs += [text_b.indexed_word_set[word]]
+            else:
+                target_top_n_words_freqs += [0]
+
+        freqs_similarity = utility.list_similarity(source_top_n_words_freqs, target_top_n_words_freqs)
+
+        return freqs_similarity
+
+    def split_sentence_length_info(self, n):
+        sentence_length_pairs = self.top_n_sentence_lengths(n)
+        sentence_lengths = [pair[0] for pair in sentence_length_pairs]
+        sentence_length_freq = [pair[1] for pair in sentence_length_pairs]
+
+        return sentence_lengths, sentence_length_freq
+
+
+
+
     def __str__(self):
         """
         Only really useful for debugging.
@@ -206,6 +251,8 @@ class TextObject:
             A report of major statistics regarding the text.
 
         """
+        # ret_string = str(self.list_of_words())
+
 
         ret_string ='\n'
         ret_string += self.filepath + '\n'
@@ -222,5 +269,5 @@ class TextObject:
         ret_string += "Punctuation: "
         ret_string += str(self.index_punctuation()) + '\n'
 
-        ret_string += str(utility.top_n_values_of_dict(self.classify_word_distribution(), 10))
+        #ret_string += str(utility.top_n_values_of_dict(self.classify_word_distribution(), 10))
         return ret_string

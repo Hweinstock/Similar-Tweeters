@@ -1,5 +1,7 @@
 from text import TextObject
-from utility import words_in_sentence
+import os
+from comparison import Comparison
+
 
 if __name__ == "__main__":
 
@@ -12,11 +14,19 @@ if __name__ == "__main__":
     MobyDick = TextObject('test_data/moby_dick_hmelville.txt')
     Worm = TextObject('test_data/worm_bstoker.txt')
     Bartleby = TextObject('test_data/bartleby_hmelville.txt')
-    print(str(Dracula))
-    print(Dracula.report())
-    print(MobyDick.report())
-    print(Worm.report())
-    print(Bartleby.report())
+
+    textObjects = []
+    for file in os.listdir('test_data'):
+        textObjects.append(TextObject('test_data/'+file))
+
+    source = textObjects[1]
+    for to in textObjects:
+        print(source.filepath, to.filepath, Comparison(source, to).report)
+
+    # print(Comparison(Dracula, MobyDick).punctuation_comparison())
+    # print(Comparison(Dracula, Worm).punctuation_comparison())
+    # print(Comparison(MobyDick, Bartleby).punctuation_comparison())
+    # print(str(MobyDick))
 
     # Old code for debugging average setence length.
     # s = sorted(MobyDick.list_of_sentences(), key=words_in_sentence, reverse=True)
