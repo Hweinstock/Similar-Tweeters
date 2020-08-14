@@ -24,7 +24,7 @@ def prepare_file(name):
     # Reopen file and write out text without gutenberg heading
     with open(full_path, "w") as text_file:
         text_file.write(new_text)
-
+    full_path = switch_path_for_analyze(full_path)
     return [full_path, author]
 
 
@@ -52,7 +52,6 @@ def identify_author(text_file):
     return " ".join(current_author)
 
 
-
 def find_start_of_text(text_file):
 
     while True:
@@ -66,3 +65,7 @@ def find_start_of_text(text_file):
         raise ValueError
 
     return new_text
+
+
+def switch_path_for_analyze(path):
+    return path[3:]

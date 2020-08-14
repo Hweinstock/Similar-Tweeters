@@ -70,16 +70,37 @@ class Comparison:
 
         return comp
 
+    def determine_author_match(self):
+        auth_1 = self.text_1.author
+        auth_2 = self.text_2.author
+
+        shorter_name = auth_1
+        bigger_name = auth_2
+        if len(auth_1) > len(auth_2):
+            shorter_name = auth_2
+            bigger_name = auth_1
+
+        for char in shorter_name:
+            if char not in bigger_name:
+                return False
+
+        return True
+
+
+
     @property
     def report(self):
         result = {
             "top_n_word_comparison": self.top_n_word_comparison(),
             "average_word_length_comparison": self.average_word_length_comparison(),
             "top_n_sentence_lengths_comparison": self.top_n_sentence_lengths_comparison(),
-            "punctuation_comparison": self.punctuation_comparison()
+            "punctuation_comparison": self.punctuation_comparison(),
+            "same_author?": self.determine_author_match(),
+            "auth_1": self.text_1.author,
+            "auth_2": self.text_2.author
         }
 
-        return result
+        return list(result.values())
 
     def to_panda(self):
-        return pd.DataFrame(self.report)
+        return pd.DataFrame(self.report.items())
