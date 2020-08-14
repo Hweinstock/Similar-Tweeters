@@ -13,8 +13,9 @@ class TextObject:
     This could eventually be called a message object, but just to keep general its a text object.
     """
 
-    def __init__(self, filepath, precalc=True, include_stopwords=False):
+    def __init__(self, filepath, author=None, precalc=True, include_stopwords=False):
         self.filepath = filepath
+        self.author = author
         self.include_stopwords = include_stopwords
         self.text = self.read_full_text()
         self.sentences = self.list_of_sentences()

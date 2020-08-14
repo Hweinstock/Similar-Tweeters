@@ -1,5 +1,18 @@
-from file_object import File
-import os
+from zip_to_dict import prepare_file
+import os, csv
+
+
+fields = ["filepath", "author"]
+rows = []
 
 files = os.listdir("../data/pre_data/")
-f = File(files[3])
+
+for file in files[:100]:
+    rows.append(prepare_file(file))
+
+with open("data.csv", 'w') as csv_file:
+    csv_writer = csv.writer(csv_file)
+
+    csv_writer.writerow(fields)
+    csv_writer.writerows(rows)
+
