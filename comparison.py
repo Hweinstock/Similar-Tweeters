@@ -54,8 +54,10 @@ class Comparison:
         text_1_sentence_lengths, text_1_sentence_length_freqs = self.text_1.split_sentence_length_info(n)
         text_2_sentence_lengths, text_2_sentence_length_freqs = self.text_2.split_sentence_length_info(n)
 
+        # self.check_lengths(text_1_sentence_lengths, text_2_sentence_lengths, "sentence length")
+
         sentence_length_comp = utility.list_similarity(text_1_sentence_lengths, text_2_sentence_lengths)
-        sentence_length_freq_comp = utility.list_similarity(text_1_sentence_length_freqs, text_2_sentence_length_freqs)
+        # sentence_length_freq_comp = utility.list_similarity(text_1_sentence_length_freqs, text_2_sentence_length_freqs)
 
         return sentence_length_comp
 
@@ -102,3 +104,8 @@ class Comparison:
 
     def to_panda(self):
         return pd.DataFrame(self.report.items())
+
+    @staticmethod
+    def check_lengths(l1, l2, func):
+        if len(l1) != len(l2):
+             print(l1, l2, func)

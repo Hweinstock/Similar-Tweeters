@@ -26,14 +26,15 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 regressor = LogisticRegression()
 regressor.fit(X_train, y_train)
 
+# Predict on test dataset
 y_pred = regressor.predict(X_test)
 
+# Create Dataframe of coefficients
 coeff_df = pd.DataFrame(regressor.coef_[0], X.columns, columns=['Coefficient'])
-print(coeff_df)
 
+# Rename for clarity and reformatting
 actual_results = [arr.item() for arr in y_test]
 predicted_results = y_pred
-#print(actual_results)
 
 total = 0
 correct = 0
@@ -44,6 +45,10 @@ for actual, predicted in zip(actual_results, predicted_results):
         if predicted == True:
             correct += 1
 print("% of same authors identified:", correct/total * 100)
+
+total = 0
+correct = 0
+
 for actual, predicted in zip(actual_results, predicted_results):
     if actual == False:
         total += 1
@@ -52,6 +57,8 @@ for actual, predicted in zip(actual_results, predicted_results):
 
 print("% of different authors identified:", correct/total * 100)
 
+total = 0
+correct = 0
 for actual, predicted in zip(actual_results, predicted_results):
     if predicted == True:
         total += 1
@@ -59,3 +66,13 @@ for actual, predicted in zip(actual_results, predicted_results):
             correct += 1
 
 print("% correct when guessing same authors:", correct/total * 100)
+
+total = 0
+correct = 0
+for actual, predicted in zip(actual_results, predicted_results):
+    total += 1
+    if actual == predicted:
+        correct += 1
+
+print("Overall % Correct:", correct/total * 100)
+print(coeff_df)

@@ -16,11 +16,13 @@ def prepare_file(name):
     full_path = "../data/post_data/" + name
 
     # Read in text file, identify author and trim gutenberg heading.
-    with open(full_path, "r", encoding="ISO-8859-1") as text_file:
+    try:
+        with open(full_path, "r", encoding="ISO-8859-1") as text_file:
 
-        author = identify_author(text_file)
-        new_text = find_start_of_text(text_file)
-
+            author = identify_author(text_file)
+            new_text = find_start_of_text(text_file)
+    except FileNotFoundError:
+        return None
     # Reopen file and write out text without gutenberg heading
     with open(full_path, "w") as text_file:
         text_file.write(new_text)

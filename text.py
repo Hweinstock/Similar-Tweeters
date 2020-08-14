@@ -1,5 +1,4 @@
 import utility
-import re
 from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.corpus import stopwords
 import string
@@ -26,7 +25,7 @@ class TextObject:
             self.indexed_sentence_set = self.index_sentences()
             self.indexed_punctuation_set = self.index_punctuation()
 
-    def number_of_setences(self):
+    def number_of_sentences(self):
         return len(self.sentences)
 
     def number_of_words(self):
@@ -239,11 +238,7 @@ class TextObject:
         sentence_length_pairs = self.top_n_sentence_lengths(n)
         sentence_lengths = [pair[0] for pair in sentence_length_pairs]
         sentence_length_freq = [pair[1] for pair in sentence_length_pairs]
-
         return sentence_lengths, sentence_length_freq
-
-
-
 
     def __str__(self):
         """
@@ -270,5 +265,5 @@ class TextObject:
         ret_string += "Punctuation: "
         ret_string += str(self.index_punctuation()) + '\n'
 
-        #ret_string += str(utility.top_n_values_of_dict(self.classify_word_distribution(), 10))
+        # ret_string += str(utility.top_n_values_of_dict(self.classify_word_distribution(), 10))
         return ret_string
