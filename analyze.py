@@ -16,7 +16,7 @@ with open('outline.csv') as csvfile:
                    "average_word_length_comparison",
                    "top_n_sentence_lengths_comparison",
                    "punctuation_comparison",
-                   "same_author?",
+                   "same_author",
                    "auth_1",
                    "auth_2"]
 

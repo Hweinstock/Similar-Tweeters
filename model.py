@@ -1,15 +1,18 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression, LogisticRegression
+from sklearn.utils import shuffle
+
 import numpy as np
 
-dataset = pd.read_csv('comps.csv')
+dataset = pd.read_csv('balanced_comps.csv')
 #print(dataset.head())
 
-#Remove Dead Data i.e NaN
-dataset = dataset.fillna(method='ffill')
+# Remove Dead Data i.e NaN
+# dataset = dataset.fillna(method='ffill')
 
 # Give set of variables to make prediction
+dataset = shuffle(dataset)
 
 X = dataset[["top_n_word_comparison",
                    "average_word_length_comparison",
@@ -17,10 +20,10 @@ X = dataset[["top_n_word_comparison",
                    "punctuation_comparison"]]
 
 # Give Labl to predict
-y = dataset[["same_author?"]].values
+y = dataset[["same_author"]].values
 
 # Split Data into train and test
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
 # Create and train model
 regressor = LogisticRegression()
