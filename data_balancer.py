@@ -37,4 +37,5 @@ def balance_data(csv_file):
     print("Writing back out to csv...")
     df.to_csv(csv_file, index=False, encoding='utf-8')
     print("*Success*")
+    return csv_file
 
