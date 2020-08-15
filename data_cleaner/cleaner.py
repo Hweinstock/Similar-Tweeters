@@ -8,7 +8,7 @@ rows = []
 
 files = os.listdir("../data/pre_data/")
 print("Cleaning Data...")
-for file in tqdm(files):
+for file in tqdm(files[:25]):
     next_file = prepare_file(file)
     if next_file is not None:
         rows.append(prepare_file(file))

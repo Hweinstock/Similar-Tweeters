@@ -61,16 +61,20 @@ class Comparison:
 
         return sentence_length_comp
 
-    def punctuation_comparison(self):
-        text_1_top_puncs_pairs = self.text_1.indexed_punctuation_set
-        text_1_top_puncs = text_1_top_puncs_pairs.keys()
+    def punctuation_comparison(self, n=5):
+        forward = self.text_1.cross_compare_top_n_puncs(self.text_2, n)
+        backward = self.text_2.cross_compare_top_n_puncs(self.text_1, n)
+        return (forward + backward) / 2.0
 
-        text_1_top_puncs_freqs = list(text_1_top_puncs_pairs.values())
-        text_2_top_puncs_freqs = [self.text_2.indexed_punctuation_set[punc] for punc in text_1_top_puncs]
-
-        comp = utility.list_similarity(text_1_top_puncs_freqs, text_2_top_puncs_freqs)
-
-        return comp
+        # text_1_top_puncs_pairs = self.text_1.indexed_punctuation_set
+        # text_1_top_puncs = text_1_top_puncs_pairs.keys()
+        #
+        # text_1_top_puncs_freqs = list(text_1_top_puncs_pairs.values())
+        # text_2_top_puncs_freqs = [self.text_2.indexed_punctuation_set[punc] for punc in text_1_top_puncs]
+        #
+        # comp = utility.list_similarity(text_1_top_puncs_freqs, text_2_top_puncs_freqs)
+        #
+        # return comp
 
     def determine_author_match(self):
         auth_1 = self.text_1.author
@@ -78,6 +82,7 @@ class Comparison:
 
         shorter_name = auth_1
         bigger_name = auth_2
+
         if len(auth_1) > len(auth_2):
             shorter_name = auth_2
             bigger_name = auth_1

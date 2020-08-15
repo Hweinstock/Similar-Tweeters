@@ -23,7 +23,7 @@ class TextObject:
         if precalc:
             self.indexed_word_set = self.index_words()
             self.indexed_sentence_set = self.index_sentences()
-            self.indexed_punctuation_set = self.index_punctuation()
+            self.indexed_punc_set = self.index_punctuation()
 
     def number_of_sentences(self):
         return len(self.sentences)
@@ -168,6 +168,19 @@ class TextObject:
 
         return utility.top_n_values_of_dict(self.indexed_sentence_set, n)
 
+    def top_n_punctuation(self, n):
+        """
+
+        Args:
+            n: Cutoff point for ranking
+
+        Returns:
+            a list ranking top puncs in form [(punc1, count), (punc2, count2)...(puncn, countn)]
+
+        """
+
+        return utility.top_n_values_of_dict(self.indexed_punc_set, n)
+
     def average_word_length(self):
         """
 
@@ -234,6 +247,22 @@ class TextObject:
                 target_top_n_words_freqs += [0]
 
         freqs_similarity = utility.list_similarity(source_top_n_words_freqs, target_top_n_words_freqs)
+
+        return freqs_similarity
+
+    def cross_compare_top_n_puncs(self, text_b, n):
+        source_top_n_puncs_pairs = self.top_n_punctuation(n)
+        source_top_n_puncs_freqs = [pair[1] for pair in source_top_n_puncs_pairs]
+        source_top_n_puncs = [pair[0] for pair in source_top_n_puncs_pairs]
+
+        target_top_n_puncs_freqs = []
+        for punc in source_top_n_puncs:
+            if punc in text_b.indexed_punc_set:
+                target_top_n_puncs_freqs += [text_b.indexed_punc_set[punc]]
+            else:
+                target_top_n_puncs_freqs += [0]
+
+        freqs_similarity = utility.list_similarity(source_top_n_puncs_freqs, target_top_n_puncs_freqs)
 
         return freqs_similarity
 
