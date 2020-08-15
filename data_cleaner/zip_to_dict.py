@@ -21,8 +21,12 @@ def prepare_file(name):
 
             author = identify_author(text_file)
             new_text = find_start_of_text(text_file)
+            # Throw out the data with no content and only a title.
+            if len(new_text) < 500:
+                return None
     except FileNotFoundError:
         return None
+
     # Reopen file and write out text without gutenberg heading
     with open(full_path, "w") as text_file:
         text_file.write(new_text)
@@ -40,7 +44,6 @@ def identify_author(text_file):
 
         for index, word in enumerate(line):
             if word.lower() == 'by' and line[0][0] != '*':
-                #print(word, line)
                 new_author = line[index + 1:]
 
                 if current_author is None or len(new_author) > len(current_author):

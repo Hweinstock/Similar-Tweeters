@@ -19,4 +19,3 @@ with open("../outline.csv", 'w') as csv_file:
     csv_writer.writerow(fields)
     csv_writer.writerows(rows)
 
-#print("Output to outline.csv successful...")

@@ -95,17 +95,10 @@ class Comparison:
             "average_word_length_comparison": self.average_word_length_comparison(),
             "top_n_sentence_lengths_comparison": self.top_n_sentence_lengths_comparison(),
             "punctuation_comparison": self.punctuation_comparison(),
-            "same_author?": self.determine_author_match(),
+            "same_author": self.determine_author_match(),
             "auth_1": self.text_1.author,
             "auth_2": self.text_2.author
         }
 
         return list(result.values())
 
-    def to_panda(self):
-        return pd.DataFrame(self.report.items())
-
-    @staticmethod
-    def check_lengths(l1, l2, func):
-        if len(l1) != len(l2):
-             print(l1, l2, func)

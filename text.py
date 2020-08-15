@@ -48,14 +48,17 @@ class TextObject:
         """
 
         Returns:
-            a list with words splits based on re-match. This is not perfect, but will be easier with less puncuation (on Discord)
+            a list of the meaningful words found in the text
 
         """
         global stop_words
 
         tokens = word_tokenize(self.text)
+        # Remove Punctuation from all the words
         punc_table = str.maketrans('', '', string.punctuation)
         stripped_words = [word.translate(punc_table) for word in tokens]
+
+        # Lower case and make sure they only contain a-z characters
         words = [word.lower() for word in stripped_words if word.isalpha()]
 
         if self.include_stopwords:

@@ -165,14 +165,12 @@ def list_similarity(l1, l2):
 
         Also known as cosine similarity.
 
-`   # TODO: Figure out what breaks this is 50:100 range
     """
     a = np.array(l1)
     b = np.array(l2)
     try:
         cos_sim = np.dot(a, b)/(norm(a)*norm(b))
     except ValueError:
-        print(a, b)
         return None
 
     return cos_sim
@@ -187,7 +185,7 @@ def frequency_class(freq, max_freq):
         max_freq:
 
     Returns:
-        returns the frequency class of a given word, this is a metric used to meaasure
+        returns the frequency class of a given word, this is a metric used to measure
         the frequency of a certain word in relation to the most frequent word.
 
 
