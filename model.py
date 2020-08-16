@@ -9,7 +9,8 @@ import pickle
 def run_model(args, csv_file):
 
     dataset = pd.read_csv(csv_file)
-
+    # Remove Dead Data i.e NaN
+    dataset = dataset.fillna(method='ffill')
     # Doesn't appear to have effect, might be built in.
     dataset = shuffle(dataset)
 

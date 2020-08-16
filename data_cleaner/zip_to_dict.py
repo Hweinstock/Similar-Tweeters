@@ -4,16 +4,16 @@ import re
 
 
 def unzip_to_dir(file, final_dir):
-    with ZipFile("../data/pre_data/" + file, 'r') as zip_ref:
+    with ZipFile("../book_data/zip_files/" + file, 'r') as zip_ref:
         zip_ref.extractall(final_dir)
 
 
 def prepare_file(name):
-    final_dir = '../data/post_data'
+    final_dir = '../book_data/text_files'
     unzip_to_dir(name, final_dir)
 
     name = splitext(name)[0] + '.txt'
-    full_path = "../data/post_data/" + name
+    full_path = "../book_data/text_files/" + name
 
     # Read in text file, identify author and trim gutenberg heading.
     try:

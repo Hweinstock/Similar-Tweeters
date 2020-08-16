@@ -6,12 +6,14 @@ from tqdm import tqdm
 fields = ["filepath", "author"]
 rows = []
 
-files = os.listdir("../data/pre_data/")
+files = os.listdir("../book_data/zip_files/")
 print("Cleaning Data...")
-for file in tqdm(files[:50]):
+for file in tqdm(files[:100]):
     next_file = prepare_file(file)
     if next_file is not None:
         rows.append(prepare_file(file))
+    else:
+        print("WARNING", file, "Could not prepare file, Possibly of wrong form. ")
 
 with open("../outline.csv", 'w') as csv_file:
     csv_writer = csv.writer(csv_file)

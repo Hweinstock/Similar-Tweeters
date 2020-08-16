@@ -2,6 +2,6 @@
 __pycache__/
 .DS_Store
 venv/
-data/
+book_data/
 *.csv
 *.pkl

@@ -25,11 +25,24 @@ class TextObject:
             self.indexed_sentence_set = self.index_sentences()
             self.indexed_punc_set = self.index_punctuation()
 
+            if self.unique_word_count < 10 or self.unique_sentence_length_count < 10:
+                print("WARNING", self.filepath, "Not enough words or sentences to qualify")
+
+    @property
     def number_of_sentences(self):
         return len(self.sentences)
 
+    @property
     def number_of_words(self):
         return len(self.words)
+
+    @property
+    def unique_word_count(self):
+        return len(self.indexed_word_set)
+
+    @property
+    def unique_sentence_length_count(self):
+        return len(self.indexed_sentence_set)
 
     def read_full_text(self):
         """
