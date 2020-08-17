@@ -1,19 +1,26 @@
-from zipfile import ZipFile
+from zipfile import ZipFile, BadZipFile
 from os.path import splitext
 import re
 
 
-def unzip_to_dir(file, final_dir):
-    with ZipFile("../book_data/zip_files/" + file, 'r') as zip_ref:
-        zip_ref.extractall(final_dir)
+def unzip_to_dir(file, final_dir, root_dir):
+    try:
+        with ZipFile("../"+root_dir+"/zip_files/" + file, 'r') as zip_ref:
+            zip_ref.extractall(final_dir)
+        return True
+    except BadZipFile:
+        return False
 
 
-def prepare_file(name):
-    final_dir = '../book_data/text_files'
-    unzip_to_dir(name, final_dir)
+def prepare_file(name, root_dir):
+    final_dir = '../'+root_dir+'/text_files'
+    able_to_unzip = unzip_to_dir(name, final_dir, root_dir)
+
+    if not able_to_unzip:
+        return None
 
     name = splitext(name)[0] + '.txt'
-    full_path = "../book_data/text_files/" + name
+    full_path = "../"+root_dir+"/text_files/" + name
 
     # Read in text file, identify author and trim gutenberg heading.
     try:

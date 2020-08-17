@@ -12,11 +12,5 @@ df = pd.read_csv("comps.csv")
 
 
 sns.set_style("whitegrid")
-sns.pairplot(df, hue="same_author", size=3)
+sns.pairplot(df, hue="same_author", height=3)
 plt.show()
-"""
-dataset[["top_n_word_comparison",
-                       "average_word_length_comparison",
-                       "top_n_sentence_lengths_comparison",
-                       "punctuation_comparison"]]
-"""

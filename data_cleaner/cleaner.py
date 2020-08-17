@@ -5,13 +5,14 @@ from tqdm import tqdm
 
 fields = ["filepath", "author"]
 rows = []
+root_dir = "test_data"
 
-files = os.listdir("../book_data/zip_files/")
+files = os.listdir("../"+root_dir+"/zip_files/")
 print("Cleaning Data...")
-for file in tqdm(files[:100]):
-    next_file = prepare_file(file)
+for file in tqdm(files):
+    next_file = prepare_file(file, root_dir)
     if next_file is not None:
-        rows.append(prepare_file(file))
+        rows.append(next_file)
     else:
         print("WARNING", file, "Could not prepare file, Possibly of wrong form. ")
 

@@ -1,6 +1,6 @@
 from imblearn.over_sampling import SMOTE
 import pandas as pd
-
+from features import get_label, get_headers
 
 def balance_data(csv_file):
     # for reproducibility
@@ -9,20 +9,14 @@ def balance_data(csv_file):
     # SMOTE number of neighbors
     k = 1
 
-    df = pd.read_csv(csv_file)[["top_n_word_comparison",
-                                   "average_word_length_comparison",
-                                   "top_n_sentence_lengths_comparison",
-                                   "punctuation_comparison",
-                                   'same_author']]
-
+    df = pd.read_csv(csv_file)[get_headers()]
     # Remove Dead Data i.e NaN
     df = df.fillna(method='ffill')
-
+    print(df)
     # Separate what is being used to predict and what is being predicted.
 
-    X = df.loc[:, df.columns != 'same_author']
+    X = df.loc[:, df.columns != get_label()[0]]
     y = df.same_author
-    print("Applying SMOTE to balance dataset...")
     over_sampler = SMOTE(sampling_strategy='auto',
                          k_neighbors=k,
                          random_state=seed)

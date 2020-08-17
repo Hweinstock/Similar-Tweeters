@@ -1,5 +1,5 @@
 import utility
-import pandas as pd
+from features import get_headers
 
 
 class Comparison:
@@ -8,6 +8,13 @@ class Comparison:
     def __init__(self, t1, t2):
         self.text_1 = t1
         self.text_2 = t2
+        self.function_mappings = {
+            "top_n_word_comparison": self.top_n_word_comparison,
+            "average_word_length_comparison": self.average_word_length_comparison,
+            "top_n_sentence_lengths_comparison": self.top_n_sentence_lengths_comparison,
+            "punctuation_comparison": self.punctuation_comparison,
+            "same_author": self.determine_author_match
+        }
 
     def top_n_word_comparison(self, n=100):
         """
@@ -93,17 +100,29 @@ class Comparison:
 
         return True
 
+    def average_sentence_length_comparison(self):
+        first_max = self.text_1.average_sentence_length()
+        second_max = self.text_2.average_sentence_length()
+
+        if first_max > second_max:
+            return second_max / first_max
+        else:
+            return first_max / second_max
+
+    def top_n_sentence_lengths_average_comparison(self):
+        first_max = self.text_1.average_sentence_length(dict(self.text_1.top_n_sentence_lengths(10)))
+        second_max = self.text_2.average_sentence_length(dict(self.text_2.top_n_sentence_lengths(10)))
+
+        if first_max > second_max:
+            return second_max / first_max
+        else:
+            return first_max / second_max
+
     @property
     def report(self):
-        result = {
-            "top_n_word_comparison": self.top_n_word_comparison(),
-            "average_word_length_comparison": self.average_word_length_comparison(),
-            "top_n_sentence_lengths_comparison": self.top_n_sentence_lengths_comparison(),
-            "punctuation_comparison": self.punctuation_comparison(),
-            "same_author": self.determine_author_match(),
-            "auth_1": self.text_1.author,
-            "auth_2": self.text_2.author
-        }
-
-        return list(result.values())
+        features = get_headers()
+        output = []
+        for feat in features:
+            output.append(self.function_mappings[feat]())
+        return output
 

@@ -210,19 +210,24 @@ class TextObject:
 
         return total_length / total_words
 
-    def average_sentence_length(self):
+    def average_sentence_length(self, input_set=None):
         """
 
         Returns:
             a floating point value representing average sentence length in words.
         """
+        if input_set is None:
+            sentence_set = self.indexed_sentence_set
+        else:
+            sentence_set = input_set
+
 
         total_length = 0
         total_sentences = 0
 
-        for sentence in self.indexed_sentence_set:
-            total_length += sentence * self.indexed_sentence_set[sentence]
-            total_sentences += self.indexed_sentence_set[sentence]
+        for sentence in sentence_set:
+            total_length += sentence * sentence_set[sentence]
+            total_sentences += sentence_set[sentence]
 
         return total_length / total_sentences
 
@@ -292,7 +297,6 @@ class TextObject:
             A report of major statistics regarding the text.
 
         """
-        # ret_string = str(self.list_of_words())
 
 
         ret_string ='\n'
@@ -310,5 +314,4 @@ class TextObject:
         ret_string += "Punctuation: "
         ret_string += str(self.index_punctuation()) + '\n'
 
-        # ret_string += str(utility.top_n_values_of_dict(self.classify_word_distribution(), 10))
         return ret_string

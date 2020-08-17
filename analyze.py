@@ -2,18 +2,7 @@ from text import TextObject
 from comparison import Comparison
 from tqdm import tqdm
 import csv
-
-
-def get_headers():
-    headers = ["top_n_word_comparison",
-               "average_word_length_comparison",
-               "top_n_sentence_lengths_comparison",
-               "punctuation_comparison",
-               "same_author",
-               "auth_1",
-               "auth_2"]
-
-    return headers
+from features import get_headers
 
 
 def create_comparison_objects(text_objects):
@@ -27,13 +16,21 @@ def create_comparison_objects(text_objects):
 
 def generate_data(file_name="comps"):
     file_name = file_name+'.csv'
-    with open('outline.csv') as csvfile:
+    with open('outline.csv', encoding='ISO-8859-1') as csvfile:
         readCSV = csv.reader(csvfile)
 
         print("Creating TextObjects...")
 
         # Convert each row (except Header) to textObject
-        text_objects = [TextObject(filepath=row[0], author=row[1]) for row in tqdm(readCSV) if row[0] != "filepath"]
+        text_objects = []
+        for row in tqdm(readCSV):
+            if row[0] != 'filepath':
+                try:
+                    text_objects.append(TextObject(filepath=row[0], author=row[1]))
+                except UnicodeDecodeError:
+                    pass
+
+       # text_objects = [TextObject(filepath=row[0], author=row[1]) for row in tqdm(readCSV) if row[0] != "filepath"]
 
         with open(file_name, 'w') as comp_csv:
             writeCSV = csv.writer(comp_csv)
@@ -47,3 +44,6 @@ def generate_data(file_name="comps"):
 
     return file_name
 
+
+if __name__ == "__main__":
+    generate_data()

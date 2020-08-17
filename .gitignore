@@ -5,3 +5,5 @@ venv/
 book_data/
 *.csv
 *.pkl
+myplot
+test_data/

@@ -3,6 +3,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.utils import shuffle
 from diagnostics import generate_diagnostics
+from features import get_features, get_label
 import pickle
 
 
@@ -15,13 +16,10 @@ def run_model(args, csv_file):
     dataset = shuffle(dataset)
 
     # Give set of variables to make prediction
-    X = dataset[["top_n_word_comparison",
-                       "average_word_length_comparison",
-                       "top_n_sentence_lengths_comparison",
-                       "punctuation_comparison"]]
+    X = dataset[get_features()]
 
     # Give Label to predict
-    y = dataset[["same_author"]].values
+    y = dataset[get_label()].values
 
     # Create and train model
     print("Creating model...")
