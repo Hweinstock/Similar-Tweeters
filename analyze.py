@@ -8,8 +8,19 @@ from features import get_headers
 def create_comparison_objects(text_objects):
     objects = []
     for index, text_a in enumerate(tqdm(text_objects)):
+        diff_author_added = False
+        same_author_added = False
         for text_b in text_objects[index + 1:]:
-            objects.append(Comparison(text_a, text_b).report)
+            if same_author_added and diff_author_added:
+                break
+
+            if not same_author_added and text_b.author == text_a.author:
+                objects.append(Comparison(text_a, text_b).report)
+                same_author_added = True
+
+            elif not diff_author_added and text_b.author != text_a.author:
+                objects.append(Comparison(text_a, text_b).report)
+                diff_author_added = True
 
     return objects
 

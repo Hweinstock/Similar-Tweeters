@@ -17,6 +17,7 @@ def get_label():
 def get_features():
     f = ["top_n_word_comparison",
          "average_word_length_comparison",
+         "top_n_sentence_lengths_comparison",
          "punctuation_comparison"]
 
     return f

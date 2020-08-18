@@ -5,7 +5,7 @@ from tqdm import tqdm
 
 fields = ["filepath", "author"]
 rows = []
-root_dir = "test_data"
+root_dir = "book_data"
 
 files = os.listdir("../"+root_dir+"/zip_files/")
 print("Cleaning Data...")

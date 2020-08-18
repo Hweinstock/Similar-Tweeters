@@ -2,6 +2,7 @@ from imblearn.over_sampling import SMOTE
 import pandas as pd
 from features import get_label, get_headers
 
+
 def balance_data(csv_file):
     # for reproducibility
     seed = 100
@@ -12,7 +13,7 @@ def balance_data(csv_file):
     df = pd.read_csv(csv_file)[get_headers()]
     # Remove Dead Data i.e NaN
     df = df.fillna(method='ffill')
-    print(df)
+
     # Separate what is being used to predict and what is being predicted.
 
     X = df.loc[:, df.columns != get_label()[0]]

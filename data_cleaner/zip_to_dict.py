@@ -67,7 +67,10 @@ def identify_author(text_file):
 def find_start_of_text(text_file):
 
     while True:
-        next_line = next(text_file).strip()
+        try:
+            next_line = next(text_file).strip()
+        except StopIteration:
+            return ""
         if re.match('(.*\*END\*)', next_line) is not None or re.match('\*\*\* START', next_line) is not None:
             new_text = text_file.read()
             break
