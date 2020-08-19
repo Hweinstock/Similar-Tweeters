@@ -70,9 +70,7 @@ def cleanup_main():
                 for line in cluster:
                     text_file.write(line)
                     text_file.write("\n")
-            # Trim to .. to make it accessible to analyze.py
-            relative_path = new_filepath[3:]
-            rows_for_csv.append([relative_path, author_uuid])
+            rows_for_csv.append([new_filepath, author_uuid])
 
         # Generate csv outlining authors and filepaths
         generate_csv(rows_for_csv)

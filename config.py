@@ -16,11 +16,11 @@ def get_text_object(name):
 
 def return_configs():
     return {
-        "cluster_size": 50,
+        "cluster_size": 250,
         "top_w_words": 50,
-        "top_s_sents": 5,
-        "top_p_puncs": 5,
-        "test_split": 0.2,
+        "top_s_sents": 3,
+        "top_p_puncs": 3,
+        "test_split": 0.25,
     }
 
 

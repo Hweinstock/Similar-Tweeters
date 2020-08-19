@@ -287,6 +287,12 @@ class TextObject:
         sentence_length_freq = [pair[1] for pair in sentence_length_pairs]
         return sentence_lengths, sentence_length_freq
 
+    @property
+    def valid(self):
+        if self.unique_word_count < 10 or self.unique_sentence_length_count < 2:
+            return False
+        return True
+
     def __str__(self):
         """
         Only really useful for debugging.

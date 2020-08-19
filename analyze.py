@@ -42,7 +42,9 @@ def generate_data(args, file_name="comps"):
             for row in tqdm(readCSV):
                 if row[0] != 'filepath':
                     try:
-                        text_objects.append(TextObject(filepath=row[0], author=row[1]))
+                        new_text = TextObject(filepath=row[0], author=row[1])
+                        if new_text.valid:
+                            text_objects.append(TextObject(filepath=row[0], author=row[1]))
                     except UnicodeDecodeError:
                         pass
 
