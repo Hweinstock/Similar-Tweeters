@@ -3,8 +3,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.utils import shuffle
 from diagnostics import generate_diagnostics
-from features import get_features, get_label
+from config import get_features, get_label
 import pickle
+from config import return_configs
+
+CONFIGS = return_configs()
 
 
 def run_model(args, csv_file):
@@ -32,7 +35,7 @@ def run_model(args, csv_file):
         regressor = LogisticRegression()
 
         # Split Data into train and test
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=CONFIGS["test_split"], random_state=0)
 
         print("Training model...")
         regressor.fit(X_train, y_train)

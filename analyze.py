@@ -1,8 +1,7 @@
-from text import TextObject
 from comparison import Comparison
 from tqdm import tqdm
 import csv
-from features import get_headers
+from config import get_headers, get_text_object
 import pickle
 
 
@@ -31,6 +30,8 @@ def create_comparison_objects(text_objects):
 
 def generate_data(args, file_name="comps"):
     file_name = file_name+'.csv'
+    TextObject = get_text_object(args.text_object_type)
+
     with open('outline.csv', encoding='ISO-8859-1') as csvfile:
         readCSV = csv.reader(csvfile)
 

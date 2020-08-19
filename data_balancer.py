@@ -1,6 +1,6 @@
 from imblearn.over_sampling import SMOTE
 import pandas as pd
-from features import get_label, get_headers
+from config import get_label, get_headers
 
 
 def balance_data(csv_file):

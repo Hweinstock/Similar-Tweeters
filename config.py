@@ -1,3 +1,27 @@
+from discord_message import DiscordMessage
+from book import Book
+
+"""
+Not sure if this is the best way to do it, but wanted a centralized place to tweak variables, this is what I came up with.
+"""
+
+
+def get_text_object(name):
+    key = {
+        'discord_message': DiscordMessage,
+        'book': Book
+    }
+    return key[name]
+
+
+def return_configs():
+    return {
+        "cluster_size": 50,
+        "top_w_words": 50,
+        "top_s_sents": 5,
+        "top_p_puncs": 5,
+        "test_split": 0.2,
+    }
 
 
 def get_all_features():

@@ -8,6 +8,19 @@ Bunch of helper functions that don't have a place.
 """
 
 
+def combine_contractions(tokens):
+    new_tokens = []
+    for index, token in enumerate(tokens):
+        if index < len(tokens) - 1:
+            next_token = tokens[index+1]
+            if next_token == "n't":
+                new_tokens.append(token + next_token)
+            elif token != "n't":
+                new_tokens.append(token)
+
+    return new_tokens
+
+
 def scale_indexed_set(indexed_set):
     """
 

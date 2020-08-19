@@ -1,11 +1,14 @@
+from tqdm import tqdm
 from zipfile import ZipFile, BadZipFile
 from os.path import splitext
 import re
+import os
+import csv
 
 
 def unzip_to_dir(file, final_dir, root_dir):
     try:
-        with ZipFile("../"+root_dir+"/zip_files/" + file, 'r') as zip_ref:
+        with ZipFile(root_dir+"/zip_files/" + file, 'r') as zip_ref:
             zip_ref.extractall(final_dir)
         return True
     except BadZipFile:
@@ -13,14 +16,14 @@ def unzip_to_dir(file, final_dir, root_dir):
 
 
 def prepare_file(name, root_dir):
-    final_dir = '../'+root_dir+'/text_files'
+    final_dir = root_dir+'/text_files'
     able_to_unzip = unzip_to_dir(name, final_dir, root_dir)
 
     if not able_to_unzip:
         return None
 
     name = splitext(name)[0] + '.txt'
-    full_path = "../"+root_dir+"/text_files/" + name
+    full_path = root_dir+"/text_files/" + name
 
     # Read in text file, identify author and trim gutenberg heading.
     try:
@@ -37,7 +40,7 @@ def prepare_file(name, root_dir):
     # Reopen file and write out text without gutenberg heading
     with open(full_path, "w") as text_file:
         text_file.write(new_text)
-    full_path = switch_path_for_analyze(full_path)
+
     result = {
         "full_path": full_path,
         "author": author
@@ -86,5 +89,23 @@ def find_start_of_text(text_file):
     return new_text
 
 
-def switch_path_for_analyze(path):
-    return path[3:]
+if __name__ == "__main__":
+
+    fields = ["filepath", "author"]
+    rows = []
+    root_dir = "book_data"
+
+    files = os.listdir(root_dir + "/zip_files/")
+    print("Cleaning Data...")
+    for file in tqdm(files):
+        next_file = prepare_file(file, root_dir)
+        if next_file is not None:
+            rows.append(next_file)
+        else:
+            print("WARNING", file, "Could not prepare file, Possibly of wrong form. ")
+
+    with open("outline.csv", 'w') as csv_file:
+        csv_writer = csv.writer(csv_file)
+
+        csv_writer.writerow(fields)
+        csv_writer.writerows(rows)

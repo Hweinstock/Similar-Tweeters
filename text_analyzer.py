@@ -14,7 +14,6 @@ if __name__ == "__main__":
         csv_file = generate_data(args)
         if not args.dont_balance:
             csv_file = balance_data(csv_file)
-            print("TRUE")
 
     else:
         csv_file = balance_data(args.dataset)

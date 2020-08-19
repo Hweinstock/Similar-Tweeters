@@ -1,5 +1,8 @@
 import utility
-from features import get_headers
+from config import get_headers
+from config import return_configs
+
+CONFIGS = return_configs()
 
 
 class Comparison:
@@ -16,7 +19,7 @@ class Comparison:
             "same_author": self.determine_author_match
         }
 
-    def top_n_word_comparison(self, n=100):
+    def top_n_word_comparison(self, n=CONFIGS["top_w_words"]):
         """
         TODO: Get rid of nouns since adjective and verb repetition is more likely to reveal a common author.
 
@@ -40,13 +43,12 @@ class Comparison:
 
         first_max = self.text_1.average_word_length()
         second_max = self.text_2.average_word_length()
-
         if first_max > second_max:
             return second_max / first_max
         else:
             return first_max / second_max
 
-    def top_n_sentence_lengths_comparison(self, n=5):
+    def top_n_sentence_lengths_comparison(self, n=CONFIGS["top_s_sents"]):
         """
         Currently not using frequency comparison.
         TODO: Split into two distinct statistics for find a way to combine them into something more significant
@@ -68,20 +70,10 @@ class Comparison:
 
         return sentence_length_comp
 
-    def punctuation_comparison(self, n=5):
+    def punctuation_comparison(self, n=CONFIGS["top_p_puncs"]):
         forward = self.text_1.cross_compare_top_n_puncs(self.text_2, n)
         backward = self.text_2.cross_compare_top_n_puncs(self.text_1, n)
         return (forward + backward) / 2.0
-
-        # text_1_top_puncs_pairs = self.text_1.indexed_punctuation_set
-        # text_1_top_puncs = text_1_top_puncs_pairs.keys()
-        #
-        # text_1_top_puncs_freqs = list(text_1_top_puncs_pairs.values())
-        # text_2_top_puncs_freqs = [self.text_2.indexed_punctuation_set[punc] for punc in text_1_top_puncs]
-        #
-        # comp = utility.list_similarity(text_1_top_puncs_freqs, text_2_top_puncs_freqs)
-        #
-        # return comp
 
     def determine_author_match(self):
         auth_1 = self.text_1.author

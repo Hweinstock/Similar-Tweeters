@@ -42,5 +42,12 @@ def prepare_args():
                         default=None,
                         dest="text_objects")
 
+    parser.add_argument("--text-object-type",
+                        help="Type of text object to create.",
+                        choices=['discord_message', 'book'],
+                        type=str,
+                        default='book',
+                        dest="text_object_type")
+
     return parser
 

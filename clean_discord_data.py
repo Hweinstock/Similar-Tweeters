@@ -2,15 +2,16 @@ import os
 from uuid import uuid4
 import re
 import csv
+from config import return_configs
 
-discord_data_path = "../test_messages/"
+discord_data_path = "test_messages/"
 
-
+CONFIGS = return_configs()
 def generate_author_identifier():
     return str(uuid4())
 
 
-def cluster_messages(messages, n=100):
+def cluster_messages(messages, n=CONFIGS['cluster_size']):
     return [messages[i:i + n] for i in range(0, len(messages), n)]
 
 
@@ -23,7 +24,7 @@ def remove_refs(message):
 def cleanup_message_file(file):
     messages = []
 
-    with open(file, 'r') as discord_file:
+    with open(file, 'r',  encoding='ISO-8859-1') as discord_file:
         for message in discord_file:
             stripped_message = message.strip()
             cleaned_message = remove_refs(stripped_message)
@@ -35,7 +36,7 @@ def cleanup_message_file(file):
 def generate_csv(rows):
     fields = ["filepath", "author"]
 
-    with open("../outline.csv", 'w') as csv_file:
+    with open("outline.csv", 'w') as csv_file:
         csv_writer = csv.writer(csv_file)
 
         csv_writer.writerow(fields)
@@ -44,7 +45,6 @@ def generate_csv(rows):
 
 def cleanup_main():
     raw_files = os.listdir(discord_data_path+"raw_data")
-
     rows_for_csv = []
 
     for file in raw_files:

@@ -67,9 +67,10 @@ class TextObject:
         global stop_words
 
         tokens = word_tokenize(self.text)
+        fixed_tokens = utility.combine_contractions(tokens)
         # Remove Punctuation from all the words
         punc_table = str.maketrans('', '', string.punctuation)
-        stripped_words = [word.translate(punc_table) for word in tokens]
+        stripped_words = [word.translate(punc_table) for word in fixed_tokens]
 
         # Lower case and make sure they only contain a-z characters
         words = [word.lower() for word in stripped_words if word.isalpha()]
@@ -80,13 +81,13 @@ class TextObject:
             meaningful_words = [word for word in words if word not in stop_words]
             return meaningful_words
 
-    def list_of_sentences(self):
-        """
-
-        Returns:
-            a list of sentences found in the raw text
-        """
-        return sent_tokenize(self.text)
+    # def list_of_sentences(self):
+    #     """
+    #
+    #     Returns:
+    #         a list of sentences found in the raw text
+    #     """
+    #     return sent_tokenize(self.text)
 
     def index_sentences(self):
         """
@@ -137,7 +138,7 @@ class TextObject:
         """
 
         occurrences = {}
-        punctuation = ['.', '!', '?', ',', ':', ';', '-']
+        punctuation = ['.', '!', '?', ',', ':', ';']
 
         for p in punctuation:
             occurrences[p] = self.text.count(p+' ')
@@ -208,7 +209,7 @@ class TextObject:
             total_length += len(word) * self.indexed_word_set[word]
             total_words += self.indexed_word_set[word]
 
-        return total_length / total_words
+        return total_length
 
     def average_sentence_length(self, input_set=None):
         """
@@ -221,23 +222,19 @@ class TextObject:
         else:
             sentence_set = input_set
 
-
         total_length = 0
-        total_sentences = 0
 
         for sentence in sentence_set:
             total_length += sentence * sentence_set[sentence]
-            total_sentences += sentence_set[sentence]
 
-        return total_length / total_sentences
+        return total_length
 
     def report(self):
-        n = 5
         text_report = {
-            "top_words": self.top_n_words(n),
+            "top_words": self.top_n_words(10),
             "word_length": self.average_word_length(),
             "sentence_length": self.average_sentence_length(),
-            "top_sentences": self.top_n_sentence_lengths(n),
+            "top_sentences": self.top_n_sentence_lengths(10),
             "punctuation_percentages": self.index_punctuation().items(),
 
         }
@@ -315,3 +312,12 @@ class TextObject:
         ret_string += str(self.index_punctuation()) + '\n'
 
         return ret_string
+
+
+if __name__ == "__main__":
+    import pickle
+
+    with open('text_objects.dat', 'rb') as pf:
+        text_objects = pickle.load(pf)
+
+    print(text_objects[0].report())
