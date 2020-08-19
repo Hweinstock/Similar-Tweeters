@@ -3,6 +3,10 @@ from comparison import Comparison
 from tqdm import tqdm
 import csv
 from features import get_headers
+import pickle
+
+
+PIK = 'text_objects.dat'
 
 
 def create_comparison_objects(text_objects):
@@ -25,23 +29,29 @@ def create_comparison_objects(text_objects):
     return objects
 
 
-def generate_data(file_name="comps"):
+def generate_data(args, file_name="comps"):
     file_name = file_name+'.csv'
     with open('outline.csv', encoding='ISO-8859-1') as csvfile:
         readCSV = csv.reader(csvfile)
 
-        print("Creating TextObjects...")
-
         # Convert each row (except Header) to textObject
-        text_objects = []
-        for row in tqdm(readCSV):
-            if row[0] != 'filepath':
-                try:
-                    text_objects.append(TextObject(filepath=row[0], author=row[1]))
-                except UnicodeDecodeError:
-                    pass
+        if args.text_objects is None:
+            print("Creating TextObjects...")
+            text_objects = []
+            for row in tqdm(readCSV):
+                if row[0] != 'filepath':
+                    try:
+                        text_objects.append(TextObject(filepath=row[0], author=row[1]))
+                    except UnicodeDecodeError:
+                        pass
 
-       # text_objects = [TextObject(filepath=row[0], author=row[1]) for row in tqdm(readCSV) if row[0] != "filepath"]
+            print("Dumping TextObjects to pickle, "+PIK+"...")
+            with open(PIK, 'wb') as pf:
+                pickle.dump(text_objects, pf)
+        else:
+            print("Loading in TextObjects from "+args.text_objects)
+            with open(args.text_objects, 'rb') as pf:
+                text_objects = pickle.load(pf)
 
         with open(file_name, 'w') as comp_csv:
             writeCSV = csv.writer(comp_csv)

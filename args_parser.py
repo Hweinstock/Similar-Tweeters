@@ -4,7 +4,6 @@ import argparse
 def prepare_args():
 
     parser = argparse.ArgumentParser()
-    #run_group = parser.add_argument_group()
 
     parser.add_argument("-l",
                         "--load-from-save",
@@ -35,6 +34,13 @@ def prepare_args():
                         action="store_true",
                         default=False,
                         dest="dont_balance")
+
+    parser.add_argument("--text-objects",
+                        help="Path to Pickle file to load in textObjects",
+                        action="store",
+                        type=str,
+                        default=None,
+                        dest="text_objects")
 
     return parser
 
