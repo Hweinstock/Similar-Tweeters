@@ -46,7 +46,7 @@ class Comparison:
         else:
             return first_max / second_max
 
-    def top_n_sentence_lengths_comparison(self, n=10):
+    def top_n_sentence_lengths_comparison(self, n=5):
         """
         Currently not using frequency comparison.
         TODO: Split into two distinct statistics for find a way to combine them into something more significant
@@ -110,8 +110,9 @@ class Comparison:
             return first_max / second_max
 
     def top_n_sentence_lengths_average_comparison(self):
-        first_max = self.text_1.average_sentence_length(dict(self.text_1.top_n_sentence_lengths(10)))
-        second_max = self.text_2.average_sentence_length(dict(self.text_2.top_n_sentence_lengths(10)))
+        n = 10
+        first_max = self.text_1.average_sentence_length(dict(self.text_1.top_n_sentence_lengths(n)))
+        second_max = self.text_2.average_sentence_length(dict(self.text_2.top_n_sentence_lengths(n)))
 
         if first_max > second_max:
             return second_max / first_max

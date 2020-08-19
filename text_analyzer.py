@@ -11,7 +11,7 @@ if __name__ == "__main__":
 
     if args.dataset is None:
         print("Analyzing Files...")
-        csv_file = generate_data()
+        csv_file = generate_data(args)
         if not args.dont_balance:
             csv_file = balance_data(csv_file)
             print("TRUE")

@@ -38,7 +38,11 @@ def prepare_file(name, root_dir):
     with open(full_path, "w") as text_file:
         text_file.write(new_text)
     full_path = switch_path_for_analyze(full_path)
-    return [full_path, author]
+    result = {
+        "full_path": full_path,
+        "author": author
+    }
+    return [result["full_path"], result["author"]]
 
 
 def identify_author(text_file):
