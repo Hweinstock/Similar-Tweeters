@@ -35,7 +35,7 @@ def generate_data(args, file_name="comps"):
         readCSV = csv.reader(csvfile)
 
         # Convert each row (except Header) to textObject
-        if args.text_objects is None:
+        if args is None or args.text_objects is None:
             print("Creating TextObjects...")
             text_objects = []
             for row in tqdm(readCSV):
@@ -67,4 +67,4 @@ def generate_data(args, file_name="comps"):
 
 
 if __name__ == "__main__":
-    generate_data()
+    generate_data(None)

@@ -3,6 +3,7 @@ __pycache__/
 .DS_Store
 venv/
 book_data/
+test_messages/
 *.csv
 *.pkl
 *.dat

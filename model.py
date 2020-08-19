@@ -23,7 +23,7 @@ def run_model(args, csv_file):
 
     # Create and train model
     print("Creating model...")
-    if args.load_from_save:
+    if args is not None and args.load_from_save:
         with open('saved_model.pkl', 'rb') as model:
             regressor = pickle.load(model)
             X_test = X
@@ -58,3 +58,5 @@ def run_model(args, csv_file):
         with open('saved_model.pkl', 'wb') as out:
             pickle.dump(regressor, out)
 
+if __name__ == '__main__':
+    run_model(None, 'comps.csv')
