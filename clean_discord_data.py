@@ -3,10 +3,13 @@ from uuid import uuid4
 import re
 import csv
 from config import return_configs
+from tqdm import tqdm
 
 discord_data_path = "test_messages/"
 
 CONFIGS = return_configs()
+
+
 def generate_author_identifier():
     return str(uuid4())
 
@@ -43,12 +46,14 @@ def generate_csv(rows):
         csv_writer.writerows(rows)
 
 
-def cleanup_main():
+def cleanup_main(cluster=True):
     raw_files = os.listdir(discord_data_path+"raw_data")
     rows_for_csv = []
 
     for file in raw_files:
 
+        if not file[0].isnumeric():
+            continue
         # Generate filepath for file in raw_data
         filepath = discord_data_path + "raw_data/" + file
 
@@ -56,24 +61,37 @@ def cleanup_main():
         messages = cleanup_message_file(filepath)
 
         # Generate uuid for author
-        author_uuid = generate_author_identifier()
+        author_uuid = os.path.basename(file)[:18]
 
         # Break file into message clusters of size n
-        clusters = cluster_messages(messages)
+        if cluster:
+            messages = cluster_messages(messages)
 
-        # Write each cluster out to file
-        for index, cluster in enumerate(clusters):
-            file_name = author_uuid + "(" + str(index) + ")"
+            # Write each cluster out to file
+            for index, cluster in enumerate(tqdm(messages)):
+                file_name = author_uuid + "(" + str(index) + ")"
+                new_filepath = discord_data_path + "cleaned_data/" + file_name + '.txt'
+
+                with open(new_filepath, 'w') as text_file:
+                    for line in cluster:
+                        text_file.write(line)
+                        text_file.write("\n")
+                rows_for_csv.append([new_filepath, author_uuid])
+        else:
+            file_name = author_uuid
             new_filepath = discord_data_path + "cleaned_data/" + file_name + '.txt'
 
             with open(new_filepath, 'w') as text_file:
-                for line in cluster:
-                    text_file.write(line)
+                for message in messages:
+                    text_file.write(message)
                     text_file.write("\n")
+
             rows_for_csv.append([new_filepath, author_uuid])
 
         # Generate csv outlining authors and filepaths
         generate_csv(rows_for_csv)
+
+    return True
 
 
 if __name__ == "__main__":

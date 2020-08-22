@@ -20,7 +20,9 @@ def return_configs():
         "top_w_words": 50,
         "top_s_sents": 3,
         "top_p_puncs": 3,
-        "test_split": 0.25,
+        "test_split": 0.2,
+        "default_object": DiscordMessage,
+        "exponential_comparison": False
     }
 
 
@@ -48,4 +50,4 @@ def get_features():
 
 
 def get_headers():
-    return get_features() + get_label()
+    return get_features() + ["auth1", "auth2"] + get_label()

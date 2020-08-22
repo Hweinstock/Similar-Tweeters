@@ -13,5 +13,6 @@ class DiscordMessage(TextObject):
         Returns:
             a list of sentences found in the raw text
         """
-        return self.text.split("\n")
+        split_text = self.text.split("\n")
+        return split_text
 

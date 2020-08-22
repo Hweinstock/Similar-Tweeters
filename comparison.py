@@ -16,8 +16,16 @@ class Comparison:
             "average_word_length_comparison": self.average_word_length_comparison,
             "top_n_sentence_lengths_comparison": self.top_n_sentence_lengths_comparison,
             "punctuation_comparison": self.punctuation_comparison,
-            "same_author": self.determine_author_match
+            "same_author": self.determine_author_match,
+            "auth1": self.get_auth_1,
+            "auth2": self.get_auth_2
         }
+
+    def get_auth_1(self):
+        return self.text_1.author
+
+    def get_auth_2(self):
+        return self.text_2.author
 
     def top_n_word_comparison(self, n=CONFIGS["top_w_words"]):
         """
@@ -79,6 +87,9 @@ class Comparison:
         auth_1 = self.text_1.author
         auth_2 = self.text_2.author
 
+        if auth_1 is None or auth_2 is None:
+            return None
+
         shorter_name = auth_1
         bigger_name = auth_2
 
@@ -116,6 +127,7 @@ class Comparison:
         features = get_headers()
         output = []
         for feat in features:
-            output.append(self.function_mappings[feat]())
+            function = self.function_mappings[feat]
+            output.append(function())
         return output
 

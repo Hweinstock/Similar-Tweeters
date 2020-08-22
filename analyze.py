@@ -3,12 +3,15 @@ from tqdm import tqdm
 import csv
 from config import get_headers, get_text_object
 import pickle
+from config import return_configs
 
 
 PIK = 'text_objects.dat'
+CONFIGS = return_configs()
 
 
-def create_comparison_objects(text_objects):
+def create_comparison_objects_conservative(text_objects):
+
     objects = []
     for index, text_a in enumerate(tqdm(text_objects)):
         diff_author_added = False
@@ -28,9 +31,21 @@ def create_comparison_objects(text_objects):
     return objects
 
 
+def create_comparison_objects_exponential(text_objects):
+    objects = []
+    for index, text_a in enumerate(tqdm(text_objects)):
+        for text_b in text_objects[index + 1:]:
+            objects.append(Comparison(text_a, text_b).report)
+
+    return objects
+
+
 def generate_data(args, file_name="comps"):
     file_name = file_name+'.csv'
-    TextObject = get_text_object(args.text_object_type)
+    if args is not None:
+        TextObject = get_text_object(args.text_object_type)
+    else:
+        TextObject = CONFIGS['default_object']
 
     with open('outline.csv', encoding='ISO-8859-1') as csvfile:
         readCSV = csv.reader(csvfile)
@@ -61,7 +76,10 @@ def generate_data(args, file_name="comps"):
             print("Creating Comparisons...")
 
             headers = get_headers()
-            rows = create_comparison_objects(text_objects)
+            if CONFIGS["exponential_comparison"]:
+                rows = create_comparison_objects_exponential(text_objects)
+            else:
+                rows = create_comparison_objects_conservative(text_objects)
 
             writeCSV.writerow(headers)
             writeCSV.writerows(rows)

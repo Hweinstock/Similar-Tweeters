@@ -10,6 +10,12 @@ from config import return_configs
 CONFIGS = return_configs()
 
 
+def load_model():
+    with open('saved_model2.pkl', 'rb') as model:
+        regressor = pickle.load(model)
+    return regressor
+
+
 def run_model(args, csv_file):
 
     dataset = pd.read_csv(csv_file)
@@ -27,39 +33,45 @@ def run_model(args, csv_file):
     # Create and train model
     print("Creating model...")
     if args is not None and args.load_from_save:
-        with open('saved_model.pkl', 'rb') as model:
-            regressor = pickle.load(model)
-            X_test = X
-            y_test = y
+        regressor = load_model()
+        X_test = X
+        y_test = y
     else:
         regressor = LogisticRegression()
 
         # Split Data into train and test
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=CONFIGS["test_split"], random_state=0)
+        if not args.save_model:
+            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=CONFIGS["test_split"], random_state=0)
+        else:
+            X_train, y_train = X, y
+
 
         print("Training model...")
         regressor.fit(X_train, y_train)
 
-    # Predict on test dataset
-    print("Predicting with model...")
-    y_pred = regressor.predict(X_test)
+    if not args.save_model:
+        # Predict on test dataset
+        print("Predicting with model...")
+        y_pred = regressor.predict(X_test)
 
-    # Create Dataframe of coefficients
-    coeff_df = pd.DataFrame(regressor.coef_[0], X.columns, columns=['Coefficient'])
+        # Create Dataframe of coefficients
+        coeff_df = pd.DataFrame(regressor.coef_[0], X.columns, columns=['Coefficient'])
 
-    # Rename for clarity and reformatting
-    actual_results = [arr.item() for arr in y_test]
-    predicted_results = y_pred
-    print("Generating diagnostics...")
-    # Print out diagnostics of tests
-    generate_diagnostics(actual_results, predicted_results)
+        # Rename for clarity and reformatting
+        actual_results = [arr.item() for arr in y_test]
+        predicted_results = y_pred
+        print("Generating diagnostics...")
+        # Print out diagnostics of tests
+        generate_diagnostics(actual_results, predicted_results)
 
-    print("\nCoefficients: ")
-    print(coeff_df)
+        print("\nCoefficients: ")
+        print(coeff_df)
 
     if args.save_model:
-        with open('saved_model.pkl', 'wb') as out:
+        print("Saving Model...")
+        with open('saved_model2.pkl', 'wb') as out:
             pickle.dump(regressor, out)
+
 
 if __name__ == '__main__':
     run_model(None, 'comps.csv')

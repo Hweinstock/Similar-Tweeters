@@ -4,6 +4,7 @@ __pycache__/
 venv/
 book_data/
 test_messages/
+train_messages/
 *.csv
 *.pkl
 *.dat
