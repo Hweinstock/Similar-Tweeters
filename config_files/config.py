@@ -1,5 +1,5 @@
-from discord_message import DiscordMessage
-from book import Book
+from analyzer.text_objects.discord_message import DiscordMessage
+from analyzer.text_objects.book import Book
 
 """
 Not sure if this is the best way to do it, but wanted a centralized place to tweak variables, this is what I came up with.
@@ -21,8 +21,9 @@ def return_configs():
         "top_s_sents": 3,
         "top_p_puncs": 3,
         "test_split": 0.2,
-        "default_object": DiscordMessage,
-        "exponential_comparison": False
+        "default_object": Book,
+        "exponential_comparison": False,
+        "delete_dead_files": True
     }
 
 

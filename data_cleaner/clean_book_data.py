@@ -4,6 +4,9 @@ from os.path import splitext
 import re
 import os
 import csv
+from config_files.config import return_configs
+
+CONFIGS = return_configs()
 
 
 def unzip_to_dir(file, final_dir, root_dir):
@@ -90,18 +93,21 @@ def find_start_of_text(text_file):
 
 
 if __name__ == "__main__":
-
     fields = ["filepath", "author"]
     rows = []
-    root_dir = "book_data"
+    root_dir = "data/book_data"
+    zip_files = root_dir + "/zip_files/"
 
-    files = os.listdir(root_dir + "/zip_files/")
+    files = os.listdir(zip_files)
     print("Cleaning Data...")
     for file in tqdm(files):
         next_file = prepare_file(file, root_dir)
         if next_file is not None:
             rows.append(next_file)
         else:
+            if CONFIGS["delete_dead_files"]:
+                os.remove(os.path.join(zip_files, file))
+                print("Deleting File")
             print("WARNING", file, "Could not prepare file, Possibly of wrong form. ")
 
     with open("outline.csv", 'w') as csv_file:

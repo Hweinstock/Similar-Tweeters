@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-from args_parser import prepare_args
-from analyze import generate_data
-from model import run_model
-from data_balancer import balance_data
+from config_files.args_parser import prepare_args
+from analyzer.analyze import generate_data
+from analyzer.model.model import run_model
+from analyzer.model.data_balancer import balance_data
 
 if __name__ == "__main__":
     parser = prepare_args()
@@ -12,11 +12,12 @@ if __name__ == "__main__":
     if args.dataset is None:
         print("Analyzing Files...")
         csv_file = generate_data(args)
-        if not args.dont_balance:
-            csv_file = balance_data(csv_file)
 
     else:
-        csv_file = balance_data(args.dataset)
+        csv_file = args.dataset
+
+    if not args.dont_balance:
+        csv_file = balance_data(csv_file)
 
     run_model(args, csv_file)
 

@@ -1,6 +1,6 @@
-import utility
-from config import get_headers
-from config import return_configs
+from utility import utility
+from config_files.config import get_headers
+from config_files.config import return_configs
 
 CONFIGS = return_configs()
 

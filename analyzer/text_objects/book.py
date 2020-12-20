@@ -1,4 +1,4 @@
-from text import TextObject
+from analyzer.text_objects.text import TextObject
 from nltk.tokenize import sent_tokenize
 
 

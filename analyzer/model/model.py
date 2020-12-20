@@ -2,10 +2,10 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.utils import shuffle
-from diagnostics import generate_diagnostics
-from config import get_features, get_label
+from analyzer.model.diagnostics import generate_diagnostics
+from config_files.config import get_features, get_label
 import pickle
-from config import return_configs
+from config_files.config import return_configs
 
 CONFIGS = return_configs()
 

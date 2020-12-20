@@ -2,7 +2,7 @@ import os
 from uuid import uuid4
 import re
 import csv
-from config import return_configs
+from config_files.config import return_configs
 from tqdm import tqdm
 
 discord_data_path = "test_messages/"

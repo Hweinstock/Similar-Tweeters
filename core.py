@@ -1,10 +1,10 @@
-from clean_discord_data import cleanup_main
+from data_cleaner.clean_discord_data import cleanup_main
 import os
-from discord_message import DiscordMessage
-from comparison import Comparison
-from config import get_headers, get_features
+from analyzer.text_objects.discord_message import DiscordMessage
+from analyzer.comparison import Comparison
+from config_files.config import get_headers, get_features
 import pandas as pd
-from model import load_model
+from analyzer.model.model import load_model
 
 
 def trim_uuid_from_file(file):

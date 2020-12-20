@@ -1,6 +1,6 @@
 from imblearn.over_sampling import SMOTE
 import pandas as pd
-from config import get_label, get_headers
+from config_files.config import get_label, get_headers, get_features
 
 
 def balance_data(csv_file):
@@ -16,7 +16,8 @@ def balance_data(csv_file):
 
     # Separate what is being used to predict and what is being predicted.
 
-    X = df.loc[:, df.columns != get_label()[0]]
+    #X = df.loc[:, df.columns != get_label()[0]]
+    X = df.loc[:, get_features()]
     y = df.same_author
     over_sampler = SMOTE(sampling_strategy='auto',
                          k_neighbors=k,

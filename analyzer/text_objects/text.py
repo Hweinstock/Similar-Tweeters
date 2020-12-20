@@ -1,5 +1,5 @@
-import utility
-from nltk.tokenize import word_tokenize, sent_tokenize
+from utility import utility
+from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 import string
 
@@ -80,14 +80,6 @@ class TextObject:
         else:
             meaningful_words = [word for word in words if word not in stop_words]
             return meaningful_words
-
-    # def list_of_sentences(self):
-    #     """
-    #
-    #     Returns:
-    #         a list of sentences found in the raw text
-    #     """
-    #     return sent_tokenize(self.text)
 
     def index_sentences(self):
         """
