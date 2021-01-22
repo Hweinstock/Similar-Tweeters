@@ -1,0 +1,7 @@
+db.sqlite3
+migrations/
+*.pyc
+node_modules/
+/env
+.idea/
+.DS_Store
