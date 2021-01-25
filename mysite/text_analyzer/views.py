@@ -42,10 +42,7 @@ class CompView(viewsets.ModelViewSet):
 
         CompObject = Comparison(Text1, Text2)
 
-        return Response({'CompObject': CompObject.__dict__(),
-                         'TextObject1': Text1.report(),
-                         'TextObject2': Text2.report(),
-                         })
+        return Response({'CompObject': CompObject.__dict__()})
 
 
 @api_view(['GET'])
@@ -55,6 +52,19 @@ def headers(request):
 
     return Response({'Headers': headers})
 
+
+@api_view(['POST'])
+def create_text_objects(request):
+    texts = request.data['text']
+    label = request.data['label']
+
+    TextObject = get_text_object(label)
+    Text1 = TextObject(texts['box1'], raw_text=True)
+    Text2 = TextObject(texts['box2'], raw_text=True)
+
+    return Response({'TextObject1': Text1.report(),
+                         'TextObject2': Text2.report(),
+                     })
 
 def index(request):
     return HttpResponse("This is the bot!")

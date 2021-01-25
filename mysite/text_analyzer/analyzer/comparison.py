@@ -53,6 +53,10 @@ class Comparison:
 
         first_max = self.text_1.average_word_length()
         second_max = self.text_2.average_word_length()
+
+        if first_max == 0.0 or second_max == 0.0:
+            return 0.0
+
         if first_max > second_max:
             return second_max / first_max
         else:

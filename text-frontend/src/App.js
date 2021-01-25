@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { submit_texts, get_headers, make_comparison } from "./api.js"
+import { submit_texts, get_headers, make_comparison, get_text_objects } from "./api.js"
 
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
@@ -28,17 +28,41 @@ class App extends Component {
         super(props);
         this.state = {
             text: {
-                box1: "",
-                box2: ""
+                box1: " ",
+                box2: " "
             },
             bar_percent: 75,
-            data: undefined
+            data: { textObjects: undefined,
+                    comp: undefined}
         };
 
         this.handleChange = this.handleChange.bind(this);
 
     }
 
+    retrieve_stats() {
+        return get_text_objects(this.state.text)
+            .then(response => this.setState(
+                {data: { textObjects: response.data,
+                               comp: this.state.data.comp}}))
+            .catch(error => console.log(error))
+
+        // return submit_texts(this.state.text)
+        //             .then(response => make_comparison(response.data.id)
+        //                 .then(second_response => this.setState({data: second_response.data}))
+        //                 .catch(error => console.log(error))
+        //             .catch( error => console.log(error)))
+    }
+
+    submit_comparison() {
+        console.log(this.state);
+        return submit_texts(this.state.text)
+                    .then(response => make_comparison(response.data.id)
+                        .then(second_response => this.setState({data: { comp: second_response.data,
+                                                                                        textObjects: this.state.data.textObjects}}))
+                        .catch(error => console.log(error))
+                    .catch( error => console.log(error)))
+    }
 
     handleChange(event, name) {
         let newText = event.target.value;
@@ -48,6 +72,8 @@ class App extends Component {
                 [name]: newText
             }
         }));
+        let p = this.retrieve_stats();
+
     }
 
 
@@ -77,11 +103,7 @@ class App extends Component {
             />
 
             <CompareButton
-                onClick={() => submit_texts(this.state.text)
-                    .then(response => make_comparison(response.data.id)
-                        .then(second_response => this.setState({data: second_response.data}))
-                        .catch(error => console.log(error))
-                    .catch( error => console.log(error)))}
+                onClick={() => this.submit_comparison()}
             />
         </div>
   );

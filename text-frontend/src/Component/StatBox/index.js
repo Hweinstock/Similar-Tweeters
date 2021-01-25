@@ -26,14 +26,20 @@ export default class StatBox extends Component {
             .catch(error => console.log(error));
     }
 
-    generate_rows(data) {
-        const t1 = this.props.data.TextObject1;
-        const t2 = this.props.data.TextObject2;
+    generate_rows() {
+        let rows;
+
+        if (typeof this.props.data.textObjects == 'undefined') {
+            rows = [{}, {}];
+            return rows
+        }
+        const t1 = this.props.data.textObjects.TextObject1;
+        const t2 = this.props.data.textObjects.TextObject2;
 
         t1.name = "Text_1";
         t2.name = "Text_2";
 
-        const rows = [t1, t2];
+        rows = [t1, t2];
 
         return rows
     }

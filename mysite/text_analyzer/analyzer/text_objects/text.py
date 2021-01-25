@@ -223,8 +223,8 @@ class TextObject:
             A floating point value representing average word length.
 
         """
-        total_length = 0
-        total_words = 0
+        total_length = 0.0
+        total_words = 0.0
 
         for word in self.indexed_word_set:
             total_length += len(word) * self.indexed_word_set[word]
@@ -236,14 +236,14 @@ class TextObject:
         """
 
         Returns:
-            a floating point value representing average sentence length in words.
+            Float: a value representing average sentence length in words.
         """
         if input_set is None:
             sentence_set = self.indexed_sentence_set
         else:
             sentence_set = input_set
 
-        total_length = 0
+        total_length = 0.0
 
         for sentence in sentence_set:
             total_length += sentence * sentence_set[sentence]
@@ -254,18 +254,27 @@ class TextObject:
         return self.index_punctuation().items()
 
     def report(self):
+        """
+
+        Returns:
+            Dict: a Dictionary that includes all statistics gathered from text
+
+        """
 
         rep = {}
 
         for header in ANALYZE_CONFIG['headers']:
+
+            # Map each statistic function over each header.
             new_item = self.function_mappings[header]()
 
+            # Reformat Data to be in readable format
             if isinstance(new_item, list):
                 new_item = [item[0] for item in new_item]
                 new_item = ", ".join([str(i) for i in new_item])
 
             elif isinstance(new_item, float):
-                new_item = str(new_item)
+                new_item = str(round(new_item, 3))
             else:
 
                 new_item = [item[0] for item in list(new_item) if item[1] != 0.0]
