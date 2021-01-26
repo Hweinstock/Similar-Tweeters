@@ -2,25 +2,44 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.utils import shuffle
-from analyzer.model.diagnostics import generate_diagnostics
-from config_files.config import get_features, get_label
+from text_analyzer.analyzer.model.diagnostics import generate_diagnostics
+from text_analyzer.analyzer.model.config import get_features, get_label
 import pickle
-from config_files.config import return_configs
+from text_analyzer.analyzer.model.config import return_configs
+import os
 
 CONFIGS = return_configs()
+PATH = 'text_analyzer/analyzer/model/'
 
 
 def load_model():
-    with open('saved_model2.pkl', 'rb') as model:
+    print(os.listdir('text_analyzer/analyzer/model/'))
+    with open(PATH + 'trained_model.pkl', 'rb') as model:
         regressor = pickle.load(model)
     return regressor
+
+
+def run_on_object(CompObj):
+    report = CompObj.__dict__()
+
+    # Convert to pandas dataframe
+    data = pd.DataFrame([report])
+
+    features = data[get_features()]
+
+    model = load_model()
+    output = model.predict(features)[0]
+
+    return output
 
 
 def run_model(args, csv_file):
 
     dataset = pd.read_csv(csv_file)
+
     # Remove Dead Data i.e NaN
     dataset = dataset.fillna(method='ffill')
+
     # Doesn't appear to have effect, might be built in.
     dataset = shuffle(dataset)
 
