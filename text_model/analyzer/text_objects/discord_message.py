@@ -1,4 +1,4 @@
-from text_analyzer.analyzer.text_objects.text import TextObject
+from text_model.analyzer.text_objects.text import TextObject
 
 
 class DiscordMessage(TextObject):

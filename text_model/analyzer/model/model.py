@@ -2,18 +2,17 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.utils import shuffle
-from text_analyzer.analyzer.model.diagnostics import generate_diagnostics
-from text_analyzer.analyzer.model.config import get_features, get_label
+from text_model.analyzer.model.diagnostics import generate_diagnostics
+from text_model.analyzer.model.config import get_features, get_label
 import pickle
-from text_analyzer.analyzer.model.config import return_configs
+from text_model.analyzer.model.config import return_configs
 import os
 
 CONFIGS = return_configs()
-PATH = 'text_analyzer/analyzer/model/'
+PATH = '../text_model/analyzer/model/'
 
 
 def load_model():
-    print(os.listdir('text_analyzer/analyzer/model/'))
     with open(PATH + 'trained_model.pkl', 'rb') as model:
         regressor = pickle.load(model)
     return regressor
