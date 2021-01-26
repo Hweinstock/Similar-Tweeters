@@ -1,14 +1,11 @@
-from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.response import Response
-from rest_framework.decorators import action
 from .serializers import CompSerializer
 from .models import ComparisonData
 from django.http import HttpResponse
 from rest_framework.decorators import api_view
-import json
 
-from text_model.analyzer.model.config import get_text_object
+from text_model.config_files.config import get_text_object
 from text_model.analyzer.text_objects.text import analyze_config
 from text_model.analyzer.comparison import Comparison
 from text_model.analyzer.model.model import run_on_object

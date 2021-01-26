@@ -3,10 +3,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.utils import shuffle
 from text_model.analyzer.model.diagnostics import generate_diagnostics
-from text_model.analyzer.model.config import get_features, get_label
+from text_model.config_files.config import get_features, get_label
 import pickle
-from text_model.analyzer.model.config import return_configs
-import os
+from text_model.config_files.config import return_configs
 
 CONFIGS = return_configs()
 PATH = '../text_model/analyzer/model/'

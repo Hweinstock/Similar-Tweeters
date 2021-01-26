@@ -1,8 +1,8 @@
 import math
 
-from text_model.analyzer import utility
-from text_model.analyzer.model.config import get_headers
-from text_model.analyzer.model.config import return_configs
+from text_model.utility import utility
+from text_model.config_files.config import get_headers
+from text_model.config_files.config import return_configs
 
 CONFIGS = return_configs()
 
