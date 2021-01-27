@@ -7,26 +7,28 @@ import csv
 from text_model.config_files.config import return_configs
 
 CONFIGS = return_configs()
+ZIPS_DIR = "/raw_zips/"
+TEXT_DIR = "/raw_text2/"
 
 
 def unzip_to_dir(file, final_dir, root_dir):
     try:
-        with ZipFile(root_dir+"/zip_files/" + file, 'r') as zip_ref:
+        with ZipFile(root_dir + ZIPS_DIR + file, 'r') as zip_ref:
             zip_ref.extractall(final_dir)
         return True
     except BadZipFile:
         return False
 
 
-def prepare_file(name, root_dir):
-    final_dir = root_dir+'/text_files'
+def prepare_file(name, root_dir, id):
+    final_dir = root_dir + TEXT_DIR
     able_to_unzip = unzip_to_dir(name, final_dir, root_dir)
 
     if not able_to_unzip:
-        return None
+        return None, "Unable to Unzip"
 
     name = splitext(name)[0] + '.txt'
-    full_path = root_dir+"/text_files/" + name
+    full_path = root_dir + TEXT_DIR + name
 
     # Read in text file, identify author and trim gutenberg heading.
     try:
@@ -34,21 +36,24 @@ def prepare_file(name, root_dir):
 
             author = identify_author(text_file)
             new_text = find_start_of_text(text_file)
+
             # Throw out the data with no content and only a title.
             if len(new_text) < 500:
-                return None
+                return None, "Insufficient Text"
     except FileNotFoundError:
-        return None
+        return None, "Can't find file"
 
     # Reopen file and write out text without gutenberg heading
-    with open(full_path, "w") as text_file:
+    with open(full_path, 'w') as text_file:
         text_file.write(new_text)
 
-    result = {
-        "full_path": full_path,
-        "author": author
-    }
-    return [result["full_path"], result["author"]]
+    # Rename file to 'authFirst_authLast_id.txt' format
+    current_dir = os.path.join(os.path.dirname(full_path), '')
+    file_name = str(id) + '_' + '_'.join(author.split()) + ".txt"
+    new_path = os.path.join(current_dir + file_name)
+    os.rename(full_path, new_path)
+
+    return new_path, "Success"
 
 
 def identify_author(text_file):
@@ -93,25 +98,44 @@ def find_start_of_text(text_file):
 
 
 if __name__ == "__main__":
-    fields = ["filepath", "author"]
-    rows = []
-    root_dir = "data/book_data"
-    zip_files = root_dir + "/zip_files/"
+    root_dir = "../data/book_data"
+    zip_files_dir = root_dir + "/raw_zips/"
+    zip_files = os.listdir(zip_files_dir)[:10]
+    print("Cleaning Data...\n")
 
-    files = os.listdir(zip_files)
-    print("Cleaning Data...")
-    for file in tqdm(files):
-        next_file = prepare_file(file, root_dir)
-        if next_file is not None:
-            rows.append(next_file)
-        else:
-            if CONFIGS["delete_dead_files"]:
-                os.remove(os.path.join(zip_files, file))
-                print("Deleting File")
+    for index, file in tqdm(enumerate(zip_files)):
+
+        current_file, msg = prepare_file(file, root_dir, index)
+
+        if current_file is None:
             print("WARNING", file, "Could not prepare file, Possibly of wrong form. ")
 
-    with open("outline.csv", 'w') as csv_file:
-        csv_writer = csv.writer(csv_file)
+            if CONFIGS["delete_dead_files"]:
+                os.remove(os.path.join(zip_files_dir, file))
+                print("Deleting File")
 
-        csv_writer.writerow(fields)
-        csv_writer.writerows(rows)
+
+
+# if __name__ == "__main__":
+#     fields = ["filepath", "author"]
+#     rows = []
+#     root_dir = "data/book_data"
+#     zip_files = root_dir + "/zip_files/"
+#
+#     files = os.listdir(zip_files)
+#     print("Cleaning Data...")
+#     for file in tqdm(files):
+#         next_file = prepare_file(file, root_dir)
+#         if next_file is not None:
+#             rows.append(next_file)
+#         else:
+#             if CONFIGS["delete_dead_files"]:
+#                 os.remove(os.path.join(zip_files, file))
+#                 print("Deleting File")
+#             print("WARNING", file, "Could not prepare file, Possibly of wrong form. ")
+#
+#     with open("outline.csv", 'w') as csv_file:
+#         csv_writer = csv.writer(csv_file)
+#
+#         csv_writer.writerow(fields)
+#         csv_writer.writerows(rows)

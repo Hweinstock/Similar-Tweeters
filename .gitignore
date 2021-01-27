@@ -1,11 +1,16 @@
 db.sqlite3
 migrations/
 *.pyc
+
 node_modules/
 /env
+
+/text_model/data/
 .idea/
 .DS_Store
+
 SECRET_KEY.txt
+
 # dependencies
 /node_modules
 /.pnp
