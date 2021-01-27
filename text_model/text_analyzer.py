@@ -4,6 +4,7 @@ from text_model.config_files.args_parser import prepare_args
 from text_model.analyzer.analyze import generate_data
 from text_model.analyzer.model.model import run_model
 from text_model.analyzer.model.data_balancer import balance_data
+import pandas as pd
 
 if __name__ == "__main__":
     parser = prepare_args()
@@ -11,13 +12,16 @@ if __name__ == "__main__":
 
     if args.dataset is None:
         print("Analyzing Files...")
-        csv_file = generate_data(args)
+        df = generate_data(args)
 
     else:
-        csv_file = args.dataset
+        df = pd.read_csv(args.dataset)
 
     if not args.dont_balance:
-        csv_file = balance_data(csv_file)
+        df = balance_data(df)
 
-    run_model(args, csv_file)
+    # Remoeve all dead data (temporary)
+    df = df.dropna()
+
+    run_model(args, df)
 

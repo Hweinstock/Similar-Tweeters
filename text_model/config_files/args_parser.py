@@ -5,7 +5,7 @@ def prepare_args():
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("-l",
+    parser.add_argument("-lm",
                         "--load-from-save",
                         help="Whether or not to load model from save or train a fresh one",
                         action="store",
@@ -13,20 +13,41 @@ def prepare_args():
                         dest="load_from_save",
                         default=None)
 
-    parser.add_argument("-s",
+    parser.add_argument("-sm",
                         "--save-model",
                         help="Whether or not to save model after running",
                         action="store_true",
                         dest="save_model",
                         default=False)
 
-    parser.add_argument("-d",
-                        "--dataset",
+    parser.add_argument("-sc",
+                        "--save_comps",
+                        help="Where or not to save comps dataframe after creating.",
+                        action="store_true",
+                        dest="save_comps",
+                        default=False)
+
+    parser.add_argument("-lc",
+                        "--load_comps",
                         help="Path to CSV file to read in.",
                         action="store",
                         type=str,
                         default=None,
                         dest="dataset")
+
+    parser.add_argument("-st",
+                        "--save_text",
+                        help="Whether or not to store the text objects. ",
+                        action="store_true",
+                        default=False,
+                        dest="save_text")
+
+    parser.add_argument("-lt",
+                        "--text_objects",
+                        help="Path to pickle to load text objects from.",
+                        action="store_true",
+                        default=False,
+                        dest="save_text")
 
     parser.add_argument("-u",
                         "--dont-balance-data",

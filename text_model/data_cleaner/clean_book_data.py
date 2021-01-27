@@ -100,7 +100,7 @@ def find_start_of_text(text_file):
 if __name__ == "__main__":
     root_dir = "../data/book_data"
     zip_files_dir = root_dir + "/raw_zips/"
-    zip_files = os.listdir(zip_files_dir)[:10]
+    zip_files = os.listdir(zip_files_dir)[:100]
     print("Cleaning Data...\n")
 
     for index, file in tqdm(enumerate(zip_files)):
@@ -113,29 +113,3 @@ if __name__ == "__main__":
             if CONFIGS["delete_dead_files"]:
                 os.remove(os.path.join(zip_files_dir, file))
                 print("Deleting File")
-
-
-
-# if __name__ == "__main__":
-#     fields = ["filepath", "author"]
-#     rows = []
-#     root_dir = "data/book_data"
-#     zip_files = root_dir + "/zip_files/"
-#
-#     files = os.listdir(zip_files)
-#     print("Cleaning Data...")
-#     for file in tqdm(files):
-#         next_file = prepare_file(file, root_dir)
-#         if next_file is not None:
-#             rows.append(next_file)
-#         else:
-#             if CONFIGS["delete_dead_files"]:
-#                 os.remove(os.path.join(zip_files, file))
-#                 print("Deleting File")
-#             print("WARNING", file, "Could not prepare file, Possibly of wrong form. ")
-#
-#     with open("outline.csv", 'w') as csv_file:
-#         csv_writer = csv.writer(csv_file)
-#
-#         csv_writer.writerow(fields)
-#         csv_writer.writerows(rows)

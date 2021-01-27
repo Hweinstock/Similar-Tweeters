@@ -31,9 +31,7 @@ def run_on_object(CompObj):
     return output
 
 
-def run_model(args, csv_file):
-
-    dataset = pd.read_csv(csv_file)
+def run_model(args, dataset):
 
     # Remove Dead Data i.e NaN
     dataset = dataset.fillna(method='ffill')

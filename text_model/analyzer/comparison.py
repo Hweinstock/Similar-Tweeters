@@ -40,6 +40,7 @@ class Comparison:
         """
         forward = self.text_1.cross_compare_top_n_words(self.text_2, n)
         backward = self.text_2.cross_compare_top_n_words(self.text_1, n)
+
         return (forward + backward) / 2.0
 
     def average_word_length_comparison(self):

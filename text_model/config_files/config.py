@@ -14,7 +14,6 @@ def get_text_object(name):
     return key[name]
 
 
-
 def return_configs():
     return {
         "cluster_size": 250,
@@ -23,7 +22,7 @@ def return_configs():
         "top_p_puncs": 3,
         "test_split": 0.2,
         "default_object": Book,
-        "exponential_comparison": False,
+        "exponential_comparison": True,
         "delete_dead_files": True
     }
 

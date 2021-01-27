@@ -8,6 +8,12 @@ Bunch of helper functions that don't have a place.
 """
 
 
+def author_from_filename(filename):
+    author_name_list = re.split('_|\.txt', filename)[1:]
+    author_name = " ".join(author_name_list)
+    return author_name
+
+
 def combine_contractions(tokens):
     new_tokens = []
     for index, token in enumerate(tokens):

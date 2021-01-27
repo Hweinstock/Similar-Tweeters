@@ -10,6 +10,7 @@ node_modules/
 .DS_Store
 
 SECRET_KEY.txt
+comps*.csv
 
 # dependencies
 /node_modules
