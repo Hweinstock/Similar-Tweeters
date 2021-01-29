@@ -8,7 +8,7 @@ from text_model.config_files.config import return_configs
 
 CONFIGS = return_configs()
 ZIPS_DIR = "/raw_zips/"
-TEXT_DIR = "/raw_text2/"
+TEXT_DIR = "/raw_text/"
 
 
 def unzip_to_dir(file, final_dir, root_dir):
@@ -25,16 +25,19 @@ def prepare_file(name, root_dir, id):
     able_to_unzip = unzip_to_dir(name, final_dir, root_dir)
 
     if not able_to_unzip:
+        os.remove(root_dir + ZIPS_DIR + file)
         return None, "Unable to Unzip"
 
     name = splitext(name)[0] + '.txt'
     full_path = root_dir + TEXT_DIR + name
+
 
     # Read in text file, identify author and trim gutenberg heading.
     try:
         with open(full_path, "r", encoding="ISO-8859-1") as text_file:
 
             author = identify_author(text_file)
+            author = "".join(["_" if char == "/" else char for char in author])
             new_text = find_start_of_text(text_file)
 
             # Throw out the data with no content and only a title.
@@ -47,7 +50,7 @@ def prepare_file(name, root_dir, id):
     with open(full_path, 'w') as text_file:
         text_file.write(new_text)
 
-    # Rename file to 'authFirst_authLast_id.txt' format
+    # Rename file to 'id_authFirst_authLast.txt' format
     current_dir = os.path.join(os.path.dirname(full_path), '')
     file_name = str(id) + '_' + '_'.join(author.split()) + ".txt"
     new_path = os.path.join(current_dir + file_name)
@@ -99,8 +102,10 @@ def find_start_of_text(text_file):
 
 if __name__ == "__main__":
     root_dir = "../data/book_data"
-    zip_files_dir = root_dir + "/raw_zips/"
-    zip_files = os.listdir(zip_files_dir)[:100]
+    zip_files_dir = root_dir + ZIPS_DIR
+    text_files_dir = root_dir + TEXT_DIR
+    zip_files = os.listdir(zip_files_dir)
+
     print("Cleaning Data...\n")
 
     for index, file in tqdm(enumerate(zip_files)):
@@ -113,3 +118,17 @@ if __name__ == "__main__":
             if CONFIGS["delete_dead_files"]:
                 os.remove(os.path.join(zip_files_dir, file))
                 print("Deleting File")
+
+    text_files = os.listdir(text_files_dir)
+
+    for sec_file in text_files:
+        # Remove non-text files from the text file directory.
+        if not sec_file.endswith('.txt'):
+            os.remove(os.path.join(text_files_dir, sec_file))
+        else:
+            # Remove any unlabeled data that made its way through.
+            first_char = sec_file[0]
+            if not first_char.isnumeric():
+                os.remove(os.path.join(text_files_dir, sec_file))
+
+

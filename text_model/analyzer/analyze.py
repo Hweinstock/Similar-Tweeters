@@ -11,7 +11,7 @@ from text_model.analyzer.comparison import Comparison
 
 PIK = 'text_objects_books.dat'
 CONFIGS = return_configs()
-DATA_PATH = 'data/book_data/raw_text2/'
+DATA_PATH = 'data/book_data/raw_text/'
 
 
 def create_comparison_objects_conservative(text_objects):
@@ -57,7 +57,7 @@ def generate_data(args, file_name='comps'):
     if args is None or args.text_objects is None:
         print("Creating TextObjects...")
 
-        for file in tqdm(text_files):
+        for file in tqdm(text_files[101:200]):
             author = author_from_filename(file)
             full_path = os.path.join(DATA_PATH + file)
             new_obj = TextObject(filepath_or_text=full_path, author=author)
@@ -92,59 +92,6 @@ def generate_data(args, file_name='comps'):
         comparisons.to_csv('comps.csv')
 
     return comparisons
-
-
-# def generate_data_old(args, file_name="comps"):
-#
-#     file_name = file_name+'.csv'
-#     if args is not None:
-#         TextObject = get_text_object(args.text_object_type)
-#     else:
-#         TextObject = CONFIGS['default_object']
-#
-#     dataCleaned = os.path.exists('outline.csv')
-#
-#     if not dataCleaned:
-#         print("DataError: Could not find outline.csv. Most likely data has not been prepped.")
-#
-#     with open('outline.csv', encoding='ISO-8859-1') as csvfile:
-#         readCSV = list(csv.reader(csvfile))
-#
-#         # Convert each row (except Header) to textObject
-#     if args is None or args.text_objects is None:
-#         print("Creating TextObjects...")
-#         text_objects = []
-#         for row in tqdm(readCSV):
-#             if row[0] != 'filepath':
-#                 try:
-#                     new_text = TextObject(filepath=row[0], author=row[1])
-#                     if new_text.valid:
-#                         text_objects.append(TextObject(filepath=row[0], author=row[1]))
-#                 except UnicodeDecodeError:
-#                     pass
-#
-#         print("Dumping TextObjects to pickle, "+PIK+"...")
-#         with open(PIK, 'wb') as pf:
-#             pickle.dump(text_objects, pf)
-#     else:
-#         print("Loading in TextObjects from "+args.text_objects)
-#         with open(args.text_objects, 'rb') as pf:
-#             text_objects = pickle.load(pf)
-#
-#     with open(file_name, 'w') as comp_csv:
-#         writeCSV = csv.writer(comp_csv)
-#         print("Creating Comparisons...")
-#
-#         headers = get_headers()
-#         if CONFIGS["exponential_comparison"]:
-#             rows = create_comparison_objects_exponential(text_objects)
-#         else:
-#             rows = create_comparison_objects_conservative(text_objects)
-#
-#         writeCSV.writerow(headers)
-#         writeCSV.writerows(rows)
-#
-#     return file_name
 
 
 if __name__ == "__main__":

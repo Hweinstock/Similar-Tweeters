@@ -187,10 +187,16 @@ def list_similarity(l1, l2):
     """
     a = np.array(l1)
     b = np.array(l2)
-    try:
-        cos_sim = np.dot(a, b)/(norm(a)*norm(b))
-    except ValueError:
-        return None
+    norm_a = norm(a)
+    norm_b = norm(b)
+
+    if norm_a == 0.0 or norm_b == 0.0:
+        cos_sim = 0.0
+    else:
+        try:
+            cos_sim = np.dot(a, b)/(norm(a)*norm(b))
+        except ValueError:
+            return None
 
     return cos_sim
 

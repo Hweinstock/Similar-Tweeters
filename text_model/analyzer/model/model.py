@@ -60,8 +60,10 @@ def run_model(args, dataset):
         else:
             X_train, y_train = X, y
 
-
         print("Training model...")
+        # Flatten train data
+        y_train = y_train.ravel()
+
         regressor.fit(X_train, y_train)
 
     if not args.save_model:
