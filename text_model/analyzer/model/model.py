@@ -27,8 +27,9 @@ def run_on_object(CompObj):
 
     model = load_model()
     output = model.predict(features)[0]
+    similarity_percentage = model.predict_proba(features)[0][1]
 
-    return output
+    return output, similarity_percentage
 
 
 def run_model(args, dataset):

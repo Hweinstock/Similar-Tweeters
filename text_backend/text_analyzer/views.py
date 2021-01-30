@@ -40,9 +40,10 @@ class CompView(viewsets.ModelViewSet):
 
         CompObject = Comparison(Text1, Text2)
 
-        result = run_on_object(CompObject)
+        result, percent = run_on_object(CompObject)
 
-        return Response({'result': result})
+        return Response({'result': result,
+                         'percent': percent})
 
 
 @api_view(['GET'])
