@@ -25,5 +25,6 @@ router.register(r'comps', views.CompView, 'comp')
 urlpatterns = [
     path('api/', include('text_analyzer.urls')),
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls))
+    path('api/', include(router.urls)),
+    path('', include('core.urls')),
 ]

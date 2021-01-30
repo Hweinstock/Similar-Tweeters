@@ -4,6 +4,7 @@ from .serializers import CompSerializer
 from .models import ComparisonData
 from django.http import HttpResponse
 from rest_framework.decorators import api_view
+from django.shortcuts import render
 
 from text_model.config_files.config import get_text_object
 from text_model.analyzer.text_objects.text import analyze_config
@@ -66,7 +67,3 @@ def create_text_objects(request):
     return Response({'TextObject1': Text1.report(),
                          'TextObject2': Text2.report(),
                      })
-
-
-def index(request):
-    return HttpResponse("This is the bot!")

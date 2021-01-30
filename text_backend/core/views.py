@@ -6,11 +6,6 @@ from rest_framework.decorators import api_view
 # Create your views here.
 
 
-@api_view(["GET"])
-def test(request):
-    test_msg = "Hello World, it worked!"
-    return Response(status=status.HTTP_200_OK, data={"data": test_msg})
+def index(request):
+    return render(request, "build/index.html")
 
-
-def train(request):
-    pass

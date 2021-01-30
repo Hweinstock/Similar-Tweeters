@@ -1,17 +1,20 @@
-<<<<<<< HEAD
+
 .idea/
 __pycache__/
 .DS_Store
+
 venv/
 book_data/
 test_messages/
 train_messages/
+
 *.csv
 *.pkl
 *.dat
 myplot
 test_data/
-=======
+
+
 db.sqlite3
 migrations/
 *.pyc
@@ -35,7 +38,7 @@ comps*.csv
 /coverage
 
 # production
-/build
+build/
 
 # misc
 .DS_Store
