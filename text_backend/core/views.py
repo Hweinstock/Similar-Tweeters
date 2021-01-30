@@ -6,6 +6,6 @@ from rest_framework.decorators import api_view
 # Create your views here.
 
 
-def index(request):
-    return render(request, "build/index.html")
+def two_boxes(request):
+    return render(request, "text_frontend/build/index.html")
 
