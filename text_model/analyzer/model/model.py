@@ -26,6 +26,14 @@ def run_on_object(CompObj):
     features = data[get_features()]
 
     model = load_model()
+
+    empty_data = features.isnull().values.any()
+
+    # Temporary Fix for inputs without enough text.
+    if empty_data:
+        print("Error: Not enough data to generate full values, returning 0")
+        return False, 0.0
+
     output = model.predict(features)[0]
     similarity_percentage = model.predict_proba(features)[0][1]
 

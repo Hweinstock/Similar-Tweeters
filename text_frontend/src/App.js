@@ -31,7 +31,7 @@ class App extends Component {
                 box1: " ",
                 box2: " "
             },
-            bar_percent: 75,
+            bar_percent: 0,
             data: { textObjects: undefined,
                     comp: undefined}
         };
@@ -46,22 +46,24 @@ class App extends Component {
                 {data: { textObjects: response.data,
                                comp: this.state.data.comp}}))
             .catch(error => console.log(error))
-
-        // return submit_texts(this.state.text)
-        //             .then(response => make_comparison(response.data.id)
-        //                 .then(second_response => this.setState({data: second_response.data}))
-        //                 .catch(error => console.log(error))
-        //             .catch( error => console.log(error)))
     }
 
     submit_comparison() {
-        console.log(this.state);
         return submit_texts(this.state.text)
                     .then(response => make_comparison(response.data.id)
-                        .then(second_response => this.setState({data: { comp: second_response.data,
-                                                                                        textObjects: this.state.data.textObjects}}))
+                        .then(second_response => this.handle_second_response(second_response))
                         .catch(error => console.log(error))
                     .catch( error => console.log(error)))
+    }
+
+    handle_second_response(sec_response) {
+
+        console.log(sec_response.data);
+        let result = sec_response.data.result;
+        let confidence_percent = (sec_response.data.percent * 100.0).toFixed(2);
+        this.setState({bar_percent: confidence_percent});
+
+
     }
 
     handleChange(event, name) {
@@ -82,10 +84,6 @@ class App extends Component {
         <div>
             <h1> Text-Analyzer </h1>
 
-            {/*<GuessBar*/}
-            {/*    percent={this.state.bar_percent}*/}
-            {/*/>*/}
-
             {/*<h1>{' '}</h1>*/}
             <TextBox
                 name="box1"
@@ -102,9 +100,17 @@ class App extends Component {
                 get_headers={get_headers}
             />
 
+            <GuessBar
+                percent={this.state.bar_percent}
+            />
+
+            <h1>{' '}</h1>
+
             <CompareButton
                 onClick={() => this.submit_comparison()}
             />
+
+
         </div>
   );
   }
