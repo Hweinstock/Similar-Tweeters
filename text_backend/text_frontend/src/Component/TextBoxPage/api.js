@@ -1,18 +1,5 @@
 import axios from "axios";
 
-
-
-// async function test_call(){
-//   const promise = await axios.get("http://localhost:8000/api/test");
-//   const status = promise.status;
-//   if(status===200)
-//   {
-//     return promise.data.data;
-//   } else {
-//       console.log("There has been an error!")
-//   }
-// }
-
 const comp = {
   id: 0,
   label: 'book'

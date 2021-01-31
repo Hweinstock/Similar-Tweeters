@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
 // import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { submit_texts, get_headers, make_comparison, get_text_objects } from "./api.js"
+import { submit_texts, get_headers, make_comparison, get_text_objects } from "./api.js";
 
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import TextBox from "./textBox.js"
+import CompareButton from "./compareButton.js"
+import GuessBar from "./guessBar.js"
+import StatBox from "./statBox.js"
 
-import TextBox from "./Component/TextBox/index"
-import CompareButton from "./Component/CompareButton/index"
-import GuessBar from "./Component/GuessBar/index"
-import StatBox from "./Component/StatBox/index"
-
-class TextBoxes extends Component {
+class TextBoxPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -104,4 +102,4 @@ class TextBoxes extends Component {
 }
 
 
-export default TextBoxes;
+export default TextBoxPage;
