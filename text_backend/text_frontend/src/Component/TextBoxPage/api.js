@@ -8,8 +8,6 @@ const comp = {
 export function make_comparison(id) {
   return axios
       .get("/api/comps/"+id)
-      // .then(response => callback_func(response))
-      // .catch(error => console.log(error));
 }
 
 export function submit_texts(texts) {

@@ -6,8 +6,9 @@ export default class SubmitButton extends Component {
   render() {
     return (
         <Button variant="contained"
-                color="primary">
-            sumbit
+                color="primary"
+                onClick={this.props.onClick}>
+            submit
         </Button>
     );
   }
