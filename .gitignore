@@ -27,6 +27,7 @@ node_modules/
 .DS_Store
 
 SECRET_KEY.txt
+twitter_config.yaml
 comps*.csv
 
 # dependencies
@@ -38,7 +39,7 @@ comps*.csv
 /coverage
 
 # production
-build/
+/build
 
 # misc
 .DS_Store
