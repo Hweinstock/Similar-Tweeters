@@ -10,6 +10,7 @@ from text_model.config_files.config import get_text_object
 from text_model.analyzer.text_objects.text import analyze_config
 from text_model.analyzer.comparison import Comparison
 from text_model.analyzer.model.model import run_on_object
+from twitter.main import tweets_from_handle
 
 # Create your views here.
 
@@ -67,3 +68,10 @@ def create_text_objects(request):
     return Response({'TextObject1': Text1.report(),
                          'TextObject2': Text2.report(),
                      })
+
+
+@api_view(['GET'])
+def get_recent_tweets(request):
+    twitter_handle = request.GET.get('username', None)
+    tweets = tweets_from_handle(twitter_handle)
+    return Response({"tweets": tweets})

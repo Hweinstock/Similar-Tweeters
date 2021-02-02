@@ -1,8 +1,6 @@
 import requests
-import pandas as pd
-import json
-import ast
 import yaml
+import os
 
 
 def create_twitter_url(handle, max_results=100):
@@ -14,7 +12,7 @@ def create_twitter_url(handle, max_results=100):
 
 
 def process_configs():
-    with open('twitter_config.yaml') as config_file:
+    with open('../twitter/twitter_config.yaml') as config_file:
         return yaml.safe_load(config_file)
 
 
@@ -38,11 +36,14 @@ def tweets_from_handle(handle):
 
     # Make request and grab text data
     response_json = twitter_auth_and_connect(bearer_token, url)
-    response_data = [tweet["text"] for tweet in response_json["data"]]
+    print(type(handle), handle)
+    print(response_json)
+    tweet_data = response_json["data"]
+    response_data = [tweet["text"] for tweet in tweet_data]
 
     return response_data
 
 
 if __name__ == "__main__":
     # Example tag
-    tweets_from_handle('AOC')
+    print(tweets_from_handle('AOC'))
