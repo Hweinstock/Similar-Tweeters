@@ -40,7 +40,7 @@ class CompView(viewsets.ModelViewSet):
         Text1 = TextObject(comp.text1, raw_text=True)
         Text2 = TextObject(comp.text2, raw_text=True)
 
-        CompObject = Comparison(Text1, Text2)
+        CompObject = Comparison(Text1.to_vector, Text2.to_vector)
 
         result, percent = run_on_object(CompObject)
 
