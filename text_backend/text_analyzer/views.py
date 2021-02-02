@@ -11,7 +11,7 @@ from text_model.analyzer.text_objects.text import analyze_config
 from text_model.analyzer.comparison import Comparison
 from text_model.analyzer.model.model import run_on_object
 from text_model.data_cleaner.clean_twitter_data import clean_tweet
-from twitter.main import tweets_from_handle
+from twitter.main import tweets_from_handle, read_in_top_users
 
 # Create your views here.
 
@@ -80,6 +80,8 @@ def get_recent_tweets(request):
 
     total_text_obj = Tweet(total_text, raw_text=True)
     total_text_rep = total_text_obj.report()
+
+    print(read_in_top_users())
 
     return Response({"tweet": total_text,
                      "report": total_text_rep,

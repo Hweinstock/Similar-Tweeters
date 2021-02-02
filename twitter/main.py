@@ -3,6 +3,18 @@ import yaml
 import os
 
 
+def read_in_top_users(n=100):
+    with open('../twitter/top_users.txt') as txt_file:
+        users = txt_file.read().splitlines()
+
+    return users
+
+
+
+
+
+
+
 def create_twitter_url(handle, max_results=100):
     mrf = "max_results={}".format(max_results)
     q = "query=from:{}".format(handle)
@@ -36,7 +48,12 @@ def tweets_from_handle(handle):
 
     # Make request and grab text data
     response_json = twitter_auth_and_connect(bearer_token, url)
-    tweet_data = response_json["data"]
+    try:
+        tweet_data = response_json["data"]
+
+    except KeyError:
+        print("Unsuccesfull call on handle", handle)
+        return []
     response_data = [tweet["text"] for tweet in tweet_data]
 
     return response_data
