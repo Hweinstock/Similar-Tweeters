@@ -10,6 +10,7 @@ from text_model.config_files.config import get_text_object
 from text_model.analyzer.text_objects.text import analyze_config
 from text_model.analyzer.comparison import Comparison
 from text_model.analyzer.model.model import run_on_object
+from text_model.data_cleaner.clean_twitter_data import clean_tweet
 from twitter.main import tweets_from_handle
 
 # Create your views here.
@@ -74,4 +75,14 @@ def create_text_objects(request):
 def get_recent_tweets(request):
     twitter_handle = request.GET.get('username', None)
     tweets = tweets_from_handle(twitter_handle)
-    return Response({"tweets": tweets})
+
+    Tweet = get_text_object('tweet')
+    cleaned_tweets = [clean_tweet(tw) for tw in tweets]
+    total_text = ' '.join(cleaned_tweets)
+
+    total_text_obj = Tweet(total_text, raw_text=True)
+    total_text_rep = total_text_obj.report()
+
+    return Response({"tweets": total_text,
+                     "reports": total_text_rep,
+                     })

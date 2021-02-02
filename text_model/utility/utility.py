@@ -7,6 +7,9 @@ from numpy.linalg import norm
 Bunch of helper functions that don't have a place. 
 """
 
+def average_statistics(list_of_objects):
+    pass
+
 
 def author_from_filename(filename):
     author_name_list = re.split('_|\.txt', filename)[1:]
