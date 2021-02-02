@@ -10,8 +10,7 @@ from text_model.config_files.config import get_text_object
 from text_model.analyzer.text_objects.text import analyze_config
 from text_model.analyzer.comparison import Comparison
 from text_model.analyzer.model.model import run_on_object
-from text_model.data_cleaner.clean_twitter_data import clean_tweet
-from twitter.main import tweets_from_handle, read_in_top_users
+from text_model.data_cleaner.clean_twitter_data import text_from_user
 
 # Create your views here.
 
@@ -70,18 +69,20 @@ def create_text_objects(request):
 
 
 @api_view(['GET'])
-def get_recent_tweets(request):
+def compare_recent_tweets(request):
+    # Extract the params from GET request.
     twitter_handle = request.GET.get('username', None)
-    tweets = tweets_from_handle(twitter_handle)
 
-    Tweet = get_text_object('tweet')
-    cleaned_tweets = [clean_tweet(tw) for tw in tweets]
-    total_text = ' '.join(cleaned_tweets)
+    # Get recent tweets
+    tweets = text_from_user(twitter_handle)
 
-    total_text_obj = Tweet(total_text, raw_text=True)
+    # Create 'Tweet' objects
+    TweetObj = get_text_object('tweet')
+
+    # Combine all tweet text into one giant tweet.
+    total_text = ' '.join(tweets)
+    total_text_obj = TweetObj(total_text, raw_text=True)
     total_text_rep = total_text_obj.report()
-
-    print(read_in_top_users())
 
     return Response({"tweet": total_text,
                      "report": total_text_rep,

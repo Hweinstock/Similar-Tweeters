@@ -28,7 +28,6 @@ export default class StatBox extends Component {
 
     generate_rows() {
         let rows;
-        console.log(this.props.data)
 
         if (typeof this.props.data.text_objects == 'undefined') {
             rows = [];
@@ -40,17 +39,6 @@ export default class StatBox extends Component {
         });
         }
         return rows;
-
-
-        // const t1 = this.props.data.textObjects.TextObject1;
-        // const t2 = this.props.data.textObjects.TextObject2;
-
-        // t1.name = "Text_1";
-        // t2.name = "Text_2";
-
-        // rows = [t1, t2];
-
-        return rows
     }
 
     format_data() {

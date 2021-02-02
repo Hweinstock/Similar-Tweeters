@@ -3,6 +3,7 @@ from twitter.main import read_in_top_users, tweets_from_handle
 from text_model.analyzer.text_objects.tweet import Tweet
 import pickle
 
+
 def clean_tweet(tweet):
     tweet = re.sub(r'http\S+', '', tweet)
     tweet = re.sub(r'RT ', '', tweet)

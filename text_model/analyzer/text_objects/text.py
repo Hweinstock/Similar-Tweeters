@@ -338,6 +338,9 @@ class TextObject:
             return False
         return True
 
+    def __dict__(self):
+        pass
+
     def __str__(self):
         """
         Only really useful for debugging.
