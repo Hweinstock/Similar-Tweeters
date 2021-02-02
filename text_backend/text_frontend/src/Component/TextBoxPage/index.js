@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 // import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { submit_texts, get_headers, make_comparison, get_text_objects } from "./api.js";
+
+import { submit_texts, make_comparison, get_text_objects } from "./api.js";
+import { get_headers } from '../sharedAPIs.js'
 
 import TextBox from "./textBox.js"
 import CompareButton from "./compareButton.js"
 import GuessBar from "./guessBar.js"
-import StatBox from "./statBox.js"
+import StatBox from "../statBox.js"
 
 class TextBoxPage extends Component {
     constructor(props) {
@@ -28,8 +30,7 @@ class TextBoxPage extends Component {
     retrieve_stats() {
         return get_text_objects(this.state.text)
             .then(response => this.setState(
-                {data: { textObjects: response.data,
-                               comp: this.state.data.comp}}))
+                {data: response.data}))
             .catch(error => console.log(error))
     }
 

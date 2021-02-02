@@ -66,9 +66,7 @@ def create_text_objects(request):
     Text1 = TextObject(texts['box1'], raw_text=True)
     Text2 = TextObject(texts['box2'], raw_text=True)
 
-    return Response({'TextObject1': Text1.report(),
-                         'TextObject2': Text2.report(),
-                     })
+    return Response({'text_objects': [Text1.report(), Text2.report()]})
 
 
 @api_view(['GET'])
@@ -83,6 +81,6 @@ def get_recent_tweets(request):
     total_text_obj = Tweet(total_text, raw_text=True)
     total_text_rep = total_text_obj.report()
 
-    return Response({"tweets": total_text,
-                     "reports": total_text_rep,
+    return Response({"tweet": total_text,
+                     "report": total_text_rep,
                      })

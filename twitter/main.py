@@ -36,8 +36,6 @@ def tweets_from_handle(handle):
 
     # Make request and grab text data
     response_json = twitter_auth_and_connect(bearer_token, url)
-    print(type(handle), handle)
-    print(response_json)
     tweet_data = response_json["data"]
     response_data = [tweet["text"] for tweet in tweet_data]
 

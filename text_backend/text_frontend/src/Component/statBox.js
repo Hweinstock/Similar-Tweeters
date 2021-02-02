@@ -28,18 +28,27 @@ export default class StatBox extends Component {
 
     generate_rows() {
         let rows;
+        console.log(this.props.data)
 
-        if (typeof this.props.data.textObjects == 'undefined') {
-            rows = [{}, {}];
-            return rows
+        if (typeof this.props.data.text_objects == 'undefined') {
+            rows = [];
+        } else {
+            rows = new Array(this.props.data.text_objects.length);
+            this.props.data.text_objects.forEach(function (item, index) {
+                rows[index] = item;
+                rows[index].name = index + 1;
+        });
         }
-        const t1 = this.props.data.textObjects.TextObject1;
-        const t2 = this.props.data.textObjects.TextObject2;
+        return rows;
 
-        t1.name = "Text_1";
-        t2.name = "Text_2";
 
-        rows = [t1, t2];
+        // const t1 = this.props.data.textObjects.TextObject1;
+        // const t2 = this.props.data.textObjects.TextObject2;
+
+        // t1.name = "Text_1";
+        // t2.name = "Text_2";
+
+        // rows = [t1, t2];
 
         return rows
     }
@@ -48,7 +57,6 @@ export default class StatBox extends Component {
         if (typeof this.props.data != 'undefined') {
 
             let rows = this.generate_rows(this.props.data);
-
             let temp2 = (<TableBody>
                 {rows.map(row => (
                     <TableRow key={row.name}>
@@ -76,7 +84,7 @@ export default class StatBox extends Component {
 
         return (
             <TableRow>
-                <TableCell> {' '} </TableCell>
+                <TableCell key={"blank"}> {' '} </TableCell>
                 {this.state.headers.map(header =>
                     <TableCell align="right" key={header}>{header}</TableCell>)}
             </TableRow>

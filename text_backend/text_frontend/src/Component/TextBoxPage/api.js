@@ -29,8 +29,6 @@ export function submit_texts(texts) {
 export function get_headers() {
   return axios
       .get("/api/headers/")
-      // .then(response => console.log(response.data))
-      // .catch(error => console.log(error))
 }
 
 export function get_text_objects(text) {
