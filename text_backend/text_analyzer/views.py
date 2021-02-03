@@ -24,7 +24,7 @@ class TextObjectView(viewsets.ModelViewSet):
     def check_if_exists(self, request, pk=None):
         query_author = request.GET.get('author', None)
         query_set = TextObjectData.objects.filter(author="\""+query_author+"\"")
-        print(query_set)
+
         if len(query_set) == 0:
             return Response({'status': False})
         else:

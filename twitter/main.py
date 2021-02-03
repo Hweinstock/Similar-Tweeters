@@ -56,4 +56,4 @@ def tweets_from_handle(handle):
 
 if __name__ == "__main__":
     # Example tag
-    print(tweets_from_handle('ZacEfron'))
+    print(tweets_from_handle('AOC'))

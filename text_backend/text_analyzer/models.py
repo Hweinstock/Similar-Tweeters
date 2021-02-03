@@ -5,7 +5,7 @@ import json
 
 class TextObjectData(models.Model):
     label = models.CharField(max_length=120)
-    author = models.TextField()
+    author = models.CharField(max_length=120)
 
     top_n_words = models.JSONField()
     top_p_puncs = models.JSONField()

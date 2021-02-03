@@ -15,3 +15,9 @@ class Tweet(TextObject):
         """
         split_text = self.text.split("\n")
         return split_text
+
+    @property
+    def valid(self):
+        if self.unique_word_count < 50 or self.unique_sentence_length_count < 2:
+            return False
+        return True
