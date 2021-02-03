@@ -23,12 +23,13 @@ def preload_users(users=None):
         users = read_in_top_users()
 
     user_vectors = []
-    users = [user for user in users if user == "paulocoelho"]
+
     for user in users:
         # Combine all text from user.
         full_text = " ".join(text_from_user(user))
         text_obj = Tweet(full_text, raw_text=True, author=user)
 
+        # Sort out ones that don't have enough.
         if text_obj.valid:
             user_vectors.append(text_obj.to_vector)
 
