@@ -10,11 +10,6 @@ def read_in_top_users(n=100):
     return users
 
 
-
-
-
-
-
 def create_twitter_url(handle, max_results=100):
     mrf = "max_results={}".format(max_results)
     q = "query=from:{}".format(handle)
@@ -61,4 +56,4 @@ def tweets_from_handle(handle):
 
 if __name__ == "__main__":
     # Example tag
-    print(tweets_from_handle('AOC'))
+    print(tweets_from_handle('ZacEfron'))

@@ -21,7 +21,7 @@ def text_from_user(handle):
 def preload_users(users=None):
     if users is None:
         users = read_in_top_users()
-    users = [users[2]]
+
     tweet_groups = {}
 
     for user in users:
@@ -34,13 +34,16 @@ def preload_users(users=None):
 
     for vector in user_vectors:
 
+        # First check if data already exists in db.
         get_data = {"author": vector["author"]}
 
-        first_response = requests.get('http://127.0.0.1:8000/api/textObjects/', params=get_data)
-        already_posted = first_response.content != []
+        first_response = requests.get('http://127.0.0.1:8000/api/textObjects/doesExist/', params=get_data)
+        query_result = json.loads(first_response.content)
+        already_posted = query_result['status']
 
         if not already_posted:
 
+            # If it can't find that author, add them to the db
             post_data = {}
 
             for key in vector:
@@ -50,7 +53,7 @@ def preload_users(users=None):
             post_data["label"] = "top100"
 
             response = requests.post('http://127.0.0.1:8000/api/textObjects/', data=post_data)
-            content = response.content
+
 
 if __name__ == "__main__":
     preload_users()

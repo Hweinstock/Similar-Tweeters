@@ -20,10 +20,15 @@ class TextObjectView(viewsets.ModelViewSet):
     serializer_class = TextObjectSerializer
     queryset = TextObjectData.objects.all()
 
-    @action(detail=True, methods=['get'])
-    def check_if_exists(self, request):
-        print(request.data)
-        print("It went here.")
+    @action(detail=False, url_path="doesExist")
+    def check_if_exists(self, request, pk=None):
+        query_author = request.GET.get('author', None)
+        query_set = TextObjectData.objects.filter(author="\""+query_author+"\"")
+        print(query_set)
+        if len(query_set) == 0:
+            return Response({'status': False})
+        else:
+            return Response({'status': True})
 
 
 class CompView(viewsets.ModelViewSet):
