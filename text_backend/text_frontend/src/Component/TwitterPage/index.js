@@ -5,7 +5,7 @@ import SubmitButton from './submitButton.js';
 import StatBox from '../statBox.js';
 
 import { get_headers } from '../sharedAPIs.js'
-import { get_recent_tweets } from './api.js'
+import { get_recent_tweets, get_and_post_username } from './api.js'
 
 class TwitterPage extends Component {
 
@@ -27,12 +27,15 @@ class TwitterPage extends Component {
     }
 
     submit_username() {
-        get_recent_tweets(this.state.username)
-            .then(response => this.setState({data: {
-                    text_objects: [response.data.report],
-                    text: response.data.tweets,
-                }}))
-            .catch(error => console.log(error))
+
+        // get_recent_tweets(this.state.username)
+        //     .then(response => this.setState({data: {
+        //             text_objects: [response.data.report],
+        //             text: response.data.tweets,
+        //         }}))
+        //     .catch(error => console.log(error))
+        get_and_post_username(this.state.username);
+
     }
 
     render() {

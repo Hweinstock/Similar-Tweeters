@@ -29,6 +29,21 @@ class TextObjectView(viewsets.ModelViewSet):
             return Response({'status': False})
         else:
             return Response({'status': True})
+    #
+    # @action(detail=False, url_path="fromUsername", methods=['post'])
+    # def create_from_username(self, request, pk=None):
+    #     username = request.data["username"]
+    #     tweets = text_from_user(username)
+    #     total_text = ' '.join(tweets)
+    #
+    #     data = {"label": "from_username",
+    #             "author": username,
+    #             "text": total_text,
+    #             }
+    #
+    #     self.create(Request())
+    #
+    #     print(TextObjectData.objects.all())
 
 
 class CompView(viewsets.ModelViewSet):
@@ -62,6 +77,20 @@ class CompView(viewsets.ModelViewSet):
 
         return Response({'result': result,
                          'percent': percent})
+
+
+@api_view(['GET'])
+def id_and_text_from_user(request):
+    username = request.GET.get('username', None)
+    tweets = text_from_user(username)
+    total_text = ' '.join(tweets)
+
+    data = {"label": "from_username",
+            "author": username,
+            "text": total_text,
+            }
+
+    return Response(data)
 
 
 @api_view(['GET'])

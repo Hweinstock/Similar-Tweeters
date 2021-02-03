@@ -21,7 +21,7 @@ from text_analyzer import views
 
 router = routers.DefaultRouter()
 router.register(r'comps', views.CompView, 'comp')
-router.register(r'textObjects', views.TextObjectView, 'textObject')
+router.register(r'text', views.TextObjectView, 'textObject')
 
 # First api/ is for custom endpoints, second is for comps class based view.
 urlpatterns = [
