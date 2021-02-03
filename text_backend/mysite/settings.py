@@ -134,4 +134,4 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'text_frontend', "build", "static"),
 )
 
-CORS_ORIGIN_ALLOW_ALL = True # added to solve CORS
+CORS_ORIGIN_ALLOW_ALL = True  # added to solve CORS

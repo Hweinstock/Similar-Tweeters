@@ -343,18 +343,20 @@ class TextObject:
     def to_vector(self):
 
         top_n_sents = self.top_n_sentence_lengths()
+        sentence_length, sentence_length_freq = self.split_sentence_length_info()
 
         as_dict = {
             "author": self.author,
             "top_n_words": self.top_n_words(),
-            "top_n_puncs": self.top_n_punctuation(),
-            "top_n_sents": top_n_sents,
+            "top_p_puncs": self.top_n_punctuation(),
+            "top_s_sents": top_n_sents,
             "indexed_word_set": self.indexed_word_set,
             "indexed_punc_set": self.indexed_punc_set,
             "average_word_length": self.average_word_length(),
             "average_sent_length": self.average_sentence_length(),
             "average_top_n_sent_length": self.average_sentence_length(dict(top_n_sents)),
-            "sentence_length_info": self.split_sentence_length_info(),
+            "sentence_lengths": sentence_length,
+            "sentence_length_freq": sentence_length_freq,
         }
 
         return as_dict

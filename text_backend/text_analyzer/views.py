@@ -1,10 +1,11 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
-from .serializers import CompSerializer
-from .models import ComparisonData
+from .serializers import CompSerializer, TextObjectSerializer
+from .models import ComparisonData, TextObjectData
 from django.http import HttpResponse
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, action
 from django.shortcuts import render
+
 
 from text_model.config_files.config import get_text_object
 from text_model.analyzer.text_objects.text import analyze_config
@@ -13,6 +14,16 @@ from text_model.analyzer.model.model import run_on_object
 from text_model.data_cleaner.clean_twitter_data import text_from_user
 
 # Create your views here.
+
+
+class TextObjectView(viewsets.ModelViewSet):
+    serializer_class = TextObjectSerializer
+    queryset = TextObjectData.objects.all()
+
+    @action(detail=True, methods=['get'])
+    def check_if_exists(self, request):
+        print(request.data)
+        print("It went here.")
 
 
 class CompView(viewsets.ModelViewSet):

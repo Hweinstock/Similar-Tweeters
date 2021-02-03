@@ -1,7 +1,8 @@
 import re
 from twitter.main import read_in_top_users, tweets_from_handle
 from text_model.analyzer.text_objects.tweet import Tweet
-import pickle
+import json
+import requests
 
 
 def clean_tweet(tweet):
@@ -20,17 +21,36 @@ def text_from_user(handle):
 def preload_users(users=None):
     if users is None:
         users = read_in_top_users()
+    users = [users[2]]
+    tweet_groups = {}
 
-    tweet_groups = [text_from_user(user) for user in users]
-    full_text_groups = [" ".join(group) for group in tweet_groups]
-    user_objs = [Tweet(text_cluster, raw_text=True) for text_cluster in full_text_groups]
+    for user in users:
+        tweet_groups[user] = " ".join(text_from_user(user))
 
-    # Force it to pre-process all data it needs
-    user_objs_reports = [obj.report() for obj in user_objs]
+    user_vectors = [Tweet(text, raw_text=True, author=user).to_vector for (user, text) in tweet_groups.items()]
 
-    with open('../twitter/top_users.pkl', 'wb') as output_file:
-        pickle.dump(user_objs, output_file)
+    # Remove the vectors that were unable to get any text
+    user_vectors = [vector for vector in user_vectors if vector['top_n_words'] != []]
 
+    for vector in user_vectors:
+
+        get_data = {"author": vector["author"]}
+
+        first_response = requests.get('http://127.0.0.1:8000/api/textObjects/', params=get_data)
+        already_posted = first_response.content != []
+
+        if not already_posted:
+
+            post_data = {}
+
+            for key in vector:
+                value = vector[key]
+                post_data[key] = json.dumps(value)
+
+            post_data["label"] = "top100"
+
+            response = requests.post('http://127.0.0.1:8000/api/textObjects/', data=post_data)
+            content = response.content
 
 if __name__ == "__main__":
     preload_users()
