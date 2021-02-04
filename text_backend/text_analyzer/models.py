@@ -8,6 +8,7 @@ from text_model.analyzer.text_objects.text import analyze_config
 class TextObjectData(models.Model):
     label = models.CharField(max_length=120)
     author = models.CharField(max_length=120)
+    source = models.CharField(max_length=120)
     text = models.TextField(default='')
 
     def to_text_object(self):
@@ -18,9 +19,7 @@ class TextObjectData(models.Model):
 
 class ComparisonData(models.Model):
     label = models.CharField(max_length=120)
-    text1 = models.IntegerField(models.ForeignKey('TextObjectData',
-                                                  on_delete=models.CASCADE))
-    text2 = models.IntegerField(models.ForeignKey('TextObjectData',
-                                                  on_delete=models.CASCADE))
+    text1 = models.ForeignKey(TextObjectData, on_delete=models.CASCADE, related_name='text_1')
+    text2 = models.ForeignKey(TextObjectData, on_delete=models.CASCADE, related_name='text_2')
 
 

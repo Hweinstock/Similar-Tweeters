@@ -11,7 +11,7 @@ class ComparisonDataAdmin(admin.ModelAdmin):
 
 
 class TextObjectDataAdmin(admin.ModelAdmin):
-    list_display = fields = ('id', 'label', 'author', 'text')
+    list_display = fields = ('id', 'label', 'author', 'text', 'source')
 
 
 admin.site.register(TextObjectData, TextObjectDataAdmin)

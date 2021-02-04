@@ -27,11 +27,9 @@ class TwitterPage extends Component {
     }
 
     update_data(new_data) {
-        console.log(new_data);
         this.setState({data: {
-                                    text_objects: [new_data]
-                                    }
-                            });
+                                text_objects: [new_data]
+        }});
     }
 
     handle_second_response(response) {
@@ -45,12 +43,21 @@ class TwitterPage extends Component {
 
     }
 
+    handle_response(response) {
+        if(response.status === 208){
+            get_text_analyzer(response.data.existing_id)
+            .then(next_response => this.update_data(next_response.data.report));
+        } else if(response.status === 200) {
+            post_create_text(response.data)
+                .then(response => this.handle_second_response(response))
+                .catch(error => console.log(error))
+        }
+    }
+
     submit_username() {
 
         get_from_username(this.state.username)
-            .then(response => post_create_text(response.data)
-                .then(response => this.handle_second_response(response))
-                .catch(error => console.log(error)))
+            .then(response => this.handle_response(response))
             .catch( error => console.log(error));
 
     }

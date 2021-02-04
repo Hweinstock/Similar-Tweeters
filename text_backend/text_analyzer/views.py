@@ -5,7 +5,7 @@ from .models import ComparisonData, TextObjectData
 from django.http import HttpResponse
 from rest_framework.decorators import api_view, action
 from django.shortcuts import render
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest, HttpResponseNotModified
 
 
 from text_model.config_files.config import get_text_object
@@ -25,11 +25,12 @@ class TextObjectView(viewsets.ModelViewSet):
     def check_if_exists(self, request, pk=None):
         query_author = request.GET.get('author', None)
         query_set = TextObjectData.objects.filter(author=query_author)
-
         if len(query_set) == 0:
             return Response({'status': False})
         else:
-            return Response({'status': True})
+            id_match = query_set[0].id
+            return Response({'status': True,
+                             'id': id_match})
 
     @action(detail=False, url_path="analyzeText")
     def analyze_text(self, request, pk=None):
@@ -40,8 +41,15 @@ class TextObjectView(viewsets.ModelViewSet):
             print(query_set)
             return HttpResponseBadRequest()
         else:
-            obj = query_set[0].to_text_object()
+            source_model = query_set[0]
+            obj = source_model.to_text_object()
             report = obj.report()
+
+            pre_loaded_texts = TextObjectData.objects.filter(source="pre_loaded")
+
+            for target_model in pre_loaded_texts:
+                new_comp = ComparisonData(label="tweet_analyze", text1=source_model, text2=target_model)
+                new_comp.save()
 
             return Response({"report": report})
 
@@ -99,13 +107,20 @@ class CompView(viewsets.ModelViewSet):
 @api_view(['GET'])
 def id_and_text_from_user(request):
     username = request.GET.get('username', None)
-    tweets = text_from_user(username)
-    total_text = ' '.join(tweets)
-    data = {"label": "tweet",
-            "author": username,
-            "text": total_text}
+    existing_objects = TextObjectData.objects.filter(author=username)
+    already_exists = len(existing_objects) > 0
 
-    return Response(data)
+    if not already_exists:
+        tweets = text_from_user(username)
+        total_text = ' '.join(tweets)
+        data = {"label": "tweet",
+                "author": username,
+                "text": total_text,
+                "source": "from_username"}
+        return Response(data=data, status=200)
+    else:
+        data = {"existing_id": existing_objects[0].id}
+        return Response(data=data, status=208)
 
 
 @api_view(['GET'])
