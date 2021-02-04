@@ -43,9 +43,9 @@ export default class StatBox extends Component {
 
     format_data() {
         if (typeof this.props.data != 'undefined') {
-
             let rows = this.generate_rows(this.props.data);
-            let temp2 = (<TableBody>
+
+            let table_body = (<TableBody>
                 {rows.map(row => (
                     <TableRow key={row.name}>
                         <TableCell component="th" scope="row">
@@ -60,7 +60,8 @@ export default class StatBox extends Component {
                     </TableRow>
                 ))}
             </TableBody>);
-            return temp2;
+
+            return table_body;
         } else {
 
             let default_table = ( <TableBody></TableBody> );

@@ -5,7 +5,7 @@ import SubmitButton from './submitButton.js';
 import StatBox from '../statBox.js';
 
 import { get_headers } from '../sharedAPIs.js'
-import { get_recent_tweets, get_and_post_username } from './api.js'
+import { get_recent_tweets, get_from_username, post_create_text, get_text_analyzer} from './api.js'
 
 class TwitterPage extends Component {
 
@@ -26,15 +26,32 @@ class TwitterPage extends Component {
         this.setState({username: username});
     }
 
+    update_data(new_data) {
+        console.log(new_data);
+        this.setState({data: {
+                                    text_objects: [new_data]
+                                    }
+                            });
+    }
+
+    handle_second_response(response) {
+        if(response.status === 201){
+            get_text_analyzer(response.data.id)
+                .then(next_response => this.update_data(next_response.data.report));
+        } else {
+            console.log("An error occurred with the following response:");
+            console.log(response);
+        }
+
+    }
+
     submit_username() {
 
-        // get_recent_tweets(this.state.username)
-        //     .then(response => this.setState({data: {
-        //             text_objects: [response.data.report],
-        //             text: response.data.tweets,
-        //         }}))
-        //     .catch(error => console.log(error))
-        get_and_post_username(this.state.username);
+        get_from_username(this.state.username)
+            .then(response => post_create_text(response.data)
+                .then(response => this.handle_second_response(response))
+                .catch(error => console.log(error)))
+            .catch( error => console.log(error));
 
     }
 

@@ -11,30 +11,33 @@ export function get_recent_tweets(username){
 }
 
 
-export function get_and_post_username(username){
+export function get_from_username(username){
     let get_data = {
         params: {
             username: username,
         },
     };
 
-    let result = axios.get('/api/fromUsername/', get_data)
-        .then(response => create_text_object(response.data))
-        .catch( error => console.log(error));
+    return axios.get('/api/fromUsername/', get_data)
+}
 
-    return result
+export function post_create_text(post_data){
+
+    return axios.post('/api/text/', post_data)
+
 
 }
 
-function create_text_object(post_data){
-    console.log(post_data);
+export function get_text_analyzer(id){
+    let get_data = {
+        params: {
+            id: id,
+        }
+    };
 
-    let sec_response = axios.post('/api/text/', post_data)
-            .then(sec_response => console.log(sec_response))
-            .catch(error => console.log(error))
-
+    return axios.get('/api/text/analyzeText/', get_data)
 }
 
 
 
-export default { get_recent_tweets, get_and_post_username }
+export default { get_recent_tweets, get_from_username, post_create_text, get_text_analyzer }

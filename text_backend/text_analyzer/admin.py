@@ -7,11 +7,11 @@ from .models import ComparisonData, TextObjectData
 
 
 class ComparisonDataAdmin(admin.ModelAdmin):
-    list_display = ('label', 'text1', 'text2')
+    list_display = ('id', 'label', 'text1', 'text2')
 
 
 class TextObjectDataAdmin(admin.ModelAdmin):
-    list_display = fields = ('label', 'author', 'text')
+    list_display = fields = ('id', 'label', 'author', 'text')
 
 
 admin.site.register(TextObjectData, TextObjectDataAdmin)

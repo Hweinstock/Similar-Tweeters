@@ -5,6 +5,7 @@ from .models import ComparisonData, TextObjectData
 from django.http import HttpResponse
 from rest_framework.decorators import api_view, action
 from django.shortcuts import render
+from django.http import HttpResponseBadRequest
 
 
 from text_model.config_files.config import get_text_object
@@ -29,6 +30,22 @@ class TextObjectView(viewsets.ModelViewSet):
             return Response({'status': False})
         else:
             return Response({'status': True})
+
+    @action(detail=False, url_path="analyzeText")
+    def analyze_text(self, request, pk=None):
+        query_id = request.GET.get('id', None)
+        query_set = TextObjectData.objects.filter(id=query_id)
+
+        if len(query_set) != 1:
+            print(query_set)
+            return HttpResponseBadRequest()
+        else:
+            obj = query_set[0].to_text_object()
+            report = obj.report()
+
+            return Response({"report": report})
+
+
     #
     # @action(detail=False, url_path="fromUsername", methods=['post'])
     # def create_from_username(self, request, pk=None):
@@ -50,33 +67,33 @@ class CompView(viewsets.ModelViewSet):
     serializer_class = CompSerializer
     queryset = ComparisonData.objects.all()
 
-    def retrieve(self, request, *args, **kwargs):
-        """
-
-        :param request:
-        :param args:
-        :param kwargs:
-        :return:
-
-        Overwrite retrieve method for CompViewSet to wait for comp to be made. (Does comp on retrieve call.)
-        """
-        comp_id = kwargs['pk']
-        comp_qset = ComparisonData.objects.filter(id=comp_id)
-        if len(comp_qset) > 1:
-            print("QuerySet returned multiple objects for single id!")
-
-        comp = comp_qset[0]
-
-        TextObject = get_text_object(comp.label)
-        Text1 = TextObject(comp.text1, raw_text=True)
-        Text2 = TextObject(comp.text2, raw_text=True)
-
-        CompObject = Comparison(Text1.to_vector, Text2.to_vector)
-
-        result, percent = run_on_object(CompObject)
-
-        return Response({'result': result,
-                         'percent': percent})
+    # def retrieve(self, request, *args, **kwargs):
+    #     """
+    #
+    #     :param request:
+    #     :param args:
+    #     :param kwargs:
+    #     :return:
+    #
+    #     Overwrite retrieve method for CompViewSet to wait for comp to be made. (Does comp on retrieve call.)
+    #     """
+    #     comp_id = kwargs['pk']
+    #     comp_qset = ComparisonData.objects.filter(id=comp_id)
+    #     if len(comp_qset) > 1:
+    #         print("QuerySet returned multiple objects for single id!")
+    #
+    #     comp = comp_qset[0]
+    #
+    #     TextObject = get_text_object(comp.label)
+    #     Text1 = TextObject(comp.text1, raw_text=True)
+    #     Text2 = TextObject(comp.text2, raw_text=True)
+    #
+    #     CompObject = Comparison(Text1.to_vector, Text2.to_vector)
+    #
+    #     result, percent = run_on_object(CompObject)
+    #
+    #     return Response({'result': result,
+    #                      'percent': percent})
 
 
 @api_view(['GET'])
@@ -84,11 +101,9 @@ def id_and_text_from_user(request):
     username = request.GET.get('username', None)
     tweets = text_from_user(username)
     total_text = ' '.join(tweets)
-
-    data = {"label": "from_username",
+    data = {"label": "tweet",
             "author": username,
-            "text": total_text,
-            }
+            "text": total_text}
 
     return Response(data)
 
