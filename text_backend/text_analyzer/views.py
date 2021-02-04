@@ -37,6 +37,7 @@ class TextObjectView(viewsets.ModelViewSet):
         query_id = request.GET.get('id', None)
         query_set = TextObjectData.objects.filter(id=query_id)
 
+        # Check that Query only returns single object with that id (supposed to be unique)
         if len(query_set) != 1:
             print(query_set)
             return HttpResponseBadRequest()
@@ -45,11 +46,20 @@ class TextObjectView(viewsets.ModelViewSet):
             obj = source_model.to_text_object()
             report = obj.report()
 
+            # Grab pre_loaded tweets for comparison
             pre_loaded_texts = TextObjectData.objects.filter(source="pre_loaded")
 
             for target_model in pre_loaded_texts:
-                new_comp = ComparisonData(label="tweet_analyze", text1=source_model, text2=target_model)
-                new_comp.save()
+                # Check if that comparison has already been made
+                comp_already_exists = CompView.check_if_exists(source_model, target_model)
+
+                if not comp_already_exists:
+                    # Create new comparison model with each pre_loaded example.
+                    new_comp = ComparisonData(label="tweet",
+                                              source="analyze_text",
+                                              text1=source_model,
+                                              text2=target_model)
+                    new_comp.save()
 
             return Response({"report": report})
 
@@ -74,6 +84,24 @@ class TextObjectView(viewsets.ModelViewSet):
 class CompView(viewsets.ModelViewSet):
     serializer_class = CompSerializer
     queryset = ComparisonData.objects.all()
+
+    @staticmethod
+    def check_if_exists(text1_ex, text2_ex):
+
+        # Check if that comparison has already been made.
+
+        forwards_query_set = ComparisonData.objects.filter(text1=text1_ex,
+                                                           text2=text2_ex)
+
+        backwards_query_set = ComparisonData.objects.filter(text1=text2_ex,
+                                                            text2=text1_ex)
+
+        query_set = forwards_query_set.union(backwards_query_set)
+
+        if len(query_set) == 0:
+            return False
+        else:
+            return True
 
     # def retrieve(self, request, *args, **kwargs):
     #     """
@@ -102,6 +130,8 @@ class CompView(viewsets.ModelViewSet):
     #
     #     return Response({'result': result,
     #                      'percent': percent})
+
+
 
 
 @api_view(['GET'])

@@ -7,7 +7,7 @@ from .models import ComparisonData, TextObjectData
 
 
 class ComparisonDataAdmin(admin.ModelAdmin):
-    list_display = ('id', 'label', 'text1', 'text2')
+    list_display = ('id', 'label', 'source', 'text1', 'text2')
 
 
 class TextObjectDataAdmin(admin.ModelAdmin):

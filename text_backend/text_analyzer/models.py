@@ -19,6 +19,7 @@ class TextObjectData(models.Model):
 
 class ComparisonData(models.Model):
     label = models.CharField(max_length=120)
+    source = models.CharField(max_length=120, default="unknown")
     text1 = models.ForeignKey(TextObjectData, on_delete=models.CASCADE, related_name='text_1')
     text2 = models.ForeignKey(TextObjectData, on_delete=models.CASCADE, related_name='text_2')
 

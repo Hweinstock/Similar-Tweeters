@@ -5,7 +5,7 @@ from .models import ComparisonData, TextObjectData
 class CompSerializer(serializers.ModelSerializer):
     class Meta:
         model = ComparisonData
-        fields = ('id', 'label', 'text1', 'text2')
+        fields = ('id', 'label', 'source', 'text1', 'text2')
 
 
 class TextObjectSerializer(serializers.ModelSerializer):
