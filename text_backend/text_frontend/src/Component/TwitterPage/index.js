@@ -27,15 +27,16 @@ class TwitterPage extends Component {
     }
 
     update_data(new_data) {
+        console.log(new_data);
         this.setState({data: {
-                                text_objects: [new_data]
+                                text_objects: [new_data.report]
         }});
     }
 
     handle_second_response(response) {
         if(response.status === 201){
             get_text_analyzer(response.data.id)
-                .then(next_response => this.update_data(next_response.data.report));
+                .then(next_response => this.update_data(next_response.data));
         } else {
             console.log("An error occurred with the following response:");
             console.log(response);
@@ -46,7 +47,7 @@ class TwitterPage extends Component {
     handle_response(response) {
         if(response.status === 208){
             get_text_analyzer(response.data.existing_id)
-            .then(next_response => this.update_data(next_response.data.report));
+            .then(next_response => this.update_data(next_response.data));
         } else if(response.status === 200) {
             post_create_text(response.data)
                 .then(response => this.handle_second_response(response))

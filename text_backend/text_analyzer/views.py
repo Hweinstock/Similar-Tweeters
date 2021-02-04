@@ -49,9 +49,11 @@ class TextObjectView(viewsets.ModelViewSet):
             # Grab pre_loaded tweets for comparison
             pre_loaded_texts = TextObjectData.objects.filter(source="pre_loaded")
 
+            new_comparisons = []
+
             for target_model in pre_loaded_texts:
                 # Check if that comparison has already been made
-                comp_already_exists = CompView.check_if_exists(source_model, target_model)
+                comp_already_exists, new_comp = CompView.check_if_exists(source_model, target_model)
 
                 if not comp_already_exists:
                     # Create new comparison model with each pre_loaded example.
@@ -61,7 +63,21 @@ class TextObjectView(viewsets.ModelViewSet):
                                               text2=target_model)
                     new_comp.save()
 
-            return Response({"report": report})
+                new_comparisons.append(new_comp)
+
+            # Map the model on each comparison to generate a list of the results.
+            full_results = {}
+            for cur_comparison in new_comparisons:
+                cur_result, cur_percent = cur_comparison.run_on_model()
+
+                full_results[cur_comparison.text2.author] = cur_percent
+
+            # Sort the results.
+
+            sorted_results = sorted(full_results.items(), reverse=True, key=lambda key_value_pair: key_value_pair[1])
+
+            return Response({"report": report,
+                             "result": sorted_results})
 
 
     #
@@ -99,9 +115,9 @@ class CompView(viewsets.ModelViewSet):
         query_set = forwards_query_set.union(backwards_query_set)
 
         if len(query_set) == 0:
-            return False
+            return False, None
         else:
-            return True
+            return True, query_set[0]
 
     # def retrieve(self, request, *args, **kwargs):
     #     """

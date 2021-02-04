@@ -31,7 +31,7 @@ def run_on_object(CompObj):
 
     # Temporary Fix for inputs without enough text.
     if empty_data:
-        print("Error: Not enough data to generate full values, returning 0")
+        print("Error: Not enough data to generate full values, returning 0. (model.py 35)")
         return False, 0.0
 
     output = model.predict(features)[0]

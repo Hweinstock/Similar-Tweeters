@@ -1,7 +1,8 @@
 from django.db import models
 
 from text_model.config_files.config import get_text_object
-from text_model.analyzer.text_objects.text import analyze_config
+from text_model.analyzer.comparison import Comparison as CompObject
+from text_model.analyzer.model.model import run_on_object
 # Create your models here.
 
 
@@ -22,5 +23,20 @@ class ComparisonData(models.Model):
     source = models.CharField(max_length=120, default="unknown")
     text1 = models.ForeignKey(TextObjectData, on_delete=models.CASCADE, related_name='text_1')
     text2 = models.ForeignKey(TextObjectData, on_delete=models.CASCADE, related_name='text_2')
+
+    def to_comp_object(self):
+        text1_vec = self.text1.to_text_object().to_vector
+        text2_vec = self.text2.to_text_object().to_vector
+
+        comp_object = CompObject(text1_vec, text2_vec)
+
+        return comp_object
+
+    def run_on_model(self):
+        comp_object = self.to_comp_object()
+        result, percent = run_on_object(comp_object)
+
+        return result, percent
+
 
 

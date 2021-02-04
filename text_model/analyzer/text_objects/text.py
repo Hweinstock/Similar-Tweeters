@@ -15,7 +15,7 @@ def analyze_config():
                     "top_sentence_lengths",
                     "punctuation_percentages"],
         "top_w_words": 10,
-        "top_s_sents": 5,
+        "top_s_sents": 3,
         "top_p_puncs": 3,
     }
 
@@ -347,7 +347,7 @@ class TextObject:
 
         as_dict = {
             "author": self.author,
-            "top_n_words": self.top_n_words(),
+            "top_w_words": self.top_n_words(),
             "top_p_puncs": self.top_n_punctuation(),
             "top_s_sents": top_n_sents,
             "indexed_word_set": self.indexed_word_set,

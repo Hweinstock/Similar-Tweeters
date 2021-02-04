@@ -76,15 +76,18 @@ class Comparison:
             the second being a comparison of top sentence length frequency
 
         """
-        text_1_sentence_lengths, text_1_sentence_length_freqs = self.text_1["sentence_length_info"]
-        text_2_sentence_lengths, text_2_sentence_length_freqs = self.text_2["sentence_length_info"]
+        text_1_sentence_lengths = self.text_1["sentence_lengths"]
+        text_1_sentence_length_freq = self.text_1["sentence_length_freq"]
+
+        text_2_sentence_lengths = self.text_2["sentence_lengths"]
+        text_2_sentence_length_freq = self.text_2["sentence_length_freq"]
+
 
         # self.check_lengths(text_1_sentence_lengths, text_2_sentence_lengths, "sentence length")
 
         sentence_length_comp = utility.list_similarity(text_1_sentence_lengths, text_2_sentence_lengths)
         # sentence_length_freq_comp = utility.list_similarity(text_1_sentence_length_freqs,
         # text_2_sentence_length_freqs)
-
         return sentence_length_comp
 
     def punctuation_comparison(self):
@@ -145,10 +148,11 @@ class Comparison:
     def __dict__(self):
         rep = {}
         for func_key in self.function_mappings:
-            value = self.function_mappings[func_key]()
-
-            if value is not None and math.isnan(value):
-                value = None
+            func = self.function_mappings[func_key]
+            value = func()
+            if value is not None:
+                if not isinstance(value, str) and math.isnan(value):
+                    value = None
 
             rep[func_key] = value
 
