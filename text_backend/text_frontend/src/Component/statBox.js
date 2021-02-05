@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { palette } from '@material-ui/system';
-import Box from '@material-ui/core/Box';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -45,27 +43,27 @@ export default class StatBox extends Component {
         if (typeof this.props.data != 'undefined') {
             let rows = this.generate_rows(this.props.data);
 
-            let table_body = (<TableBody>
+            return (
+                <TableBody>
                 {rows.map(row => (
                     <TableRow key={row.name}>
                         <TableCell component="th" scope="row">
                             {row.name}
                         </TableCell>
                         {this.state.headers.map(header => (
-                            <TableCell key={[header]} align="right">
+                            <TableCell key={[header]} style={{textAlign: "right"}}>
                                 {row.[header]}
                             </TableCell>
                             )
                         )}
                     </TableRow>
+
                 ))}
             </TableBody>);
 
-            return table_body;
         } else {
 
-            let default_table = ( <TableBody></TableBody> );
-            return default_table
+            return ( <TableBody></TableBody> );
         }
     }
 
@@ -75,7 +73,7 @@ export default class StatBox extends Component {
             <TableRow>
                 <TableCell key={"blank"}> {' '} </TableCell>
                 {this.state.headers.map(header =>
-                    <TableCell align="right" key={header}>{header}</TableCell>)}
+                    <TableCell style={{textAlign: "right"}} key={header}>{header}</TableCell>)}
             </TableRow>
         )
 
@@ -83,9 +81,10 @@ export default class StatBox extends Component {
     }
 
     render() {
-        const data = this.format_data();
         return (
             <div style={{width: "75%"}}>
+            <h1> {' '} </h1>
+            <h3> {this.props.title} </h3>
             <TableContainer component={Paper}>
                 <Table size="small" aria-label="a dense table">
                     <TableHead>

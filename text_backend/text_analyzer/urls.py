@@ -7,4 +7,5 @@ urlpatterns = [
     path('twitter/recent/', views.compare_recent_tweets, name='recentTweets'),
     path('fromUsername/', views.id_and_text_from_user, name='fromUsername'),
     path('analyzeText/', views.analyze_text, name='analyzeText'),
+    path('compareRawText/', views.compare_raw_text, name='compareRawText'),
 ]

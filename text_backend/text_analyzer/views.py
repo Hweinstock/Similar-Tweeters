@@ -6,13 +6,15 @@ from django.http import HttpResponse
 from rest_framework.decorators import api_view, action
 from django.shortcuts import render
 from django.http import HttpResponseBadRequest, HttpResponseNotModified
-
+import json
+import ast
 
 from text_model.config_files.config import get_text_object
 from text_model.analyzer.text_objects.text import analyze_config
 from text_model.analyzer.comparison import Comparison
 from text_model.analyzer.model.model import run_on_object
 from text_model.data_cleaner.clean_twitter_data import text_from_user
+from text_model.analyzer.model.model import run_on_object
 
 # Create your views here.
 
@@ -102,6 +104,7 @@ class CompView(viewsets.ModelViewSet):
         else:
             return True, query_set[0]
 
+
 @api_view(['GET'])
 def id_and_text_from_user(request):
     username = request.GET.get('username', None)
@@ -164,21 +167,39 @@ def compare_recent_tweets(request):
 
 @api_view(['GET'])
 def analyze_text(request):
-    text = request.GET.get('text', None)
+    text = json.loads(request.GET.get('text', None))
     label = request.GET.get('label', None)
 
-    print(text, label)
-    return Response({"here": "it worked"})
+    text_obj = get_text_object(label)
+    report_1 = text_obj(text["box1"], raw_text=True, author="box1").report()
+    report_2 = text_obj(text["box2"], raw_text=True, author="box2").report()
+    return Response({"reports": [report_1, report_2]})
 
-# def retrieve(request):
-#
-#     TextObject = get_text_object(comp.label)
-#     Text1 = TextObject(comp.text1, raw_text=True)
-#     Text2 = TextObject(comp.text2, raw_text=True)
-#
-#     CompObject = Comparison(Text1.to_vector, Text2.to_vector)
-#
-#     result, percent = run_on_object(CompObject)
-#
-#     return Response({'result': result,
-#                      'percent': percent})
+
+@api_view(['GET'])
+def compare_raw_text(request):
+    # Load in Get Params
+    texts = json.loads(request.GET.get('texts', None))
+    label = request.GET.get('label', None)
+
+    text1 = texts['text1']
+    text2 = texts['text2']
+
+    text_obj = get_text_object(label)
+
+    # Convert both to vector format to create Comparison Object
+    text1_vec = text_obj(text1, raw_text=True).to_vector
+    text2_vec = text_obj(text2, raw_text=True).to_vector
+
+    comp_obj = Comparison(text1_vec, text2_vec)
+
+    # Generate report from model
+    report = run_on_object(comp_obj)
+    percentage = report[1]
+    verdict = report[0]
+
+    return Response({"result": {
+        "percentage": percentage,
+        "verdict": verdict,
+    }
+    })

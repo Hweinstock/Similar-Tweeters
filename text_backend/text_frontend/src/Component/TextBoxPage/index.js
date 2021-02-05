@@ -30,23 +30,20 @@ class TextBoxPage extends Component {
     retrieve_stats() {
         return get_text_objects(this.state.text)
             .then(response => this.setState(
-                {data: response.data}))
+                {data: {rows: response.data.reports}}))
             .catch(error => console.log(error))
     }
 
     submit_comparison() {
         return submit_texts(this.state.text)
-                    .then(response => make_comparison(response.data.id)
-                        .then(second_response => this.handle_second_response(second_response))
-                        .catch(error => console.log(error))
-                    .catch( error => console.log(error)))
+                    .then(response => this.handle_response(response))
+                    .catch( error => console.log(error));
     }
 
-    handle_second_response(sec_response) {
+    handle_response(sec_response) {
 
-        console.log(sec_response.data);
         let result = sec_response.data.result;
-        let confidence_percent = (sec_response.data.percent * 100.0).toFixed(2);
+        let confidence_percent = (result.percentage * 100.0).toFixed(2);
         this.setState({bar_percent: confidence_percent});
 
 
@@ -84,6 +81,7 @@ class TextBoxPage extends Component {
             <StatBox
                 data={this.state.data}
                 get_headers={get_headers}
+                title={"Text Statistics"}
             />
 
             <GuessBar

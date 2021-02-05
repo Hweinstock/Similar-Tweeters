@@ -77,10 +77,9 @@ class TwitterPage extends Component {
                 <h1> Twitter-Analyzer </h1>
                 <InputBox onChange={this.update_username}/>
                 <SubmitButton onClick={this.submit_username}/>
-                <h1> {' '} </h1>
-                <h3> Tweet Statistics </h3>
                 <StatBox get_headers={get_headers}
                          data={this.state.data}
+                         title={"Tweet Statistics"}
                 />
                 <h1> {' '} </h1>
                 <h3> Most Similar Tweeters: </h3>
