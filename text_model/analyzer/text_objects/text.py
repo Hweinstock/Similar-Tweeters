@@ -311,6 +311,8 @@ class TextObject:
 
         rep = {}
 
+        rep["author"] = self.author
+
         for header in ANALYZE_CONFIG['headers']:
 
             # Map each statistic function over each header.

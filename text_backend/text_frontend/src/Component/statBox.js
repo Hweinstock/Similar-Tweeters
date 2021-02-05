@@ -29,13 +29,13 @@ export default class StatBox extends Component {
     generate_rows() {
         let rows;
 
-        if (typeof this.props.data.text_objects == 'undefined') {
+        if (typeof this.props.data.rows == 'undefined') {
             rows = [];
         } else {
-            rows = new Array(this.props.data.text_objects.length);
-            this.props.data.text_objects.forEach(function (item, index) {
+            rows = new Array(this.props.data.rows.length);
+            this.props.data.rows.forEach(function (item, index) {
                 rows[index] = item;
-                rows[index].name = index + 1;
+                rows[index].name = item.author
         });
         }
         return rows;
@@ -85,7 +85,7 @@ export default class StatBox extends Component {
     render() {
         const data = this.format_data();
         return (
-            <div style={{width: "100%"}}>
+            <div style={{width: "75%"}}>
             <TableContainer component={Paper}>
                 <Table size="small" aria-label="a dense table">
                     <TableHead>

@@ -15,6 +15,7 @@ class TwitterPage extends Component {
         this.state = {
             username: "",
             data: undefined,
+            top_users: [],
         };
 
         this.update_username = this.update_username.bind(this);
@@ -26,11 +27,18 @@ class TwitterPage extends Component {
         this.setState({username: username});
     }
 
+    top_users_to_text(){
+        let names = this.state.top_users.map(item => "@"+item[0]);
+        return names.join(", ")
+    }
+
     update_data(new_data) {
-        console.log(new_data);
-        this.setState({data: {
-                                text_objects: [new_data.report]
-        }});
+        this.setState({
+            data: {
+                rows: [new_data.report],
+            },
+            top_users: new_data.result.slice(0, 3),
+        });
     }
 
     handle_second_response(response) {
@@ -69,9 +77,14 @@ class TwitterPage extends Component {
                 <h1> Twitter-Analyzer </h1>
                 <InputBox onChange={this.update_username}/>
                 <SubmitButton onClick={this.submit_username}/>
+                <h1> {' '} </h1>
+                <h3> Tweet Statistics </h3>
                 <StatBox get_headers={get_headers}
                          data={this.state.data}
                 />
+                <h1> {' '} </h1>
+                <h3> Most Similar Tweeters: </h3>
+                <h5 style={{color: "blue"}}>{this.top_users_to_text()}</h5>
             </div>
         );
     }

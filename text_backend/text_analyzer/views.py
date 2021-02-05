@@ -32,8 +32,8 @@ class TextObjectView(viewsets.ModelViewSet):
             return Response({'status': True,
                              'id': id_match})
 
-    @action(detail=False, url_path="analyzeText")
-    def analyze_text(self, request, pk=None):
+    @action(detail=False, url_path="compareText")
+    def compare_text(self, request, pk=None):
         query_id = request.GET.get('id', None)
         query_set = TextObjectData.objects.filter(id=query_id)
 
@@ -80,23 +80,6 @@ class TextObjectView(viewsets.ModelViewSet):
                              "result": sorted_results})
 
 
-    #
-    # @action(detail=False, url_path="fromUsername", methods=['post'])
-    # def create_from_username(self, request, pk=None):
-    #     username = request.data["username"]
-    #     tweets = text_from_user(username)
-    #     total_text = ' '.join(tweets)
-    #
-    #     data = {"label": "from_username",
-    #             "author": username,
-    #             "text": total_text,
-    #             }
-    #
-    #     self.create(Request())
-    #
-    #     print(TextObjectData.objects.all())
-
-
 class CompView(viewsets.ModelViewSet):
     serializer_class = CompSerializer
     queryset = ComparisonData.objects.all()
@@ -118,37 +101,6 @@ class CompView(viewsets.ModelViewSet):
             return False, None
         else:
             return True, query_set[0]
-
-    # def retrieve(self, request, *args, **kwargs):
-    #     """
-    #
-    #     :param request:
-    #     :param args:
-    #     :param kwargs:
-    #     :return:
-    #
-    #     Overwrite retrieve method for CompViewSet to wait for comp to be made. (Does comp on retrieve call.)
-    #     """
-    #     comp_id = kwargs['pk']
-    #     comp_qset = ComparisonData.objects.filter(id=comp_id)
-    #     if len(comp_qset) > 1:
-    #         print("QuerySet returned multiple objects for single id!")
-    #
-    #     comp = comp_qset[0]
-    #
-    #     TextObject = get_text_object(comp.label)
-    #     Text1 = TextObject(comp.text1, raw_text=True)
-    #     Text2 = TextObject(comp.text2, raw_text=True)
-    #
-    #     CompObject = Comparison(Text1.to_vector, Text2.to_vector)
-    #
-    #     result, percent = run_on_object(CompObject)
-    #
-    #     return Response({'result': result,
-    #                      'percent': percent})
-
-
-
 
 @api_view(['GET'])
 def id_and_text_from_user(request):
@@ -208,3 +160,25 @@ def compare_recent_tweets(request):
     return Response({"tweet": total_text,
                      "report": total_text_rep,
                      })
+
+
+@api_view(['GET'])
+def analyze_text(request):
+    text = request.GET.get('text', None)
+    label = request.GET.get('label', None)
+
+    print(text, label)
+    return Response({"here": "it worked"})
+
+# def retrieve(request):
+#
+#     TextObject = get_text_object(comp.label)
+#     Text1 = TextObject(comp.text1, raw_text=True)
+#     Text2 = TextObject(comp.text2, raw_text=True)
+#
+#     CompObject = Comparison(Text1.to_vector, Text2.to_vector)
+#
+#     result, percent = run_on_object(CompObject)
+#
+#     return Response({'result': result,
+#                      'percent': percent})

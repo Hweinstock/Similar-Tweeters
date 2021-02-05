@@ -22,8 +22,6 @@ export function get_from_username(username){
 }
 
 export function post_create_text(post_data){
-    console.log("Here");
-
     return axios.post('/api/text/', post_data)
 }
 
@@ -34,7 +32,7 @@ export function get_text_analyzer(id){
         }
     };
 
-    return axios.get('/api/text/analyzeText/', get_data)
+    return axios.get('/api/text/compareText/', get_data)
 }
 
 

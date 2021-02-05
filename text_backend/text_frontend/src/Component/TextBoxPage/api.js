@@ -32,14 +32,15 @@ export function get_headers() {
 }
 
 export function get_text_objects(text) {
-  let request_data = {
-    text: text,
-    label: comp.label
+  let get_data = {
+    params:
+        {
+          text: text,
+          label: comp.label,
+        },
   };
   return axios
-      .post("/api/textObjects/", request_data)
-      // .then(response => console.log(response.data))
-      // .catch(error => console.log(error))
+      .get("/api/analyzeText/", get_data)
 }
 
 export default {submit_texts, get_headers, make_comparison, get_text_objects}
