@@ -8,7 +8,6 @@ export default class InputBox extends Component {
     }
 
     determine_style(){
-        console.log(this.props.userExists);
         if(this.props.userExists)
         {
             return {backgroundColor: "#6495ED", color: "black"}
