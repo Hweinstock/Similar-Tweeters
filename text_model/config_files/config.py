@@ -24,7 +24,7 @@ def return_configs():
         "top_p_puncs": 3,
         "test_split": 0.2,
         "default_object": Book,
-        "exponential_comparison": True,
+        "exponential_comparison": False,
         "delete_dead_files": True
     }
 

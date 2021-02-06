@@ -13,7 +13,7 @@ def balance_data(df):
     df = df[get_headers()]
 
     # Remove Dead Data i.e NaN
-    # df = df.fillna(method='ffill')
+    df = df.fillna(method='ffill')
 
 
     # Separate what is being used to predict and what is being predicted.

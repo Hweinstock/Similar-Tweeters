@@ -24,11 +24,11 @@ def create_comparison_objects_conservative(text_objects):
             if same_author_added and diff_author_added:
                 break
 
-            if not same_author_added and text_b.author == text_a.author:
+            if not same_author_added and text_b["author"] == text_a["author"]:
                 objects.append(Comparison(text_a, text_b).report)
                 same_author_added = True
 
-            elif not diff_author_added and text_b.author != text_a.author:
+            elif not diff_author_added and text_b["author"] != text_a["author"]:
                 objects.append(Comparison(text_a, text_b).report)
                 diff_author_added = True
 
@@ -57,14 +57,14 @@ def generate_data(args, file_name='comps'):
     if args is None or args.text_objects is None:
         print("Creating TextObjects...")
 
-        for file in tqdm(text_files[101:200]):
+        for file in tqdm(text_files):
             author = author_from_filename(file)
             full_path = os.path.join(DATA_PATH + file)
             new_obj = TextObject(filepath_or_text=full_path, author=author)
 
             # Check if object meets minimums to work with model
             if new_obj.valid:
-                text_objects.append(new_obj)
+                text_objects.append(new_obj.to_vector)
             else:
                 print("Found Invalid TextObject:", full_path)
 
