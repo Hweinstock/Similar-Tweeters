@@ -8,8 +8,8 @@ export default class TextBox extends Component {
           <label>Text{this.props.name}: </label>
           <textarea
                   onChange={(e) => this.props.handleChange(e, this.props.name)}
-                    rows={5}
-                    cols={5}
+                    rows={20}
+                    cols={20}
          />
         </div>
     );

@@ -8,4 +8,5 @@ urlpatterns = [
     path('fromUsername/', views.id_and_text_from_user, name='fromUsername'),
     path('analyzeText/', views.analyze_text, name='analyzeText'),
     path('compareRawText/', views.compare_raw_text, name='compareRawText'),
+    path('doesUserExist/', views.does_user_exist_endpoint, name='doesUserExist')
 ]

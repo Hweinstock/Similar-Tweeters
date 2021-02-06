@@ -7,6 +7,16 @@ export default class InputBox extends Component {
         this.textInput = React.createRef();
     }
 
+    determine_style(){
+        console.log(this.props.userExists);
+        if(this.props.userExists)
+        {
+            return {backgroundColor: "#6495ED", color: "black"}
+        } else {
+            return {backgroundColor: "#87CEFA", color: "black"}
+        }
+    }
+
     render() {
         return (
             <div>
@@ -17,7 +27,9 @@ export default class InputBox extends Component {
                                       size="lg"
                                       className="w-25"
                                       ref={this.textInput}
-                                      onChange={() => this.props.onChange(this.textInput.current.value)}/>
+                                      onChange={() => this.props.onChange(this.textInput.current.value)}
+                                      style={this.determine_style()}/>
+
                     </Form.Group>
                 </Form>
             </div>

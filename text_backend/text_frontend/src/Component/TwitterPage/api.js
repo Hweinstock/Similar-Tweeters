@@ -35,6 +35,20 @@ export function get_text_analyzer(id){
     return axios.get('/api/text/compareText/', get_data)
 }
 
+export function get_if_user_exists(username){
+    let get_data = {
+        params: {
+            username: username,
+        }
+    };
+
+    return axios.get('/api/doesUserExist/', get_data)
+}
 
 
-export default { get_recent_tweets, get_from_username, post_create_text, get_text_analyzer }
+
+export default { get_recent_tweets,
+                 get_from_username,
+                 post_create_text,
+                 get_text_analyzer,
+                 get_if_user_exists}

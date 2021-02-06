@@ -5,7 +5,11 @@ import SubmitButton from './submitButton.js';
 import StatBox from '../statBox.js';
 
 import { get_headers } from '../sharedAPIs.js'
-import { get_recent_tweets, get_from_username, post_create_text, get_text_analyzer} from './api.js'
+import { get_recent_tweets,
+         get_from_username,
+         post_create_text,
+         get_text_analyzer,
+         get_if_user_exists} from './api.js'
 
 class TwitterPage extends Component {
 
@@ -24,7 +28,13 @@ class TwitterPage extends Component {
     }
 
     update_username(username) {
-        this.setState({username: username});
+        console.log(this.state.username_exists);
+        get_if_user_exists(username)
+            .then(response => this.setState({
+                username: username,
+                username_exists: response.data.result,
+            }));
+
     }
 
     top_users_to_text(){
@@ -75,7 +85,8 @@ class TwitterPage extends Component {
         return (
             <div>
                 <h1> Twitter-Analyzer </h1>
-                <InputBox onChange={this.update_username}/>
+                <InputBox onChange={this.update_username}
+                          userExists={this.state.username_exists}/>
                 <SubmitButton onClick={this.submit_username}/>
                 <StatBox get_headers={get_headers}
                          data={this.state.data}

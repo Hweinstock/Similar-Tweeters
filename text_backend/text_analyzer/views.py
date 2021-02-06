@@ -7,8 +7,10 @@ from rest_framework.decorators import api_view, action
 from django.shortcuts import render
 from django.http import HttpResponseBadRequest, HttpResponseNotModified
 import json
-import ast
+import re
 
+
+from twitter.main import does_twitter_user_exist
 from text_model.config_files.config import get_text_object
 from text_model.analyzer.text_objects.text import analyze_config
 from text_model.analyzer.comparison import Comparison
@@ -203,3 +205,17 @@ def compare_raw_text(request):
         "verdict": verdict,
     }
     })
+
+
+@api_view(['GET'])
+def does_user_exist_endpoint(request):
+    twitter_handle = request.GET.get('username', None).strip()
+    twitter_username_re = re.fullmatch(r'[a-zA-Z0-9_]+', twitter_handle)
+    if twitter_username_re is None:
+        does_exist = False
+    else:
+        does_exist = does_twitter_user_exist(twitter_handle)
+
+    return Response({"result": does_exist})
+
+
