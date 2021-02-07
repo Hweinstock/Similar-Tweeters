@@ -4,9 +4,9 @@ import InputBox from './inputBox.js';
 import SubmitButton from './submitButton.js';
 import StatBox from '../statBox.js';
 
-import title_styles from  './Styling/title.module.css'
-import submitBorder from './Styling/submitBorder.module.css'
-import similarTweetStyle from './Styling/similarTweets.module.css'
+import submitButtonStyle from './Styling/submitButton.module.css';
+import similarTweetStyle from './Styling/similarTweets.module.css';
+import backgroundStyle from './Styling/background.module.css';
 
 import { get_headers } from '../sharedAPIs.js'
 import { get_recent_tweets,
@@ -99,9 +99,9 @@ class TwitterPage extends Component {
                          data={this.state.data}
                          title={"Tweet Statistics"}
                 />
-                <div className={similarTweetStyle.default}>
-                    <h3>{"Similar Tweeters:"} </h3>
-                    <h5>{this.top_users_to_text()}</h5>
+                <div className={similarTweetStyle.box}>
+                    <h3 className={similarTweetStyle.title}>{"Similar Tweeters:"} </h3>
+                    <h5 className={similarTweetStyle.text}>{this.top_users_to_text()}</h5>
                 </div>
         </div>);
         } else {
@@ -111,9 +111,9 @@ class TwitterPage extends Component {
 
 
         return (
-            <div>
-                <h1 className={title_styles.default}> Twitter-Analyzer </h1>
-                <div className={submitBorder.default}>
+            <div className={backgroundStyle.background}>
+                <h1 className={backgroundStyle.title}> Twitter-Analyzer </h1>
+                <div className={submitButtonStyle.border}>
                 <InputBox onChange={this.update_username}
                           userExists={this.state.username_exists}/>
                 <SubmitButton onClick={this.submit_username}/>

@@ -1,4 +1,14 @@
-.default {
+.button {
     margin-left: auto;
     border-radius: 0;
+
+}
+
+.border {
+    display: flex;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 60px;
+    background-color: white;
 }

@@ -1,0 +1,13 @@
+.title {
+    font-size: 75px;
+    color: black;
+    text-align: center;
+    padding-top: 5%;
+    box-sizing: border-box;
+}
+
+.background {
+    background-color: #9acfea;
+    height:100vh;
+    font-family: Avenir, "Century Gothic", sans-serif;
+}

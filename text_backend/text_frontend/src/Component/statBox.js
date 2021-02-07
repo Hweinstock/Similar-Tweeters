@@ -1,14 +1,24 @@
 import React, { Component } from "react";
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+// import Table from '@material-ui/core/Table';
+// import TableBody from '@material-ui/core/TableBody';
+// import TableCell from '@material-ui/core/TableCell';
+// import TableContainer from '@material-ui/core/TableContainer';
+// import TableHead from '@material-ui/core/TableHead';
+// import TableRow from '@material-ui/core/TableRow';
+import Table from 'react-bootstrap/Table'
+// import Paper from '@material-ui/core/Paper';
 
 import statBoxStyle from './shared_styling/statBox.module.css';
 
+
+const column_header_mappings = {
+    "top_words": "Keywords",
+    "avg_word_length": "Average Word Length",
+    "avg_sentence_length": "Average Sentence Length",
+    "punctuation_percentages": "Punctuation Usage",
+    "top_sentence_lengths": "Common Sentence Lengths",
+
+};
 export default class StatBox extends Component {
 
     constructor(props) {
@@ -41,42 +51,50 @@ export default class StatBox extends Component {
         return rows;
     }
 
+    determine_header(header) {
+        if(header in column_header_mappings){
+            return column_header_mappings[header];
+        } else {
+            return header;
+        }
+    }
+
     format_data() {
         if (typeof this.props.data != 'undefined') {
             let rows = this.generate_rows(this.props.data);
 
             return (
-                <TableBody>
+                <tbody>
                 {rows.map(row => (
-                    <TableRow key={row.name}>
-                        <TableCell component="th" scope="row">
+                    <tr key={row.name}>
+                        <td className={statBoxStyle.label}>
                             {row.name}
-                        </TableCell>
+                        </td>
                         {this.state.headers.map(header => (
-                            <TableCell key={[header]} style={{textAlign: "right"}}>
+                            <td key={[header]} className={statBoxStyle.cell}>
                                 {row.[header]}
-                            </TableCell>
+                            </td>
                             )
                         )}
-                    </TableRow>
+                    </tr>
 
                 ))}
-            </TableBody>);
+            </tbody>);
 
         } else {
 
-            return ( <TableBody></TableBody> );
+            return ( <div/> );
         }
     }
 
     format_headers() {
 
         return (
-            <TableRow>
-                <TableCell key={"blank"}> {' '} </TableCell>
+            <tr>
+                <th key={"blank"}> {' '} </th>
                 {this.state.headers.map(header =>
-                    <TableCell style={{textAlign: "right"}} key={header}>{header}</TableCell>)}
-            </TableRow>
+                    <th className={statBoxStyle.header} key={header}>{this.determine_header(header)}</th>)}
+            </tr>
         )
 
 
@@ -84,15 +102,13 @@ export default class StatBox extends Component {
 
     render() {
         return (
-            <div className={statBoxStyle.default}>
-            <TableContainer component={Paper}>
-                <Table size="small" aria-label="a dense table">
-                    <TableHead>
+            <div className={statBoxStyle.box}>
+                <Table className={statBoxStyle.table}>
+                    <thead>
                         {this.format_headers()}
-                    </TableHead>
+                    </thead>
                     {this.format_data()}
                 </Table>
-            </TableContainer>
             </div>
         );
   }
