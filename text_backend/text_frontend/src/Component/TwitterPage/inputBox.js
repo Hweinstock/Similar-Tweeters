@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Form from 'react-bootstrap/Form'
+import inputBox_styles from "./Styling/inputBox.module.css";
 
 export default class InputBox extends Component {
     constructor(props) {
@@ -23,12 +24,9 @@ export default class InputBox extends Component {
                     <Form.Group>
                         <Form.Control type="twitter_handle"
                                       placeholder="Enter username"
-                                      size="lg"
-                                      className="w-25"
                                       ref={this.textInput}
                                       onChange={() => this.props.onChange(this.textInput.current.value)}
-                                      style={this.determine_style()}/>
-
+                                      className={inputBox_styles.default}/>
                     </Form.Group>
                 </Form>
             </div>

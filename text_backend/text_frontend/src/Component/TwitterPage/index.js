@@ -4,6 +4,8 @@ import InputBox from './inputBox.js';
 import SubmitButton from './submitButton.js';
 import StatBox from '../statBox.js';
 
+import title_styles from  './Styling/title.module.css'
+
 import { get_headers } from '../sharedAPIs.js'
 import { get_recent_tweets,
          get_from_username,
@@ -84,17 +86,17 @@ class TwitterPage extends Component {
     render() {
         return (
             <div>
-                <h1> Twitter-Analyzer </h1>
+                <h1 className={title_styles.default}> Twitter-Analyzer </h1>
                 <InputBox onChange={this.update_username}
                           userExists={this.state.username_exists}/>
-                <SubmitButton onClick={this.submit_username}/>
-                <StatBox get_headers={get_headers}
-                         data={this.state.data}
-                         title={"Tweet Statistics"}
-                />
-                <h1> {' '} </h1>
-                <h3> Most Similar Tweeters: </h3>
-                <h5 style={{color: "blue"}}>{this.top_users_to_text()}</h5>
+                {/*<SubmitButton onClick={this.submit_username}/>*/}
+                {/*<StatBox get_headers={get_headers}*/}
+                {/*         data={this.state.data}*/}
+                {/*         title={"Tweet Statistics"}*/}
+                {/*/>*/}
+                {/*<h1> {' '} </h1>*/}
+                {/*<h3> Most Similar Tweeters: </h3>*/}
+                {/*<h5 style={{color: "blue"}}>{this.top_users_to_text()}</h5>*/}
             </div>
         );
     }
