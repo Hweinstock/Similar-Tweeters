@@ -7,6 +7,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
+import statBoxStyle from './shared_styling/statBox.module.css';
+
 export default class StatBox extends Component {
 
     constructor(props) {
@@ -82,9 +84,7 @@ export default class StatBox extends Component {
 
     render() {
         return (
-            <div style={{width: "75%"}}>
-            <h1> {' '} </h1>
-            <h3> {this.props.title} </h3>
+            <div className={statBoxStyle.default}>
             <TableContainer component={Paper}>
                 <Table size="small" aria-label="a dense table">
                     <TableHead>

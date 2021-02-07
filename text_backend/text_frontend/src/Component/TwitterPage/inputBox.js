@@ -19,7 +19,7 @@ export default class InputBox extends Component {
 
     render() {
         return (
-            <div>
+            <div style={{width: '100%'}}>
                 <Form>
                     <Form.Group>
                         <Form.Control type="twitter_handle"

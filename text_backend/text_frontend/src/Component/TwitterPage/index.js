@@ -5,6 +5,8 @@ import SubmitButton from './submitButton.js';
 import StatBox from '../statBox.js';
 
 import title_styles from  './Styling/title.module.css'
+import submitBorder from './Styling/submitBorder.module.css'
+import similarTweetStyle from './Styling/similarTweets.module.css'
 
 import { get_headers } from '../sharedAPIs.js'
 import { get_recent_tweets,
@@ -19,6 +21,7 @@ class TwitterPage extends Component {
         super(props);
 
         this.state = {
+            submitted: false,
             username: "",
             data: undefined,
             top_users: [],
@@ -41,11 +44,14 @@ class TwitterPage extends Component {
 
     top_users_to_text(){
         let names = this.state.top_users.map(item => "@"+item[0]);
-        return names.join(", ")
+        console.log(names);
+        console.log(names.join(", "));
+        return names.join(", ");
     }
 
     update_data(new_data) {
         this.setState({
+            submitted: true,
             data: {
                 rows: [new_data.report],
             },
@@ -83,20 +89,36 @@ class TwitterPage extends Component {
 
     }
 
+
     render() {
+        let results;
+
+        if(this.state.submitted){
+            results = (<div>
+            <StatBox get_headers={get_headers}
+                         data={this.state.data}
+                         title={"Tweet Statistics"}
+                />
+                <div className={similarTweetStyle.default}>
+                    <h3>{"Similar Tweeters:"} </h3>
+                    <h5>{this.top_users_to_text()}</h5>
+                </div>
+        </div>);
+        } else {
+            results = (<div>{}</div>)
+        }
+
+
+
         return (
             <div>
                 <h1 className={title_styles.default}> Twitter-Analyzer </h1>
+                <div className={submitBorder.default}>
                 <InputBox onChange={this.update_username}
                           userExists={this.state.username_exists}/>
-                {/*<SubmitButton onClick={this.submit_username}/>*/}
-                {/*<StatBox get_headers={get_headers}*/}
-                {/*         data={this.state.data}*/}
-                {/*         title={"Tweet Statistics"}*/}
-                {/*/>*/}
-                {/*<h1> {' '} </h1>*/}
-                {/*<h3> Most Similar Tweeters: </h3>*/}
-                {/*<h5 style={{color: "blue"}}>{this.top_users_to_text()}</h5>*/}
+                <SubmitButton onClick={this.submit_username}/>
+                </div>
+                {results}
             </div>
         );
     }
