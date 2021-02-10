@@ -11,6 +11,10 @@ def clean_tweet(tweet):
     return tweet
 
 
+def clean_scraped_tweet(tweet):
+    return tweet
+
+
 def text_from_user(handle):
     tweets = tweets_from_handle(handle)
     cleaned_tweets = [clean_tweet(tw) for tw in tweets]

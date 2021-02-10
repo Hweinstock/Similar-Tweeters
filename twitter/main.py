@@ -26,11 +26,11 @@ def recent_tweets_url(handle, max_results=100):
 
 def process_configs():
     with open('../twitter/twitter_config.yaml') as config_file:
-        return yaml.safe_load(config_file)
+        return yaml.safe_load(config_file)["twitter_info"]
 
 
 def create_bearer_token(data):
-    return data["search_tweets_api"]["bearer_token"]
+    return data["bearer_token"]
 
 
 def twitter_auth_and_connect(bearer_token, url):

@@ -33,7 +33,6 @@ class TwitterPage extends Component {
     }
 
     update_username(username) {
-        console.log(this.state.username_exists);
         get_if_user_exists(username)
             .then(response => this.setState({
                 username: username,
@@ -44,8 +43,6 @@ class TwitterPage extends Component {
 
     top_users_to_text(){
         let names = this.state.top_users.map(item => "@"+item[0]);
-        console.log(names);
-        console.log(names.join(", "));
         return names.join(", ");
     }
 
@@ -82,7 +79,6 @@ class TwitterPage extends Component {
     }
 
     submit_username() {
-
         get_from_username(this.state.username)
             .then(response => this.handle_response(response))
             .catch( error => console.log(error));

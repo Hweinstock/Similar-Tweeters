@@ -16,6 +16,7 @@ from text_model.analyzer.text_objects.text import analyze_config
 from text_model.analyzer.comparison import Comparison
 from text_model.analyzer.model.model import run_on_object
 from text_model.data_cleaner.clean_twitter_data import text_from_user
+from twitter.scrape_tweets import scrape_recent_tweets
 from text_model.analyzer.model.model import run_on_object
 
 # Create your views here.
@@ -114,8 +115,10 @@ def id_and_text_from_user(request):
     already_exists = len(existing_objects) > 0
 
     if not already_exists:
-        tweets = text_from_user(username)
-        total_text = ' '.join(tweets)
+        # tweets = text_from_user(username)
+        tweets = scrape_recent_tweets(username)
+        list_tweets = tweets["text"].tolist()
+        total_text = ' '.join(list_tweets)
         data = {"label": "tweet",
                 "author": username,
                 "text": total_text,
