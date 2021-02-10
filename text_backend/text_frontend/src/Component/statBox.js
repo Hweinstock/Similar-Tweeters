@@ -1,30 +1,22 @@
 import React, { Component } from "react";
-// import Table from '@material-ui/core/Table';
-// import TableBody from '@material-ui/core/TableBody';
-// import TableCell from '@material-ui/core/TableCell';
-// import TableContainer from '@material-ui/core/TableContainer';
-// import TableHead from '@material-ui/core/TableHead';
-// import TableRow from '@material-ui/core/TableRow';
 import Table from 'react-bootstrap/Table'
-// import Paper from '@material-ui/core/Paper';
 
 import statBoxStyle from './shared_styling/statBox.module.css';
 
-
-const column_header_mappings = {
-    "top_words": "Keywords",
-    "avg_word_length": "Average Word Length",
-    "avg_sentence_length": "Average Sentence Length",
-    "punctuation_percentages": "Punctuation Usage",
-    "top_sentence_lengths": "Common Sentence Lengths",
-
-};
 export default class StatBox extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             headers: []
+        };
+
+        this.column_header_mappings = {
+            "top_words": "Keywords",
+            "avg_word_length": "Average Word Length",
+            "avg_sentence_length": "Average Sentence Length",
+            "punctuation_percentages": "Punctuation Usage",
+            "top_sentence_lengths": "Common Sentence Lengths",
         };
 
     }
@@ -52,8 +44,8 @@ export default class StatBox extends Component {
     }
 
     determine_header(header) {
-        if(header in column_header_mappings){
-            return column_header_mappings[header];
+        if(header in this.column_header_mappings){
+            return this.column_header_mappings[header];
         } else {
             return header;
         }
