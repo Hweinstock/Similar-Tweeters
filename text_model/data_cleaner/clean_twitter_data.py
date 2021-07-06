@@ -1,8 +1,10 @@
 import re
 from twitter.main import read_in_top_users, tweets_from_handle
+from twitter.scrape_tweets import scrape_recent_tweets
 from text_model.analyzer.text_objects.tweet import Tweet
 import json
 import requests
+import tqdm
 
 
 def clean_tweet(tweet):
@@ -16,19 +18,21 @@ def clean_scraped_tweet(tweet):
 
 
 def text_from_user(handle):
-    tweets = tweets_from_handle(handle)
-    cleaned_tweets = [clean_tweet(tw) for tw in tweets]
+    tweets = scrape_recent_tweets(handle)
+    cleaned_tweets = [clean_scraped_tweet(tw) for tw in tweets["text"].tolist()]
 
     return cleaned_tweets
 
 
 def preload_users(users=None):
+
+    INDENT = "  "
     if users is None:
         users = read_in_top_users()
 
     user_vectors = []
 
-    for user in users:
+    for user in tqdm.tqdm(users):
         # Combine all text from user.
         full_text = " ".join(text_from_user(user))
         text_obj = Tweet(full_text, raw_text=True, author=user)
@@ -38,7 +42,8 @@ def preload_users(users=None):
             user_vectors.append({"author": user,
                                  "text": full_text})
 
-    for vector in user_vectors:
+    print("Got all text! Moving on...")
+    for vector in tqdm.tqdm(user_vectors):
         author = vector["author"]
         # First check if data already exists in db.
         get_data = {"author": author}
@@ -47,6 +52,7 @@ def preload_users(users=None):
         query_result = json.loads(first_response.content)
 
         already_posted = query_result['status']
+        print(INDENT+"Already posted: "+ already_posted)
 
         if not already_posted:
 

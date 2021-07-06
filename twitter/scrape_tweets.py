@@ -2,7 +2,7 @@ import snscrape.modules.twitter as sntwitter
 import pandas as pd
 
 
-def scrape_recent_tweets(username, max_tweets=1000):
+def scrape_recent_tweets(username, max_tweets=10):
     df_rows = []
     query = 'from:'+username
     query_results = sntwitter.TwitterSearchScraper(query).get_items()
