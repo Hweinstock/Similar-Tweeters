@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 from ..text_model.config_files.args_parser import prepare_args
 from ..text_model.analyzer.analyze import generate_data
 from ..text_model.analyzer.model.model import run_model

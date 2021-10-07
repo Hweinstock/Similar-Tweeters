@@ -33,5 +33,11 @@ This is what allows the Twitter API to function. The YAML files should be of for
 the bearer token can be accessed via `data[twitter][bearer_token]`.
 
 Additionally, we want to have the top users pre-loaded into the database. 
+We can use the following command:
+
+`python text_backend/preload_users.py`
+
+### Train a Model
+
 
 ...

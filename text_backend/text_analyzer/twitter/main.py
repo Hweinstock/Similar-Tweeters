@@ -4,7 +4,7 @@ import os
 
 
 def read_in_top_users(n=100):
-    with open('./top_users.txt') as txt_file:
+    with open('text_analyzer/twitter/top_users.txt') as txt_file:
         users = txt_file.read().splitlines()
 
     return users
