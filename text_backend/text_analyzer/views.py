@@ -10,14 +10,14 @@ import json
 import re
 
 
-from twitter.main import does_twitter_user_exist
-from text_model.config_files.config import get_text_object
-from text_model.analyzer.text_objects.text import analyze_config
-from text_model.analyzer.comparison import Comparison
-from text_model.analyzer.model.model import run_on_object
-from text_model.data_cleaner.clean_twitter_data import text_from_user
-from twitter.scrape_tweets import scrape_recent_tweets
-from text_model.analyzer.model.model import run_on_object
+from .twitter.main import does_twitter_user_exist
+from .text_model.config_files.config import get_text_object
+from .text_model.analyzer.text_objects.text import analyze_config
+from .text_model.analyzer.comparison import Comparison
+from .text_model.analyzer.model.model import run_on_object
+from .text_model.data_cleaner.clean_twitter_data import text_from_user
+from .twitter.scrape_tweets import scrape_recent_tweets
+from .text_model.analyzer.model.model import run_on_object
 
 # Create your views here.
 
@@ -212,6 +212,7 @@ def compare_raw_text(request):
 
 @api_view(['GET'])
 def does_user_exist_endpoint(request):
+    print(request)
     twitter_handle = request.GET.get('username', None).strip()
     twitter_username_re = re.fullmatch(r'[a-zA-Z0-9_]+', twitter_handle)
     if twitter_username_re is None:

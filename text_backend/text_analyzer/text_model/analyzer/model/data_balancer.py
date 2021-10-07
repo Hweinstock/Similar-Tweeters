@@ -1,6 +1,6 @@
 from imblearn.over_sampling import SMOTE
 import pandas as pd
-from config_files.config import get_label, get_headers, get_features
+from ...config_files.config import get_label, get_headers, get_features
 
 
 def balance_data(df):

@@ -3,10 +3,10 @@ import csv
 import os
 import pickle
 import pandas as pd
-from text_model.config_files.config import get_headers, get_text_object
-from text_model.config_files.config import return_configs
-from text_model.utility.utility import author_from_filename
-from text_model.analyzer.comparison import Comparison
+from ..config_files.config import get_headers, get_text_object
+from ..config_files.config import return_configs
+from ..utility.utility import author_from_filename
+from ..analyzer.comparison import Comparison
 
 
 PIK = 'text_objects_books.dat'

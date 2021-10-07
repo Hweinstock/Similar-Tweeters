@@ -1,6 +1,6 @@
-from text_model.analyzer.text_objects.discord_message import DiscordMessage
-from text_model.analyzer.text_objects.book import Book
-from text_model.analyzer.text_objects.tweet import Tweet
+from ..analyzer.text_objects.discord_message import DiscordMessage
+from ..analyzer.text_objects.book import Book
+from ..analyzer.text_objects.tweet import Tweet
 
 """
 Not sure if this is the best way to do it, but wanted a centralized place to tweak variables, this is what I came up with.

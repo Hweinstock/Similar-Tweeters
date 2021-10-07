@@ -4,7 +4,7 @@ from os.path import splitext
 import re
 import os
 import csv
-from text_model.config_files.config import return_configs
+from ...text_model.config_files.config import return_configs
 
 CONFIGS = return_configs()
 ZIPS_DIR = "/raw_zips/"

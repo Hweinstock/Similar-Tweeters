@@ -1,4 +1,4 @@
-from text_model.utility import utility
+from ..utility import utility
 
 # TODO: Generalize these functions
 

@@ -1,4 +1,4 @@
-from text_model.utility import utility
+from ...utility import utility
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 # from text_analyzer.analyzer.model.config import analyze_config

@@ -1,9 +1,9 @@
 import math
 
-from text_model.utility import utility
-from text_model.config_files.config import get_headers
-from text_model.config_files.config import return_configs
-from text_model.analyzer.cross_compare import cross_compare_top_n_puncs, cross_compare_top_n_words
+from ..utility import utility
+from ..config_files.config import get_headers
+from ..config_files.config import return_configs
+from ..analyzer.cross_compare import cross_compare_top_n_puncs, cross_compare_top_n_words
 
 CONFIGS = return_configs()
 

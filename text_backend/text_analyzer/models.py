@@ -1,8 +1,8 @@
 from django.db import models
 
-from text_model.config_files.config import get_text_object
-from text_model.analyzer.comparison import Comparison as CompObject
-from text_model.analyzer.model.model import run_on_object
+from .text_model.config_files.config import get_text_object
+from .text_model.analyzer.comparison import Comparison as CompObject
+from .text_model.analyzer.model.model import run_on_object
 # Create your models here.
 
 

@@ -1,7 +1,7 @@
 import re
-from twitter.main import read_in_top_users, tweets_from_handle
-from twitter.scrape_tweets import scrape_recent_tweets
-from text_model.analyzer.text_objects.tweet import Tweet
+from ...twitter.main import read_in_top_users, tweets_from_handle
+from ...twitter.scrape_tweets import scrape_recent_tweets
+from ...text_model.analyzer.text_objects.tweet import Tweet
 import json
 import requests
 import tqdm

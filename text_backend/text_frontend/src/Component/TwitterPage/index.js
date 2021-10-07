@@ -34,7 +34,8 @@ class TwitterPage extends Component {
 
     update_username(username) {
         get_if_user_exists(username)
-            .then(response => this.setState({
+            .then(response =>
+                this.setState({
                 username: username,
                 username_exists: response.data.result,
             }));
@@ -79,6 +80,7 @@ class TwitterPage extends Component {
     }
 
     submit_username() {
+        console.log(this.state.username);
         get_from_username(this.state.username)
             .then(response => this.handle_response(response))
             .catch( error => console.log(error));

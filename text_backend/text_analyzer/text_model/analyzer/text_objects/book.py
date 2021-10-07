@@ -1,4 +1,4 @@
-from text_model.analyzer.text_objects.text import TextObject
+from ..text_objects.text import TextObject
 from nltk.tokenize import sent_tokenize
 
 

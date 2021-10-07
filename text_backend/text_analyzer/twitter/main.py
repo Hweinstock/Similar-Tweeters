@@ -4,7 +4,7 @@ import os
 
 
 def read_in_top_users(n=100):
-    with open('../twitter/top_users.txt') as txt_file:
+    with open('./top_users.txt') as txt_file:
         users = txt_file.read().splitlines()
 
     return users
@@ -25,7 +25,7 @@ def recent_tweets_url(handle, max_results=100):
 
 
 def process_configs():
-    with open('../twitter/twitter_config.yaml') as config_file:
+    with open('twitter_config.yaml') as config_file:
         return yaml.safe_load(config_file)["twitter_info"]
 
 
