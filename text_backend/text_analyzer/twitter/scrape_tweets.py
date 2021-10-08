@@ -5,7 +5,8 @@ import re
 
 def clean_text(raw_text):
     text = re.sub(r'http\S+', '', raw_text)
-    text = re.sub(r'RT ', '', raw_text)
+    text = re.sub(r'RT ', '', text)
+    text = re.sub(r'https\S+', '', text)
     return text
 
 

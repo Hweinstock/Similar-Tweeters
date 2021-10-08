@@ -12,7 +12,6 @@ PATH = 'text_backend/text_analyzer/text_model/analyzer/model/'
 
 
 def load_model():
-    import os
     with open(PATH + 'saved_model.pkl', 'rb') as model:
         regressor = pickle.load(model)
     return regressor

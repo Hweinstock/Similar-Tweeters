@@ -153,7 +153,7 @@ def compare_recent_tweets(request):
     twitter_handle = request.GET.get('username', None)
 
     # Get recent tweets
-    tweets = scrape_recent_tweets(twitter_handle) # this was changed
+    tweets = scrape_recent_tweets(twitter_handle)["text"] # this was changed
 
     # Create 'Tweet' objects
     TweetObj = get_text_object('tweet')
