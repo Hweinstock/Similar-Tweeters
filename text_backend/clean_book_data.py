@@ -4,7 +4,7 @@ from os.path import splitext
 import re
 import os
 import csv
-from ...text_model.config_files.config import return_configs
+from text_analyzer.text_model.config_files.config import return_configs
 
 CONFIGS = return_configs()
 ZIPS_DIR = "/raw_zips/"
@@ -101,7 +101,7 @@ def find_start_of_text(text_file):
 
 
 if __name__ == "__main__":
-    root_dir = "../data/book_data"
+    root_dir = "book_data"
     zip_files_dir = root_dir + ZIPS_DIR
     text_files_dir = root_dir + TEXT_DIR
     zip_files = os.listdir(zip_files_dir)
@@ -116,7 +116,10 @@ if __name__ == "__main__":
             print("WARNING", file, "Could not prepare file, Possibly of wrong form. ")
 
             if CONFIGS["delete_dead_files"]:
-                os.remove(os.path.join(zip_files_dir, file))
+                dead_path = os.path.join(zip_files_dir, file)
+                if os.path.isdir(dead_path):
+                    for file in os.listdir(dead_path):
+                        os.remove(os.path.join(dead_path, file))
                 print("Deleting File")
 
     text_files = os.listdir(text_files_dir)
@@ -124,11 +127,17 @@ if __name__ == "__main__":
     for sec_file in text_files:
         # Remove non-text files from the text file directory.
         if not sec_file.endswith('.txt'):
-            os.remove(os.path.join(text_files_dir, sec_file))
+            dead_path = os.path.join(text_files_dir, sec_file)
+            if os.path.isdir(dead_path):
+                for file in os.listdir(dead_path):
+                    os.remove(os.path.join(dead_path, file))
+                os.rmdir(dead_path)
+            else:
+                os.remove(dead_path)
         else:
             # Remove any unlabeled data that made its way through.
             first_char = sec_file[0]
-            if not first_char.isnumeric():
+            if not first_char.isnumeric() or "_" not in sec_file:
                 os.remove(os.path.join(text_files_dir, sec_file))
 
 

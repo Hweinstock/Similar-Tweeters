@@ -39,5 +39,13 @@ We can use the following command:
 
 ### Train a Model
 
+#### Clean the Data
+In order to train a model, we must have data. If using the example book_data, this can be done via 
+`clean_book_data.py` script. Otherwise it must be cleaned and put into `.txt` another way. 
+
+
+
+
+
 
 ...

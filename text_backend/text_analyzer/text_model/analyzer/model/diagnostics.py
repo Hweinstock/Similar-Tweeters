@@ -1,5 +1,5 @@
 
-def generate_diagnostics(actual_results, predicted_results):
+def generate_diagnostics(actual_results, predicted_results, train_size, test_size):
 
     combined_results = zip(actual_results, predicted_results)
 
@@ -34,6 +34,8 @@ def generate_diagnostics(actual_results, predicted_results):
                 correct_same_authors += 1.0
                 correct += 1.0
 
+    print("Train sample size: ", train_size)
+    print("Test sample size: ", test_size)
     if total_different_authors != 0.0:
         print("% of different authors identified:", correct_different_authors/total_different_authors * 100.0)
 

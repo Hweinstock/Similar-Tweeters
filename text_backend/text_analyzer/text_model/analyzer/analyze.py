@@ -11,7 +11,7 @@ from ..analyzer.comparison import Comparison
 
 PIK = 'text_objects_books.dat'
 CONFIGS = return_configs()
-DATA_PATH = 'data/book_data/raw_text/'
+DATA_PATH = 'book_data/raw_text/'
 
 
 def create_comparison_objects_conservative(text_objects):

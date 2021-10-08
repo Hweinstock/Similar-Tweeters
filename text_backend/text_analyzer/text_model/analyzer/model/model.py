@@ -8,11 +8,12 @@ import pickle
 from ...config_files.config import return_configs
 
 CONFIGS = return_configs()
-PATH = '../text_model/analyzer/model/'
+PATH = 'text_backend/text_analyzer/text_model/analyzer/model/'
 
 
 def load_model():
-    with open(PATH + 'trained_model.pkl', 'rb') as model:
+    import os
+    with open(PATH + 'saved_model.pkl', 'rb') as model:
         regressor = pickle.load(model)
     return regressor
 
@@ -68,7 +69,8 @@ def run_model(args, dataset):
             X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=CONFIGS["test_split"], random_state=0)
         else:
             X_train, y_train = X, y
-
+        train_size = len(X_train)
+        test_size = len(X_test)
         print("Training model...")
         # Flatten train data
         y_train = y_train.ravel()
@@ -88,7 +90,7 @@ def run_model(args, dataset):
         predicted_results = y_pred
         print("Generating diagnostics...")
         # Print out diagnostics of tests
-        generate_diagnostics(actual_results, predicted_results)
+        generate_diagnostics(actual_results, predicted_results, train_size, test_size)
 
         print("\nCoefficients: ")
         print(coeff_df)
