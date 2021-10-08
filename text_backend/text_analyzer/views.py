@@ -210,7 +210,6 @@ def compare_raw_text(request):
 
 @api_view(['GET'])
 def does_user_exist_endpoint(request):
-    print(request)
     twitter_handle = request.GET.get('username', None).strip()
     twitter_username_re = re.fullmatch(r'[a-zA-Z0-9_]+', twitter_handle)
     if twitter_username_re is None:
