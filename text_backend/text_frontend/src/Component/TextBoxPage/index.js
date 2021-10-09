@@ -5,10 +5,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { submit_texts, make_comparison, get_text_objects } from "./api.js";
 import { get_headers } from '../sharedAPIs.js'
 
+
 import TextBox from "./textBox.js"
 import CompareButton from "./compareButton.js"
 import GuessBar from "./guessBar.js"
 import StatBox from "../statBox.js"
+
+import textBoxStyle from "./styling/textBox.module.css"
 
 class TextBoxPage extends Component {
     constructor(props) {
@@ -64,29 +67,34 @@ class TextBoxPage extends Component {
 
   render() {
     return (
-        <div>
+        <div className={textBoxStyle.bigContainer}>
             <h1> Text-Analyzer </h1>
-
-            {/*<h1>{' '}</h1>*/}
-            <TextBox
-                name="box1"
-                handleChange={this.handleChange}
-            />
-
-            <TextBox
-                name="box2"
-                handleChange={this.handleChange}
-            />
 
             <StatBox
                 data={this.state.data}
                 get_headers={get_headers}
                 title={"Text Statistics"}
             />
-
             <GuessBar
                 percent={this.state.bar_percent}
             />
+
+            {/*<h1>{' '}</h1>*/}
+            <div className={textBoxStyle.flexContainer}>
+                <div clasName={textBoxStyle.textBoxLeft}>
+                    <TextBox
+                        name="box1"
+                        handleChange={this.handleChange}
+                    />
+                </div>
+                <div className={textBoxStyle.textBoxBuffer}/>
+                <div clasName={textBoxStyle.textBoxRight}>
+                    <TextBox
+                        name="box2"
+                        handleChange={this.handleChange}
+                    />
+                </div>
+            </div>
 
             <h1>{' '}</h1>
 

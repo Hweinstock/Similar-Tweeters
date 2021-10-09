@@ -7,7 +7,8 @@ export default class CompareButton extends Component {
     return (
         <Button onClick={this.props.onClick}
                 variant="contained"
-                color="primary">
+                color="primary"
+                size="large">
             compare
         </Button>
     );

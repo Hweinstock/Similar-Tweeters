@@ -1,6 +1,8 @@
 import ProgressBar from 'react-bootstrap/ProgressBar'
 import React, { Component } from "react";
 
+import textBoxStyle from "./styling/textBox.module.css"
+
 export default class GuessBar extends Component {
 
     constructor(props) {
@@ -25,12 +27,14 @@ export default class GuessBar extends Component {
 
     render() {
         return (
-            <div style={{width: '20%'}}>
-                <h2> Similarity: </h2>
+
+            <div className={textBoxStyle.guessBar}>
+            <h2> Similarity </h2>
             <ProgressBar
                 variant={this.determine_color(this.props.percent)}
                 now={this.props.percent}
                 label={this.props.percent+'%'}
+                style={{color: 'black'}}
             />
             </div>
         );
