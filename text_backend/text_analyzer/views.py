@@ -141,8 +141,8 @@ def create_text_objects(request):
     label = request.data['label']
 
     TextObject = get_text_object(label)
-    Text1 = TextObject(texts['box1'], raw_text=True)
-    Text2 = TextObject(texts['box2'], raw_text=True)
+    Text1 = TextObject(texts['left'], raw_text=True)
+    Text2 = TextObject(texts['right'], raw_text=True)
 
     return Response({'text_objects': [Text1.report(), Text2.report()]})
 
@@ -174,8 +174,8 @@ def analyze_text(request):
     label = request.GET.get('label', None)
 
     text_obj = get_text_object(label)
-    report_1 = text_obj(text["box1"], raw_text=True, author="box1").report()
-    report_2 = text_obj(text["box2"], raw_text=True, author="box2").report()
+    report_1 = text_obj(text["left"], raw_text=True, author="left").report()
+    report_2 = text_obj(text["right"], raw_text=True, author="right").report()
     return Response({"reports": [report_1, report_2]})
 
 
@@ -184,7 +184,6 @@ def compare_raw_text(request):
     # Load in Get Params
     texts = json.loads(request.GET.get('texts', None))
     label = request.GET.get('label', None)
-
     text1 = texts['text1']
     text2 = texts['text2']
 

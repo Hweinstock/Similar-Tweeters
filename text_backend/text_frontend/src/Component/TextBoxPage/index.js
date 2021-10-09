@@ -18,14 +18,13 @@ class TextBoxPage extends Component {
         super(props);
         this.state = {
             text: {
-                box1: " ",
-                box2: " "
+                left: " ",
+                right: " "
             },
             bar_percent: 0,
             data: { textObjects: undefined,
                     comp: undefined}
         };
-
         this.handleChange = this.handleChange.bind(this);
 
     }
@@ -83,14 +82,14 @@ class TextBoxPage extends Component {
             <div className={textBoxStyle.flexContainer}>
                 <div clasName={textBoxStyle.textBoxLeft}>
                     <TextBox
-                        name="box1"
+                        name="left"
                         handleChange={this.handleChange}
                     />
                 </div>
                 <div className={textBoxStyle.textBoxBuffer}/>
                 <div clasName={textBoxStyle.textBoxRight}>
                     <TextBox
-                        name="box2"
+                        name="right"
                         handleChange={this.handleChange}
                     />
                 </div>

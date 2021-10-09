@@ -11,12 +11,11 @@ export function submit_texts(texts) {
     params: {
       label: comp.label,
       texts: {
-        text1: texts.box1,
-        text2: texts.box2,
+        text1: texts.left,
+        text2: texts.right,
       },
     }
   };
-
   return axios
       .get("/api/compareRawText/", get_params)
 
