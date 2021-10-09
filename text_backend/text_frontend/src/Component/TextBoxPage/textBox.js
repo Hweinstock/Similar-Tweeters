@@ -8,7 +8,7 @@ export default class TextBox extends Component {
         <div className={textBoxStyling.textBoxBorder}>
           <textarea
                   onChange={(e) => this.props.handleChange(e, this.props.name)}
-                    rows={30}
+                    rows={15}
                     cols={50}
                     placeholder="Enter text here. "
          />
