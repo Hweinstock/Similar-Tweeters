@@ -80,7 +80,6 @@ class TwitterPage extends Component {
     }
 
     submit_username() {
-        console.log(this.state.username);
         get_from_username(this.state.username)
             .then(response => this.handle_response(response))
             .catch( error => console.log(error));
@@ -114,7 +113,8 @@ class TwitterPage extends Component {
                 <div className={submitButtonStyle.border}>
                 <InputBox onChange={this.update_username}
                           userExists={this.state.username_exists}/>
-                <SubmitButton onClick={this.submit_username}/>
+                <SubmitButton onClick={this.submit_username}
+                            userExists={this.state.username_exists}/>
                 </div>
                 {results}
             </div>

@@ -10,7 +10,8 @@ export default class SubmitButton extends Component {
     return (
         <Button variant="outline-primary"
                 onClick={this.props.onClick}
-                className={submitButtonStyle.button}>
+                className={submitButtonStyle.button}
+                disabled={!this.props.userExists}>
             submit
         </Button>
     );
