@@ -1,4 +1,6 @@
-# text-analyzer
+# Similar-Tweeters
+- A Django and ReactJS based web-application utilizing the Twitter API to find accounts with similar tweet styles.
+- Modern NLP techniques such as neural language modeling, topic modeling, as well as general deep learning techniques. 
 
 ## Setup
 
